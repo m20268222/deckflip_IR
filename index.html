@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="ko" class="nojs">
+<head>
+<meta charset="UTF-8">
+<script>document.documentElement.classList.remove('nojs');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="DeckFlip — 발표는 여기서 이어집니다">
+<meta property="og:description" content="GRAVITY 2026 IR, 19번째 슬라이드. 종이의 18장이 끝난 자리에서 웹의 발표가 시작됩니다. 라이브 투표와 함께 보세요.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f5eff'/%3E%3Ctext x='32' y='44' font-size='34' font-weight='900' font-family='Arial' fill='white' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E">
+<title>DeckFlip — GRAVITY 2026 IR (웹 라이브)</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" media="print" onload="this.media='all'">
+<style>
+:root{--paper:#fff;--ink:#111113;--ink2:#18181b;--gray:#71717a;--gray7:#3f3f46;
+--line:#e4e4e7;--blue:#1f5eff;--navy:#0f1923;--dark:#151515;--ice:#a4e0ff;--lav:#7ea2ff;--lime:#aaff5e;
+--f:"Pretendard",-apple-system,"Segoe UI",sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#05070d;font-family:var(--f);word-break:keep-all}
+body:not(.scrollmode){overflow:hidden}
+#bgstars{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.stage{position:fixed;inset:0;display:grid;place-items:center;z-index:1}
+#deck{width:1280px;height:720px;position:relative;transform-origin:center}
+.slide{position:absolute;inset:0;background:var(--paper);color:var(--ink);overflow:hidden;
+  padding:64px 78px 56px;display:flex;flex-direction:column;opacity:0;pointer-events:none;
+  transition:opacity .45s ease;border-radius:6px}
+.slide.on{opacity:1;pointer-events:auto}
+.slide.dark{background:var(--navy);color:#fff}
+.slide.dark2{background:var(--dark);color:#fff}
+.eb{font-size:14px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gray)}
+.dark .eb,.dark2 .eb{color:var(--lav)}
+h1{font-weight:900;letter-spacing:-.055em;line-height:1.06;margin-top:14px;font-size:45px}
+.blue{color:var(--blue)} .dark .blue,.dark2 .blue{color:var(--ice)}
+.foot{position:absolute;left:78px;right:78px;bottom:22px;display:flex;justify-content:space-between;
+  font-size:12px;color:var(--gray);font-weight:600}
+.dark .foot,.dark2 .foot{color:rgba(255,255,255,.45)}
+.pill{display:inline-flex;align-items:center;gap:7px;border:1.5px solid var(--line);border-radius:999px;
+  padding:8px 17px;font-size:15px;font-weight:700;color:var(--gray7)}
+.pill.solid{background:var(--navy);color:#fff;border-color:var(--navy)}
+.pill.lime{background:var(--lime);color:var(--navy);border-color:var(--lime)}
+.dark .pill,.dark2 .pill{border-color:#2a4060;color:rgba(255,255,255,.85)}
+.card{border:1.5px solid var(--line);border-radius:20px;padding:24px 26px;background:#fff}
+.dark .card,.dark2 .card{color:var(--ink)}
+.grid{display:grid;gap:18px}
+.num{font-size:16px;font-weight:900;color:var(--blue);letter-spacing:-.02em}
+.src{font-size:12px;color:var(--gray);font-weight:500}
+.big{font-weight:900;letter-spacing:-.045em}
+.mark{background:#fff9e6;border:2px dashed #d4a017;color:#7a5c00;font-size:12px;font-weight:700;border-radius:8px;padding:2px 8px}
+.badtag{display:inline-block;font-size:11px;font-weight:800;color:#e05252;border:1.5px solid #e05252;border-radius:99px;padding:2px 8px;background:rgba(224,82,82,.06)}
+.glow{position:absolute;inset:0;pointer-events:none}
+[data-anim]{opacity:0;transform:translateY(14px);transition:opacity .5s cubic-bezier(.2,.7,.3,1),transform .5s cubic-bezier(.2,.7,.3,1)}
+[data-anim].in{opacity:1;transform:none}
+/* ─ chrome ─ */
+#prog{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--ice));width:0%;z-index:70;transition:width .3s}
+#cnt,#pdfbtn,#hint{transition:opacity .8s}
+#cnt{position:fixed;right:14px;bottom:12px;z-index:70;font-size:12px;color:rgba(255,255,255,.7);
+  background:rgba(10,16,26,.8);border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:5px 13px;font-weight:700}
+#pdfbtn{position:fixed;left:14px;bottom:12px;z-index:70;font-size:12px;color:rgba(255,255,255,.78);cursor:pointer;
+  background:rgba(10,16,26,.8);border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:5px 13px;font-weight:700}
+#pdfbtn:hover{border-color:var(--ice);color:#fff}
+#hint{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:70;font-size:12px;font-weight:700;
+  color:rgba(255,255,255,.75);background:rgba(10,16,26,.8);border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:5px 15px}
+body.dimchrome #cnt,body.dimchrome #pdfbtn{opacity:.14}
+#stamp{position:fixed;top:14px;right:14px;z-index:75;display:none;background:#c62828;color:#fff;
+  font-size:12px;font-weight:800;border-radius:8px;padding:6px 12px}
+body.pdf #stamp{display:block}
+body.pdf #deck{filter:grayscale(1) contrast(.96)}
+body.pdf [data-anim]{transition:none!important}
+body.pdf .kf,body.pdf .kf *,body.pdf .lane .doc,body.pdf .led{animation-play-state:paused!important}
+#black{position:fixed;inset:0;background:#000;z-index:85;display:none}
+body.blackout #black{display:block}
+#timer{position:fixed;top:14px;left:14px;z-index:75;display:none;background:rgba(10,16,26,.9);color:var(--lime);
+  font-family:ui-monospace,monospace;font-size:18px;font-weight:800;border-radius:10px;padding:7px 14px;cursor:pointer}
+body.timeron #timer{display:block}
+#help{position:fixed;inset:0;z-index:90;display:none;background:rgba(4,7,13,.9);color:#fff;place-items:center}
+body.helpon #help{display:grid}
+#help .box{max-width:540px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:28px 34px;font-size:14.5px;line-height:2.1}
+#help b{display:inline-block;min-width:86px;color:var(--ice);font-family:ui-monospace,monospace}
+#help .x{margin-top:10px;font-size:12px;color:rgba(255,255,255,.5)}
+/* ─ filmstrip ─ */
+#stripHot{position:fixed;left:0;top:0;bottom:0;width:16px;z-index:71}
+#strip{position:fixed;left:0;top:0;bottom:0;width:196px;z-index:72;background:rgba(6,10,18,.94);
+  border-right:1px solid rgba(255,255,255,.12);transform:translateX(-100%);transition:transform .3s ease;
+  overflow-y:auto;padding:14px 12px;scrollbar-width:thin}
+#strip.open{transform:translateX(0)}
+.sitem{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;cursor:pointer;border-radius:10px;padding:6px;border:1px solid transparent}
+.sitem:hover{border-color:rgba(164,224,255,.45);background:rgba(255,255,255,.05)}
+.sitem.cur{border-color:var(--blue)}
+.thumb{width:160px;height:90px;overflow:hidden;border-radius:6px;background:#fff;position:relative}
+.thumb .cl{width:1280px;height:720px;transform:scale(0.125);transform-origin:top left;position:absolute;top:0;left:0;pointer-events:none}
+.thumb .cl,.thumb .cl *{animation:none!important;transition:none!important}
+.thumb .cl [data-anim]{opacity:1!important;transform:none!important}
+.slabel{font-size:11px;font-weight:700;color:rgba(255,255,255,.75)}
+.slabel b{color:var(--ice);font-family:ui-monospace,monospace;margin-right:5px}
+/* ─ intro ─ */
+#intro{position:fixed;inset:0;z-index:95;background:#04060c;display:grid;place-items:center;overflow:hidden;
+  transition:opacity .7s ease}
+#intro.bye{opacity:0;pointer-events:none}
+#istars{position:absolute;inset:0;width:100%;height:100%}
+#cosmos{position:absolute;left:50%;top:42%;width:0;height:0}
+.planet{position:absolute;left:-70px;top:-70px;width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle at 34% 30%,#3f7dff 0%,#1f5eff 38%,#0c2f8f 72%,#061a52 100%);
+  box-shadow:0 0 70px rgba(31,94,255,.55),0 0 160px rgba(31,94,255,.25);animation:breathe 5s ease-in-out infinite}
+.pring{position:absolute;left:-125px;top:-42px;width:250px;height:84px;border:2px solid rgba(164,224,255,.4);
+  border-radius:50%;transform:rotate(-16deg)}
+.ptxt{position:absolute;left:-70px;top:-12px;width:140px;text-align:center;font-size:15px;font-weight:900;
+  letter-spacing:.22em;color:#fff;text-shadow:0 0 14px rgba(31,94,255,.9)}
+@keyframes breathe{0%,100%{box-shadow:0 0 70px rgba(31,94,255,.55),0 0 160px rgba(31,94,255,.25)}50%{box-shadow:0 0 95px rgba(31,94,255,.75),0 0 200px rgba(31,94,255,.35)}}
+.orbit{position:absolute;border:1px dashed rgba(164,224,255,.18);border-radius:50%;transform:translate(-50%,-50%) scaleY(.42)}
+.orb{position:absolute;left:0;top:0;animation:spin linear infinite}
+.sat{position:absolute;display:flex;flex-direction:column;align-items:center;gap:4px;transform:translate(-50%,-50%);animation:spinR linear infinite;z-index:3;text-shadow:0 2px 10px rgba(0,0,0,.85)}
+@keyframes spinR{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(-360deg)}}
+.sat i{width:13px;height:13px;border-radius:50%;display:block;box-shadow:0 0 12px currentColor}
+.sat span{font-size:10.5px;font-weight:800;letter-spacing:.1em;color:rgba(255,255,255,.8)}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.icopy{position:relative;z-index:2;text-align:center;margin-top:340px;padding:0 20px}
+.icopy .ieb{font-size:12px;font-weight:800;letter-spacing:.25em;color:var(--ice);text-transform:uppercase}
+.icopy h2{font-size:clamp(26px,4.6vw,44px);font-weight:900;letter-spacing:-.05em;color:#fff;margin-top:12px}
+.icopy .isub{font-size:clamp(13px,1.6vw,16px);color:rgba(255,255,255,.6);margin-top:12px;line-height:1.7}
+#enter{margin-top:26px;background:linear-gradient(90deg,var(--blue),#3f7dff);color:#fff;border:0;border-radius:999px;
+  padding:13px 34px;font-size:16px;font-weight:800;font-family:var(--f);cursor:pointer;box-shadow:0 8px 30px rgba(31,94,255,.4)}
+#enter:hover{transform:translateY(-2px);box-shadow:0 12px 38px rgba(31,94,255,.55)}
+.ikeys{margin-top:16px;font-size:12px;color:rgba(255,255,255,.4)}
+/* ─ P4 race · 파이프라인 LED · bars · poll · formula (콘텐츠 위젯) ─ */
+.lane{position:relative;height:64px;border:1.5px dashed #2a4060;border-radius:14px;margin-top:12px}
+.lane .doc{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:26px}
+.lane .gate{position:absolute;top:50%;transform:translateY(-50%);font-size:11px;color:rgba(255,255,255,.55);
+  border:1px solid #2a4060;border-radius:8px;padding:4px 8px;background:rgba(255,255,255,.04)}
+.on .lane.slow .doc{animation:race 5.2s ease-in-out infinite}
+.on .lane.fast .doc{animation:race 1.9s ease-in-out infinite}
+@keyframes race{0%{left:8px}82%{left:calc(100% - 46px)}100%{left:calc(100% - 46px)}}
+.pline{display:flex;gap:14px;align-items:center;margin-top:38px}
+.pbox{flex:1;border:1.5px solid var(--line);border-radius:16px;padding:18px 16px;text-align:center;position:relative}
+.pbox .t{font-weight:800;font-size:17px}
+.pbox .d{font-size:13px;color:var(--gray7);margin-top:5px;line-height:1.5}
+.pbox .led{position:absolute;top:12px;right:12px;width:10px;height:10px;border-radius:50%;background:#d9dee7}
+.on .pl1 .led{animation:led1 6s infinite}.on .pl2 .led{animation:led2 6s infinite}
+.on .pl3 .led{animation:led3 6s infinite}.on .pl4 .led{animation:led4 6s infinite}
+@keyframes led1{0%,15%{background:var(--blue)}16%,100%{background:#d9dee7}}
+@keyframes led2{16%,40%{background:#e5a400}0%,15%,41%,100%{background:#d9dee7}}
+@keyframes led3{41%,65%{background:#e05252}0%,40%,66%,100%{background:#d9dee7}}
+@keyframes led4{66%,95%{background:#22a06b}0%,65%,96%,100%{background:#d9dee7}}
+.bar{height:10px;border-radius:99px;background:#eef1f6;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;width:0;border-radius:99px;background:var(--blue);transition:width 1s cubic-bezier(.2,.7,.3,1)}
+.on .bar i{width:var(--w)}
+.fun{border:1.5px solid var(--line);border-radius:16px;padding:15px 22px;background:#fff}
+.fun.som{border-color:var(--blue)}
+.pollbtn{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:12px;
+  padding:7px 12px;font-size:13px;font-weight:700;color:var(--ink2);cursor:pointer;font-family:var(--f);margin-top:5px}
+.pollbtn:hover{border-color:var(--blue)}
+.pollrow{font-size:12px;color:var(--gray7);margin-top:7px}
+.pollrow .bar{margin-top:3px;height:8px}
+.pollrow .bar i{background:var(--lime)}
+#p6live .card{padding:16px 20px}
+#p6live .grid{gap:14px}
+#p6live h1{font-size:40px;margin-top:10px}
+#p6live .pollrow{margin-top:5px}
+#p6live .pollrow .bar{height:6px}
+.formula{font-family:ui-monospace,"Cambria Math",serif;font-size:21px;color:var(--ink2);letter-spacing:.02em;min-height:30px;cursor:pointer}
+.formula::after{content:'▍';color:var(--blue);animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
+/* ─ 모바일 웹툰 스크롤 모드 ─ */
+.scrollmode #bgstars,.scrollmode #strip,.scrollmode #stripHot{display:none}
+.scrollmode .stage{position:static;display:block}
+.scrollmode #deck{width:100%;height:auto;transform:none!important}
+.scrollmode .slide{position:relative;inset:auto;opacity:1;pointer-events:auto;width:100%;height:auto;
+  padding:46px 22px 36px;border-radius:0;transition:none}
+.scrollmode h1{font-size:clamp(25px,7.4vw,34px)!important;line-height:1.18!important;letter-spacing:-.04em}
+.scrollmode .grid{grid-template-columns:1fr!important}
+.scrollmode [style*="grid-template-columns"]{grid-template-columns:1fr!important}
+.scrollmode .mrow{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:14px!important}
+.scrollmode .pline{flex-direction:column;gap:10px}
+.scrollmode .pline>div:not(.pbox){display:none}
+.scrollmode [style*="font-size:88px"]{font-size:54px!important}
+.scrollmode [style*="font-size:74px"],.scrollmode [style*="font-size:62px"],.scrollmode [style*="font-size:58px"],
+.scrollmode [style*="font-size:52px"],.scrollmode [style*="font-size:50px"]{font-size:38px!important}
+.scrollmode [style*="font-size:33px"]{font-size:22px!important;white-space:normal!important}
+.scrollmode [style*="font-size:30px"]{font-size:19px!important}
+.scrollmode [style*="font-size:21px"],.scrollmode [style*="font-size:22px"]{font-size:17px!important}
+.scrollmode [style*="margin-top:auto"]{margin-top:26px!important}
+.scrollmode .foot{position:static;margin-top:24px}
+.scrollmode table{display:block;overflow-x:auto;font-size:13px;white-space:nowrap}
+.scrollmode #cosmos{transform:scale(.7)}
+body.scrollmode:not(.dimchrome) #pdfbtn{opacity:.72;font-size:11px;padding:4px 10px}
+.scrollmode #intro{overflow:auto}
+.scrollmode .icopy{margin-top:340px}
+.onlymob{display:none}
+.scrollmode .onlymob{display:inline}
+.scrollmode .onlydesk{display:none}
+.scrollmode #hint{bottom:52px;font-size:11px;max-width:92vw;text-align:center}
+
+/* ─ JS가 꺼진 환경(카톡 문서뷰어 등): 위에서 아래로 읽는 문서로 강등 ─ */
+html.nojs body{overflow:auto}
+html.nojs .stage{position:static;display:block}
+html.nojs #deck{width:1280px;height:auto;transform:none;margin:0 auto}
+html.nojs .slide{position:relative;inset:auto;opacity:1;pointer-events:auto;height:720px;margin:0 auto}
+html.nojs [data-anim]{opacity:1;transform:none}
+html.nojs #cnt,html.nojs #pdfbtn,html.nojs #hint,html.nojs #strip,html.nojs #stripHot,html.nojs #prog{display:none}
+html.nojs #intro{position:relative;height:100vh;min-height:620px}
+html.nojs #enter,html.nojs .ikeys{display:none}
+html.nojs .bar i{width:var(--w);animation:njbar 1.4s ease both}
+/* 세로로 쌓일 때 장 경계 — 간격 + 액센트 라인 (같은 색 장 연속 대비) */
+.scrollmode .slide,html.nojs .slide{margin:0 auto 16px;border-top:3px solid var(--blue)}
+.scrollmode .slide.dark,.scrollmode .slide.dark2,html.nojs .slide.dark,html.nojs .slide.dark2{border-top-color:var(--ice)}
+/* ── 노JS에서도 살아 있는 것들: .on 게이트를 CSS로 해제 ── */
+html.nojs .lane.slow .doc{animation:race 5.2s ease-in-out infinite}
+html.nojs .lane.fast .doc{animation:race 1.9s ease-in-out infinite}
+html.nojs .pl1 .led{animation:led1 6s infinite}
+html.nojs .pl2 .led{animation:led2 6s infinite}
+html.nojs .pl3 .led{animation:led3 6s infinite}
+html.nojs .pl4 .led{animation:led4 6s infinite}
+html.nojs .formula{animation:njink 1.6s ease .5s both}
+html.nojs #mbars rect{transform-box:fill-box;transform-origin:50% 100%;animation:njrise 1s ease both}
+html.nojs #mbars rect:nth-child(2){animation-delay:.12s}
+html.nojs #mbars rect:nth-child(3){animation-delay:.24s}
+html.nojs #mbars rect:nth-child(4){animation-delay:.36s}
+html.nojs #mbars rect:nth-child(5){animation-delay:.48s}
+html.nojs #mbars rect:nth-child(6){animation-delay:.6s}
+@keyframes njbar{from{width:0}}
+@keyframes njink{from{opacity:0;letter-spacing:.28em}to{opacity:1;letter-spacing:.02em}}
+@keyframes njrise{from{transform:scaleY(0)}}
+@media (max-width:819px){
+html.nojs #bgstars, html.nojs #strip, html.nojs #stripHot{display:none}
+html.nojs .stage{position:static;display:block}
+html.nojs #deck{width:100%;height:auto;transform:none!important}
+html.nojs .slide{position:relative;inset:auto;opacity:1;pointer-events:auto;width:100%;height:auto;
+  padding:46px 22px 36px;border-radius:0;transition:none}
+html.nojs h1{font-size:clamp(25px,7.4vw,34px)!important;line-height:1.18!important;letter-spacing:-.04em}
+html.nojs .grid{grid-template-columns:1fr!important}
+html.nojs [style*="grid-template-columns"]{grid-template-columns:1fr!important}
+html.nojs .mrow{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:14px!important}
+html.nojs .pline{flex-direction:column;gap:10px}
+html.nojs .pline>div:not(.pbox){display:none}
+html.nojs [style*="font-size:88px"]{font-size:54px!important}
+html.nojs [style*="font-size:74px"], html.nojs [style*="font-size:62px"], html.nojs [style*="font-size:58px"], html.nojs [style*="font-size:52px"], html.nojs [style*="font-size:50px"]{font-size:38px!important}
+html.nojs [style*="font-size:33px"]{font-size:22px!important;white-space:normal!important}
+html.nojs [style*="font-size:30px"]{font-size:19px!important}
+html.nojs [style*="font-size:21px"], html.nojs [style*="font-size:22px"]{font-size:17px!important}
+html.nojs [style*="margin-top:auto"]{margin-top:26px!important}
+html.nojs .foot{position:static;margin-top:24px}
+html.nojs table{display:block;overflow-x:auto;font-size:13px;white-space:nowrap}
+html.nojs #cosmos{transform:scale(.7)}
+html.nojs .icopy{margin-top:340px}
+html.nojs .onlymob{display:inline}
+html.nojs .onlydesk{display:none}
+html.nojs #hint{bottom:52px;font-size:11px;max-width:92vw;text-align:center}
+html.nojs #deck{width:100%}
+html.nojs .slide{height:auto}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{transition:none!important;animation:none!important}
+  [data-anim]{opacity:1;transform:none}
+  .bar i{width:var(--w)}
+}
+</style>
+</head>
+<body>
+<noscript><div style="background:#101828;color:#cfe2ff;font:600 13px/1.7 Pretendard,sans-serif;padding:12px 18px;text-align:center">지금은 문서 미리보기 모드입니다. 아래로 내리면 전체 슬라이드를 볼 수 있고, 라이브 투표와 발표자 도구까지 쓰시려면 링크를 크롬·사파리 같은 브라우저에서 열어 주세요.</div></noscript>
+<canvas id="bgstars"></canvas>
+<div id="prog"></div>
+<div id="cnt">1 / 16</div>
+<div id="pdfbtn" title="P 키">📄 PDF 모드 체험</div>
+<div id="hint"><span class="onlydesk">← → 이동 · <b style="color:var(--ice)">P</b> PDF 모드 · <b style="color:var(--ice)">?</b> 단축키 · 왼쪽 가장자리 = 미리보기</span><span class="onlymob">웹툰처럼 아래로 내려보세요. 각 장이 살아서 움직입니다</span></div>
+<div id="stamp">지금 PDF를 보고 계십니다. 다시 누르면 살아납니다</div>
+<div id="black"></div>
+<div id="timer" title="클릭 = 리셋">00:00</div>
+<div id="help"><div class="box">
+<b>← → Space</b> 슬라이드 이동 (터치 스와이프)<br>
+<b>숫자+Enter</b> 해당 장으로 점프<br>
+<b>P</b> PDF 모드 토글 · 이 자료의 핵심 데모<br>
+<b>S</b> 슬라이드 미리보기 (왼쪽 가장자리 호버와 동일)<br>
+<b>F</b> 전체화면 &nbsp; <b>B</b> 블랙아웃 &nbsp; <b>T</b> 타이머<br>
+<b>?</b> 이 도움말 열기/닫기
+<div class="x">이 창은 7초 뒤 자동으로 닫힙니다</div>
+</div></div>
+<div id="stripHot"></div>
+<div id="strip"><div id="stripInner"></div></div>
+
+<div id="intro">
+  <canvas id="istars"></canvas>
+  <div id="cosmos">
+    <div class="orbit" style="width:340px;height:340px"></div>
+    <div class="orbit" style="width:470px;height:470px"></div>
+    <div class="orbit" style="width:600px;height:600px"></div>
+    <div class="pring"></div>
+    <div class="planet"></div>
+    <div class="ptxt" style="top:-10px">GRAVITY</div>
+    <div class="orb" style="animation-duration:14s"><div class="sat" style="left:0;top:-71px;animation-duration:14s"><i style="color:#a4e0ff;background:#a4e0ff"></i><span>UNIST</span></div></div>
+    <div class="orb" style="animation-duration:20s;animation-delay:-7s"><div class="sat" style="left:98px;top:-98px;animation-duration:20s;animation-delay:-7s"><i style="color:#7ea2ff;background:#7ea2ff"></i><span>KAIST</span></div></div>
+    <div class="orb" style="animation-duration:26s;animation-delay:-3s"><div class="sat" style="left:-126px;top:-63px;animation-duration:26s;animation-delay:-3s"><i style="color:#aaff5e;background:#aaff5e"></i><span>GIST</span></div></div>
+    <div class="orb" style="animation-duration:33s;animation-delay:-15s"><div class="sat" style="left:63px;top:126px;animation-duration:33s;animation-delay:-15s"><i style="color:#ffc24b;background:#ffc24b"></i><span>DGIST</span></div></div>
+  </div>
+  <div class="icopy">
+    <div class="ieb">GRAVITY 2026 · DECKFLIP · SLIDE 19</div>
+    <h2>발표는 여기서 이어집니다</h2>
+    <div class="isub">종이의 18장이 끝난 자리에서, 웹의 19번째 장이 시작됩니다.<br>이 발표자료 전체가 브라우저에서 열리는 파일 하나입니다. 설치 없이 지금 그대로 시작됩니다.</div>
+    <button id="enter">발표 이어보기 →</button>
+    <div class="ikeys"><span class="onlydesk">아무 키나 눌러도 시작됩니다</span><span class="onlymob">화면을 탭해도 시작됩니다</span></div>
+  </div>
+</div>
+
+<div class="stage"><div id="deck">
+
+<!-- P1 표지 -->
+<section class="slide dark" data-title="훅 — DeckFlip" style="justify-content:center">
+  <div class="glow" style="background:radial-gradient(900px 500px at 82% 18%,rgba(31,94,255,.28),transparent 60%),radial-gradient(700px 500px at 8% 100%,rgba(126,162,255,.12),transparent 55%)"></div>
+  <div style="position:relative">
+    <span class="pill lime" data-anim>GRAVITY 2026 · UNIST · 대학원 트랙</span>
+    <div style="font-size:88px;font-weight:900;letter-spacing:-.065em;line-height:.95;margin-top:30px" data-anim>Deck<span style="color:var(--ice)">Flip</span></div>
+    <div style="font-size:30px;font-weight:650;letter-spacing:-.04em;margin-top:22px;color:rgba(255,255,255,.92)" data-anim>문서가 발표가 되는 가장 빠른 길.</div>
+    <div style="font-size:17px;color:rgba(255,255,255,.6);margin-top:14px;font-weight:450" data-anim>지금 보고 계신 이 발표자료 자체가, 저희가 만드는 <b style="color:var(--ice)">웹 발표자료</b>입니다.</div>
+    <div style="margin-top:40px;display:flex;gap:10px;align-items:center;flex-wrap:wrap" data-anim>
+      <span class="pill" style="border-color:#2a4060">팀 DeckFlip · 5인</span>
+      <span class="pill" style="border-color:var(--ice)">발표가 끝나도 이 주소는 살아 있습니다 · 마지막 장에서 확인하세요</span>
+    </div>
+  </div>
+  <div class="foot"><span>DeckFlip · GRAVITY 2026 IR · LIVE</span><span>01 / 16</span></div>
+</section>
+
+<!-- P2 문제정의 -->
+<section class="slide" data-title="문제 — 발표 직전의 실수">
+  <div class="hd"><div class="eb">Problem</div>
+    <h1 data-anim>실수는 꼭 <span class="blue">발표 직전에</span> 발견됩니다.</h1></div>
+  <div class="grid" style="grid-template-columns:1fr 1fr 1fr;margin-top:30px">
+    <div class="card" data-anim>
+      <div style="position:relative;border:1.5px dashed #e05252;border-radius:10px;height:74px;overflow:hidden;padding:8px 12px;font-size:12.5px;line-height:1.55;color:var(--gray7)">핵심 요약: 올해 신제품 출시 계획과 분기별 실행 일정, 담당 조직과 예산 배분까지 이 한 장에 담았습니다. 글자가 상자보다 많으면 이렇게 밀려 나가는데, 무대 화면에서야 처음 보입니다.<div style="position:absolute;right:8px;bottom:6px" class="badtag">잘림</div></div>
+      <div style="font-size:17px;font-weight:800;margin-top:12px">글자 넘침</div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:5px;line-height:1.6">상자 밖으로 밀려난 문장은<br>무대 화면에서 처음 눈에 띕니다</div></div>
+    <div class="card" data-anim>
+      <div style="height:74px;display:flex;align-items:center;gap:12px">
+        <div style="font-size:50px;font-weight:900;letter-spacing:-.04em;color:var(--ink2);text-decoration:underline wavy #e05252">○○%</div>
+        <span class="badtag">출처 없음</span></div>
+      <div style="font-size:17px;font-weight:800;margin-top:12px">근거 없는 숫자</div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:5px;line-height:1.6">질문 하나면 무너집니다.<br>AI가 만든 통계일수록 더 그렇습니다</div></div>
+    <div class="card" data-anim>
+      <div style="height:74px;display:flex;align-items:center;gap:14px">
+        <div style="width:52px;height:74px;border:2.5px solid #c9ced8;border-radius:10px;position:relative;overflow:hidden;background:#f7f8fa;flex:none">
+          <div style="position:absolute;left:5px;top:8px;width:40px;height:16px;background:#dbe3f0;border-radius:3px"></div>
+          <div style="position:absolute;left:12px;top:17px;width:40px;height:16px;background:rgba(31,94,255,.35);border-radius:3px;transform:rotate(-7deg)"></div>
+          <div style="position:absolute;left:5px;top:44px;width:52px;height:10px;background:#dbe3f0;border-radius:3px"></div>
+        </div>
+        <span class="badtag">겹침</span></div>
+      <div style="font-size:17px;font-weight:800;margin-top:12px">모바일 깨짐</div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:5px;line-height:1.6">폰으로 열어 본 순간<br>레이아웃이 무너집니다</div></div>
+  </div>
+  <div class="card" style="margin-top:auto;display:flex;gap:16px;align-items:center;background:#f7f8fa;border-color:transparent;padding:14px 22px" data-anim>
+    <div style="font-size:20px">💬</div>
+    <div style="font-size:14.5px;line-height:1.6;color:var(--ink2)">"AI 통계에 출처가 없고 팩트체크하면 대부분 틀리다" <span class="src">· 경쟁 AI 발표 도구(Gamma) 공식 커뮤니티의 사용자 불만 · 2025.8 접수, 2026.7 열람 기준 미해결</span></div>
+  </div>
+  <div style="margin-top:auto" data-anim><span class="pill solid" style="font-size:16.5px;padding:11px 24px">만들어 주는 도구는 많습니다. 무대에 올려도 되는지 확인해 주는 서비스는 없습니다</span></div>
+  <div class="foot"><span>DeckFlip · GRAVITY 2026 IR · LIVE</span><span>02 / 16</span></div>
+</section>
+
+<!-- P3 WHY NOW -->
+<section class="slide" data-title="WHY NOW — 세 변화">
+  <div class="hd"><div class="eb">Why Now</div>
+    <h1 data-anim>콘텐츠는 <span class="blue">혼자 만드는 시대</span>가 됐습니다.<br>발표자료도 그렇게 됩니다.</h1></div>
+  <div class="grid" style="grid-template-columns:1fr 1fr 1fr;margin-top:20px;flex:1;align-content:center">
+    <div class="card" data-anim><div class="num">TREND 1</div>
+      <div style="font-size:17px;font-weight:800;margin-top:8px">1인 사업이 급증합니다</div>
+      <div class="big" style="font-size:33px;white-space:nowrap;margin-top:10px;color:var(--blue)">+<span data-count="20">20</span>% 이상</div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:8px;line-height:1.6">미국 1인 사업체 신청, 2025년 이후.<br>"월 200달러 AI 구독이 작은 팀의 일을 대신한다"</div>
+      <div class="src" style="margin-top:8px">Nasdaq 경제연구소 · 2026.6</div></div>
+    <div class="card" data-anim><div class="num">TREND 2</div>
+      <div style="font-size:17px;font-weight:800;margin-top:8px">발표 무대가 웹으로 옮겨 갑니다</div>
+      <div class="big" style="font-size:33px;white-space:nowrap;margin-top:10px;color:var(--blue)">$<span data-count="657">657</span>억</div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:8px;line-height:1.6">화상회의 시장 2034년 규모.<br>발표자료는 이제 파일이 아니라 링크로 공유됩니다</div>
+      <div class="src" style="margin-top:8px">Fortune Business Insights · 연 5.9% 성장</div></div>
+    <div class="card" style="border-color:var(--blue)" data-anim><div class="num">TREND 3</div>
+      <div style="font-size:17px;font-weight:800;margin-top:8px">발표 도구 시장이 커집니다</div>
+      <div class="big" style="font-size:33px;white-space:nowrap;margin-top:10px;color:var(--blue)">$<span data-count="166">166</span>억</div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:8px;line-height:1.6">2030년 규모 · 해마다 14.6%씩.<br>Canva 2억 6,500만 명, Gamma 7,000만 명이 이미 씁니다</div>
+      <div class="src" style="margin-top:8px">The Business Research Company · 각사 공식 발표</div></div>
+  </div>
+  <div style="margin-top:auto;font-size:19px;font-weight:800;letter-spacing:-.02em;color:var(--ink2);line-height:1.6" data-anim>디자인도, 글도, 영상도 혼자 만드는 시대가 왔는데,<br><span class="blue">발표자료의 모양 다듬기</span>만 그대로 남았습니다.</div>
+  <div class="foot"><span>DeckFlip · GRAVITY 2026 IR · LIVE</span><span>03 / 16</span></div>
+</section>
+
+<!-- P4 시장 규모 -->
+<section class="slide" data-title="시장 — TAM·SAM·SOM">
+  <div class="hd"><div class="eb">Market Size</div>
+    <h1 data-anim>시장은 크고, 저희 몫은<br><span class="blue">가정까지 공개하며</span> 계산했습니다.</h1></div>
+  <div class="mrow" style="display:flex;gap:26px;margin-top:34px;align-items:stretch">
+    <div style="flex:1.15;display:flex;flex-direction:column;gap:12px">
+      <div class="fun" data-anim><b>TAM</b> · 글로벌 프레젠테이션 SW <b class="blue" style="font-size:21px">$9.65B → $16.62B</b>
+        <div class="src" style="margin-top:4px">2026→2030 · 연 14.6% 성장 · The Business Research Company</div></div>
+      <div class="fun" style="margin-left:34px" data-anim><b>SAM</b> · 국내에서 발표·제안이 생존인 조직
+        <div class="src" style="margin-top:4px">연간 신규 창업 118만 · 기술기반 창업 21.5만(중기부 2024) · 디자인 활용 기업 151,477개(KIDP 2022)</div></div>
+      <div class="fun som" style="margin-left:68px" data-anim><b class="blue">SOM</b> · 출시 2~3년 내 <b class="blue" style="font-size:21px">1,000개 조직</b>
+        <div class="src" style="margin-top:4px">연 환산 약 12억 원 · 산식과 가정은 오른쪽에 그대로 적었습니다</div></div>
+    </div>
+    <div class="card" style="flex:.85;background:#f7f8fa;border-color:transparent" data-anim>
+      <div class="eb" style="font-size:12px">이 숫자를 지키는 방법</div>
+      <div style="font-size:15.5px;line-height:1.8;margin-top:12px;color:var(--ink2)">
+      · TAM은 <b>한 기관의 한 수치</b>만 씁니다. 범위로 부풀리지 않습니다<br>
+      · SAM은 <b>정부 통계에 있는 조직 수</b>만 셉니다<br>
+      · SOM 산식: 1,000개 조직 × 조직당 5명 × 월 19,900원 = <b class="blue">연 약 12억 원</b><br>
+      · <b>전원이 Pro를 결제한다는 가정</b>까지 숨기지 않고 적었습니다</div>
+    </div>
+  </div>
+  <div class="src" style="margin-top:auto" data-anim>출처: 중소벤처기업부 창업기업 동향(2024) · 한국디자인진흥원 디자인산업통계(2022)</div>
+  <div class="foot"><span>DeckFlip · GRAVITY 2026 IR · LIVE</span><span>04 / 16</span></div>
+</section>
+
+<!-- P5 수요 증명 -->
+<section class="slide" data-title="수요 — 검증된 시장">
+  <div class="hd"><div class="eb">Proven Demand</div>
+    <h1 data-anim>생성 AI 발표 도구는<br>이미 <span class="blue">검증된 시장</span>입니다.</h1></div>
+  <div class="grid" style="grid-template-columns:1fr 1fr 1fr;margin-top:16px;flex:1;align-content:center">
+    <div class="card" data-anim><div style="font-weight:800;font-size:16px">Canva</div>
+      <div class="big" style="font-size:33px;white-space:nowrap;margin-top:8px;color:var(--blue)">1억 → 2.65억 명</div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:8px;line-height:1.6">월간 사용자, 2022→2025년 말.<br>3년 새 2.65배 · ARR $4B</div>
+      <div class="src" style="margin-top:8px">Canva 공식(2022.10) · TechCrunch(2026.2)</div></div>
+    <div class="card" data-anim><div style="font-weight:800;font-size:16px">Gamma</div>
+      <div class="big" style="font-size:33px;white-space:nowrap;margin-top:8px;color:var(--blue)">누적 4억 개 생성</div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:8px;line-height:1.6">하루 100만 개 이상 · 가입 7,000만 명<br>ARR $100M+ · 기업가치 $2.1B</div>
+      <div class="src" style="margin-top:8px">Business Wire 공식 보도자료(2025.11)</div></div>
+    <div class="card" data-anim><div style="font-weight:800;font-size:16px">AI 프레젠테이션 세그먼트</div>
+      <div class="big" style="font-size:33px;white-space:nowrap;margin-top:8px;color:var(--blue)">연 25.3% 성장</div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:8px;line-height:1.6">$1.94B(2025) → $6.0B(2030)<br>전체 시장보다 빠르게 큽니다</div>
+      <div class="src" style="margin-top:8px">The Business Research Company</div></div>
+  </div>
+  <div class="card" style="margin-top:auto;display:flex;gap:16px;align-items:center;background:#f7f8fa;border-color:transparent;padding:16px 22px" data-anim>
+    <div style="font-size:20px">🔥</div>
+    <div style="font-size:15px;line-height:1.65;color:var(--ink2)">반면 Tome은 <b>사용자 2,000만 명</b>을 모으고도 ARR $4M을 넘지 못했고, 2025년 4월 문을 닫았습니다. 수평 확장이 아니라 <b class="blue">"그대로 쓸 수 있는 품질"</b>이 승부를 가릅니다. 저희가 검증에 집중하는 이유입니다. <span class="src">VentureBeat</span></div>
+  </div>
+  <div class="foot"><span>DeckFlip · GRAVITY 2026 IR · LIVE</span><span>05 / 16</span></div>
+</section>
+
+<!-- P6 경쟁 공백 -->
+<section class="slide" data-title="경쟁 — 여섯 줄 비교">
+  <div class="hd"><div class="eb">Competition</div>
+    <h1 data-anim>여섯 줄로 비교했습니다.<br>안 되는 것까지 <span class="blue">정직하게</span> 적었습니다.</h1></div>
+  <table style="width:100%;margin-top:20px;border-collapse:collapse;font-size:14.5px">
+    <tr style="color:var(--gray);font-size:12.5px;text-transform:uppercase;letter-spacing:.06em">
+      <th style="text-align:left;padding:8px 12px;font-weight:800">기준</th>
+      <th style="text-align:center;padding:8px 8px;font-weight:800">PPT</th>
+      <th style="text-align:center;padding:8px 8px;font-weight:800">Canva</th>
+      <th style="text-align:center;padding:8px 8px;font-weight:800">Gamma</th>
+      <th style="text-align:center;padding:8px 8px;font-weight:800">Pitch</th>
+      <th style="text-align:center;padding:8px 8px;font-weight:800">Beautiful.ai</th>
+      <th style="text-align:center;padding:8px 8px;font-weight:900;color:var(--blue)">DeckFlip</th></tr>
+    <tr style="border-top:1.5px solid var(--line)" data-anim><td style="padding:11px 12px;font-weight:800">발표 전체를 웹 문서로 생성·소유</td>
+      <td style="text-align:center;color:var(--gray)">✕</td><td style="text-align:center;color:var(--gray)">✕</td><td style="text-align:center;color:var(--gray)">✕</td><td style="text-align:center;color:var(--gray)">✕</td><td style="text-align:center;color:var(--gray)">✕</td><td style="text-align:center;font-weight:900;color:var(--blue)">✓</td></tr>
+    <tr style="border-top:1px solid var(--line)" data-anim><td style="padding:11px 12px;font-weight:800">인터랙션을 만들 때부터 내장</td>
+      <td style="text-align:center;color:var(--gray)">✕</td><td style="text-align:center;color:var(--gray)">△</td><td style="text-align:center;color:var(--gray)">△</td><td style="text-align:center;color:var(--gray)">△</td><td style="text-align:center;color:var(--gray)">△</td><td style="text-align:center;font-weight:900;color:var(--blue)">✓</td></tr>
+    <tr style="border-top:1px solid var(--line)" data-anim><td style="padding:11px 12px;font-weight:800">움직이는 3D 장면 연출</td>
+      <td style="text-align:center;color:var(--gray)">△</td><td style="text-align:center;color:var(--gray)">△</td><td style="text-align:center;color:var(--gray)">△</td><td style="text-align:center;color:var(--gray)">△</td><td style="text-align:center;color:var(--gray)">△</td><td style="text-align:center;font-weight:900;color:var(--blue)">✓</td></tr>
+    <tr style="border-top:1px solid var(--line)" data-anim><td style="padding:11px 12px;font-weight:800">청중 라이브 참여 (투표·질문)</td>
+      <td style="text-align:center;color:var(--gray)">✕</td><td style="text-align:center;color:var(--gray)">△</td><td style="text-align:center;color:var(--gray)">✕</td><td style="text-align:center;color:var(--gray)">✕</td><td style="text-align:center;color:var(--gray)">✕</td><td style="text-align:center;font-weight:900;color:var(--blue)">✓</td></tr>
+    <tr style="border-top:1px solid var(--line);background:#f4f7ff" data-anim><td style="padding:11px 12px;font-weight:900">발행 전 자동 검사와 수리</td>
+      <td style="text-align:center;color:var(--gray)">✕</td><td style="text-align:center;color:var(--gray)">✕</td><td style="text-align:center;color:var(--gray)">✕</td><td style="text-align:center;color:var(--gray)">✕</td><td style="text-align:center;color:var(--gray)">✕</td><td style="text-align:center;font-weight:900;color:var(--blue)">✓</td></tr>
+    <tr style="border-top:1px solid var(--line)" data-anim><td style="padding:11px 12px;font-weight:800;color:var(--gray7)">실시간 공동 편집</td>
+      <td style="text-align:center">✓</td><td style="text-align:center">✓</td><td style="text-align:center">✓</td><td style="text-align:center">✓</td><td style="text-align:center">✓</td><td style="text-align:center;color:var(--gray7);font-weight:700">로드맵</td></tr>
+  </table>
+  <div style="margin-top:20px;font-size:19px;font-weight:800;letter-spacing:-.02em;color:var(--ink2)" data-anim>다섯 줄은 저희만 갖고 있고, 한 줄은 아직 없습니다. <span class="blue">없는 것을 없다고 쓰는 것</span>이 저희가 파는 신뢰입니다.</div>
+  <div class="src" style="margin-top:auto;line-height:1.6" data-anim>비교 대상: PowerPoint·Canva·Gamma·Pitch·Beautiful.ai, 각사 공식 문서·실사용 기준(2026.7) · Canva Code는 위젯 단위 코드 생성으로 발표 전체의 소스 반출과는 다릅니다 · 발행 전 사실검증 게이트는 조사한 전 제품에서 확인되지 않았습니다</div>
+  <div class="foot"><span>DeckFlip · GRAVITY 2026 IR · LIVE</span><span>06 / 16</span></div>
+</section>
+
+<!-- P7 제품 -->
+<section class="slide" data-title="제품 — 4단계">
+  <div class="hd"><div class="eb">Product</div>
+    <h1 data-anim>말하면 만들어지고,<br><span class="blue">검사를 통과해야</span> 무대에 오릅니다.</h1></div>
+  <div class="mrow" style="display:flex;gap:14px;margin-top:auto">
+    <div class="card" style="flex:1;padding:18px 16px" data-anim><div class="num">01 말하기</div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:8px;line-height:1.6">대화로 주제와 취향, 필요한 기능(투표·질문)을 고릅니다</div></div>
+    <div class="card" style="flex:1;padding:18px 16px" data-anim><div class="num">02 만들기</div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:8px;line-height:1.6">변환 과정 없이 웹으로 바로 만듭니다. 결과물이 곧 소프트웨어입니다</div></div>
+    <div class="card" style="flex:1;padding:18px 16px;border-color:var(--blue)" data-anim><div class="num">03 검사</div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:8px;line-height:1.6">넘침·정렬·숫자의 출처까지 41가지를 자동으로 검사합니다</div></div>
+    <div class="card" style="flex:1;padding:18px 16px" data-anim><div class="num">04 무대</div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:8px;line-height:1.6">발표 도구와 청중 참여 기능이 켜진 채로 도착합니다</div></div>
+  </div>
+  <div style="margin-top:22px;display:flex;gap:8px;flex-wrap:wrap;align-items:center" data-anim>
+    <span class="pill solid" style="font-size:13px;padding:6px 14px">스타일 플랜 6종</span>
+    <span class="pill" style="font-size:13px;padding:6px 14px">프리미엄 비즈니스</span>
+    <span class="pill" style="font-size:13px;padding:6px 14px">학술 보수형</span>
+    <span class="pill" style="font-size:13px;padding:6px 14px">다크 글래스 문서</span>
+    <span class="pill" style="font-size:13px;padding:6px 14px">라이브 웹</span>
+    <span class="pill" style="font-size:13px;padding:6px 14px">에디토리얼 아트 <b style="background:var(--navy);color:var(--lime);border-radius:6px;padding:1px 7px;font-size:10.5px">ART</b></span>
+    <span class="pill" style="font-size:13px;padding:6px 14px">몰입형 아트 <b style="background:var(--navy);color:var(--lime);border-radius:6px;padding:1px 7px;font-size:10.5px">ART</b></span>
+  </div>
+  <div class="card" style="margin-top:auto;background:#f7f8fa;border-color:transparent;padding:16px 22px;display:flex;gap:16px;align-items:center" data-anim>
+    <div style="font-size:22px">🖥️</div>
+    <div style="font-size:15.5px;line-height:1.65;color:var(--ink2)">제품 화면을 따로 보여드릴 필요가 없습니다. <b class="blue">지금 보고 계신 이 화면이 저 네 단계를 통과해 나온 결과물</b>이고, 다음 장에서 타사와 실측으로 비교합니다.</div>
+  </div>
+  <div class="foot"><span>DeckFlip · GRAVITY 2026 IR · LIVE</span><span>07 / 16</span></div>
+</section>
+
+<!-- P8 실측 비교 -->
+<section class="slide" data-title="실측 — 다섯 도구 비교">
+  <div class="hd"><div class="eb">Field Test</div>
+    <h1 data-anim>같은 한 줄을 <span class="blue">다섯 곳</span>에 넣어 봤습니다.</h1></div>
+  <div style="margin-top:12px;font-size:15.5px;color:var(--gray7)" data-anim>프롬프트는 <b>"디지털 마케팅 트렌드"</b> 한 줄입니다. 마케팅 대행사를 운영하는 팀원이 직접 만들어 비교했습니다 <span class="src">(2026.7 · 분량과 구성은 각 도구가 스스로 결정)</span></div>
+  <div class="mrow" style="display:flex;gap:12px;margin-top:auto">
+    <div class="card" style="flex:1;padding:18px 14px" data-anim><div style="font-weight:800;font-size:15px">Canva</div>
+      <div class="big" style="font-size:62px;color:var(--gray7)"><span data-count="5">5</span><span style="font-size:24px">장</span></div>
+      <div style="font-size:13.5px;color:var(--gray7);line-height:1.55">가벼운 요약본.<br>출처 표기 없음</div></div>
+    <div class="card" style="flex:1;padding:18px 14px" data-anim><div style="font-weight:800;font-size:15px">Gamma</div>
+      <div class="big" style="font-size:62px;color:var(--gray)">—</div>
+      <div style="font-size:13.5px;color:var(--gray7);line-height:1.55">템플릿형 구성<br><span class="mark" style="font-size:10.5px;display:inline-block;line-height:1.5;margin-top:4px">장수 기입 · 링크 공개 전환 중</span></div></div>
+    <div class="card" style="flex:1;padding:18px 14px" data-anim><div style="font-weight:800;font-size:15px">Pitch</div>
+      <div class="big" style="font-size:62px;color:var(--gray)">—</div>
+      <div style="font-size:13.5px;color:var(--gray7);line-height:1.55">템플릿형 구성<br><span class="mark" style="font-size:10.5px;display:inline-block;line-height:1.5;margin-top:4px">장수 기입 · 링크 공개 전환 중</span></div></div>
+    <div class="card" style="flex:1;padding:18px 14px" data-anim><div style="font-weight:800;font-size:15px">Beautiful.ai</div>
+      <div class="big" style="font-size:62px;color:var(--gray7)"><span data-count="9">9</span><span style="font-size:24px">장</span></div>
+      <div style="font-size:13.5px;color:var(--gray7);line-height:1.55">깔끔한 요약본.<br>출처 표기 없음</div></div>
+    <div class="card" style="flex:1.25;padding:18px 14px;border-color:var(--blue)" data-anim><div style="font-weight:900;font-size:15px;color:var(--blue)">DeckFlip</div>
+      <div class="big" style="font-size:62px;color:var(--blue)"><span data-count="40">40</span><span style="font-size:24px">장</span></div>
+      <div style="font-size:13.5px;color:var(--ink2);font-weight:600;line-height:1.55">장마다 출처 표기<br>추정치는 ★로 구분<br>웹에서 살아 움직임</div></div>
+  </div>
+  <div class="card" style="margin-top:auto;background:#f7f8fa;border-color:transparent;padding:15px 22px;display:flex;gap:16px;align-items:center" data-anim>
+    <div style="font-size:20px">⏱️</div>
+    <div style="font-size:15px;line-height:1.65;color:var(--ink2)">정직하게 말씀드리면, <b>생성 시간은 저희가 느립니다.</b> 다른 도구는 3분 안팎, 저희는 약 10분. 그 차이가 바로 <b class="blue">검사하고 고치는 시간</b>이고, 저희가 파는 것입니다. <span class="onlydesk">지금 키보드 <b class="blue">P</b>를 눌러 보세요.</span><span class="onlymob">왼쪽 아래 버튼을 눌러 보세요.</span> 이 자료 전체가 PDF로 멈춥니다.</div>
+  </div>
+  <div class="src" style="margin-top:14px;line-height:1.6" data-anim>다섯 결과물 모두 링크로 보존되어 있습니다. 요청하시면 그 자리에서 열어 드리겠습니다 · DeckFlip 결과물: deckflip.net/d/deck-h3jrh7yc</div>
+  <div class="foot"><span>DeckFlip · GRAVITY 2026 IR · LIVE</span><span>08 / 16</span></div>
+</section>
+
+<!-- P9 검사 파이프라인 -->
+<section class="slide" data-title="검사 — 41가지 원장">
+  <div class="hd"><div class="eb">Quality Gate</div>
+    <h1 data-anim>발행 전에 <span class="blue">41가지</span>를 검사합니다.<br>실전 결함 하나가, 규칙 하나가 됩니다.</h1></div>
+  <div class="pline kf" style="margin-top:auto" data-anim>
+    <div class="pbox pl1"><span class="led"></span><div class="t">생성</div><div class="d">내용에 맞는<br>레이아웃 설계</div></div>
+    <div style="font-size:20px;color:var(--gray)">→</div>
+    <div class="pbox pl2" style="border-color:var(--blue)"><span class="led"></span><div class="t">자동 품질 검사</div><div class="d">넘침·정렬·겹침 검사<br>숫자는 출처와 대조</div></div>
+    <div style="font-size:20px;color:var(--gray)">→</div>
+    <div class="pbox pl3"><span class="led"></span><div class="t">불합격 발견</div><div class="d">결함을 찾으면<br>여기서 멈춥니다</div></div>
+    <div style="font-size:20px;color:var(--gray)">→</div>
+    <div class="pbox pl4"><span class="led"></span><div class="t">합격까지 자동 수정</div><div class="d">통과한 것만<br>사용자에게 갑니다</div></div>
+  </div>
+  <div style="font-size:13px;color:var(--gray);margin-top:10px" data-anim>· 불빛이 실제 공정 순서대로 돌고 있습니다. 빨간 불(결함 발견)이 있어야 초록 불이 의미를 가집니다</div>
+  <div class="card" style="margin-top:auto;background:#f7f8fa;border-color:transparent;padding:18px 24px;display:flex;gap:16px;align-items:center" data-anim>
+    <div style="font-size:22px">♻️</div>
+    <div style="font-size:15.5px;line-height:1.65;color:var(--ink2)">검사 항목은 실전에서 자랍니다. 사람이 결함 하나를 잡을 때마다 <b>규칙 하나를 원장에 적습니다.</b> 지금의 41가지가 그렇게 쌓였고, 검사를 통과한 레이아웃은 <b class="blue">부품처럼 재사용</b>해서 쓸수록 빨라지고 싸집니다.</div>
+  </div>
+  <div class="foot"><span>DeckFlip · GRAVITY 2026 IR · LIVE</span><span>09 / 16</span></div>
+</section>
+
+<!-- P10 라이브 발표 -->
+<section class="slide" id="p6live" data-title="라이브 — 청중 참여">
+  <div class="hd"><div class="eb">Live</div>
+    <h1 data-anim>링크 하나면, 청중의 폰이<br><span class="blue">발표장</span>이 됩니다.</h1></div>
+  <div class="grid" style="grid-template-columns:1.05fr 1fr;margin-top:22px">
+    <div class="card live" data-anim><div style="font-size:26px">🗳️</div><div style="font-weight:800;font-size:18px;margin-top:6px">라이브 투표 · 청중 Q&A</div>
+      <div id="poll" style="margin-top:8px">
+        <div style="font-size:13px;color:var(--gray7);font-weight:700">발표자료, 어디에 시간을 제일 쓰세요?</div>
+        <button class="pollbtn" data-v="0">내용 만들기</button>
+        <button class="pollbtn" data-v="1">모양 다듬기</button>
+        <div id="pollres"></div>
+        <div class="src" id="polllab" style="margin-top:5px">로컬 데모 · 이 기기에서만 집계됩니다</div>
+        <div style="display:flex;gap:6px;margin-top:8px">
+          <input id="qain" maxlength="120" placeholder="발표자에게 질문 보내기" style="flex:1;min-width:0;border:1.5px solid var(--line);border-radius:10px;padding:6px 10px;font-size:12.5px;font-family:var(--f);color:var(--ink2)">
+          <button id="qasend" class="pollbtn" style="width:auto;margin-top:0;padding:6px 12px;font-size:12.5px">보내기</button>
+        </div>
+        <div id="qalist" class="src" style="margin-top:5px">아직 질문이 없습니다</div>
+      </div></div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card" data-anim><div style="font-weight:800;font-size:16px">🎛️ 발표자 전용 화면</div>
+        <div style="font-size:14px;color:var(--gray7);margin-top:5px;line-height:1.6">타이머·미리보기·슬라이드 점프를 한 화면에서<span class="onlydesk"> (T 키·왼쪽 가장자리)</span><span class="onlymob"> (PC 화면에서 켜집니다)</span></div></div>
+      <div class="card" data-anim><div style="font-weight:800;font-size:16px">📱 어디서나 열림</div>
+        <div style="font-size:14px;color:var(--gray7);margin-top:5px;line-height:1.6">설치 없이 브라우저로 열립니다. 폰트와 스타일을 링크가 함께 불러와, 기기에 폰트가 없어도 의도한 서체로 보입니다</div></div>
+      <div class="card" style="background:var(--navy);color:#fff;border-color:var(--navy)" data-anim><div style="font-weight:800;font-size:16px">✅ 시연용이 아닙니다</div>
+        <div style="font-size:14px;color:rgba(255,255,255,.7);margin-top:5px;line-height:1.6">이 투표는 실제 서비스와 같은 계층에서 돕니다. 연결이 없으면 스스로 <b style="color:var(--lime)">"로컬 데모"</b>로 정직하게 내려갑니다</div></div>
+    </div>
+  </div>
+  <div style="margin-top:auto" data-anim><span class="pill solid" style="font-size:16px;padding:10px 22px">질의응답 동안 이 화면을 열어 두겠습니다. 지금 눌러 보세요</span></div>
+  <div class="foot"><span>DeckFlip · GRAVITY 2026 IR · LIVE</span><span>10 / 16</span></div>
+</section>
+
+<!-- P11 확장 파이프라인 -->
+<section class="slide dark2" data-title="확장 — 직군별 특화">
+  <div class="glow" style="background:radial-gradient(800px 460px at 85% 0%,rgba(31,94,255,.18),transparent 60%)"></div>
+  <div class="hd" style="position:relative"><div class="eb">Beyond Business</div>
+    <h1 data-anim>엔진은 하나,<br><span style="color:var(--ice)">직군마다 다른 무대</span>를 얹습니다.</h1></div>
+  <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:10px;position:relative;gap:14px;flex:1;align-content:center">
+    <div class="card" style="padding:16px 20px" data-anim><div style="font-weight:800;font-size:16px">🖼️ 에디토리얼 아트 <b style="background:var(--navy);color:var(--lime);border-radius:6px;padding:1px 7px;font-size:10.5px">ART</b></div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:5px;line-height:1.6">전시 서문과 브랜드 필름처럼 흐르는 스크롤 연출. 작가·에이전시의 무대입니다</div></div>
+    <div class="card" style="padding:16px 20px" data-anim><div style="font-weight:800;font-size:16px">🪐 몰입형 아트 <b style="background:var(--navy);color:var(--lime);border-radius:6px;padding:1px 7px;font-size:10.5px">ART</b></div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:5px;line-height:1.6">3D 장면과 파티클, 조명까지 코드로 연출합니다. 처음 이 화면에서 보신 우주가 그 예입니다</div></div>
+    <div class="card live" style="padding:16px 20px" data-anim><div style="font-weight:800;font-size:16px">📐 학술 · 살아있는 수식</div>
+      <div style="font-size:13.5px;color:var(--gray7);margin-top:5px">논문 수식이 그림이 아니라 실제로 렌더됩니다</div>
+      <div class="formula" id="formula" style="margin-top:10px" title="클릭하면 다시 타이핑됩니다">∇·E = ρ/ε₀ · F = ma · ŷ = σ(Wx + b)</div>
+      <div class="src" style="margin-top:6px">클릭 = 다시 쓰기 · 이미지가 아닌 텍스트라 수정·복사 가능</div></div>
+    <div class="card live" style="padding:16px 20px" data-anim><div style="font-weight:800;font-size:16px">📊 데이터 · 움직이는 차트</div>
+      <div style="font-size:13.5px;color:var(--gray7);margin-top:5px">차트를 클릭해 보세요. 데이터가 바뀝니다 (데모)</div>
+      <svg id="mchart" viewBox="0 0 200 62" style="margin-top:8px;cursor:pointer;width:100%;max-height:88px">
+        <g id="mbars"><rect x="8" y="30" width="22" height="28" rx="4" fill="#dbe3f0"/><rect x="40" y="16" width="22" height="42" rx="4" fill="#dbe3f0"/><rect x="72" y="24" width="22" height="34" rx="4" fill="#dbe3f0"/><rect x="104" y="6" width="22" height="52" rx="4" fill="#1f5eff"/><rect x="136" y="28" width="22" height="30" rx="4" fill="#dbe3f0"/><rect x="168" y="10" width="22" height="48" rx="4" fill="#dbe3f0"/></g>
+      </svg></div>
+  </div>
+  <div style="margin-top:auto;position:relative;font-size:17px;font-weight:700;color:rgba(255,255,255,.85)" data-anim>발표가 끝나도 산출물은 죽지 않습니다. 같은 파일이 포트폴리오가 되고, 랜딩이 됩니다.</div>
+  <div class="foot"><span>DeckFlip · GRAVITY 2026 IR · LIVE</span><span>11 / 16</span></div>
+</section>
+
+<!-- P12 수익 모델 -->
+<section class="slide" data-title="수익 — 크레딧 구조">
+  <div class="hd"><div class="eb">Business Model</div>
+    <h1 data-anim>요금은 하나로 단순하게,<br>한도는 <span class="blue">원가에 정직하게.</span></h1></div>
+  <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:16px;flex:1;align-content:center">
+    <div class="card" data-anim>
+      <div class="eb" style="font-size:12px">요금표 (출시 시 적용안)</div>
+      <div style="margin-top:12px;display:flex;flex-direction:column;gap:9px;font-size:15px;line-height:1.5">
+        <div style="display:flex;gap:10px;align-items:baseline"><b style="min-width:86px">Free</b><span style="color:var(--gray7)">예시 갤러리 + 체험 크레딧 · 결과물 워터마크</span></div>
+        <div style="display:flex;gap:10px;align-items:baseline"><b style="min-width:86px" class="blue">Pro</b><span style="color:var(--ink2)"><b>월 19,900원</b> 국내 단일가 · 개인·프리랜서</span></div>
+        <div style="display:flex;gap:10px;align-items:baseline"><b style="min-width:86px">Team</b><span style="color:var(--gray7)">좌석 단위 과금 <span class="mark">요금은 파일럿 후 확정</span></span></div>
+        <div style="display:flex;gap:10px;align-items:baseline"><b style="min-width:86px">Enterprise</b><span style="color:var(--gray7)">별도 협의 · 보안·전용 지원</span></div>
+      </div>
+      <div style="margin-top:12px;font-size:13.5px;color:var(--gray7);line-height:1.6">Pro는 경쟁 도구의 프로 요금과 같은 가격대입니다. 같은 값에 <b>웹 소스 소유와 발표 경험</b>이 더해집니다</div>
+    </div>
+    <div class="card" data-anim>
+      <div class="eb" style="font-size:12px">크레딧 구조</div>
+      <div style="font-size:17px;font-weight:800;margin-top:10px">쓴 만큼 차감되는 크레딧제입니다</div>
+      <div style="font-size:15px;color:var(--gray7);margin-top:10px;line-height:1.8">
+      · 풀덱 생성, 부분 수정, 재생성이 <b>서로 다른 크레딧</b>을 차감합니다<br>
+      · 월 한도는 <b>실측 생성 원가를 역산</b>해 설계합니다. 팔수록 손해 보는 무제한은 팔지 않습니다<br>
+      · 무료 사용자는 원가가 들지 않는 <b>예시 갤러리</b>부터 만나고, 이어 쓰려면 구독으로 넘어옵니다</div>
+    </div>
+  </div>
+  <div class="src" style="margin-top:auto" data-anim>경쟁 요금 비교 기준: 각사 공식 가격 페이지(2026.7) · 크레딧 세부 한도는 파일럿 원가 실측 후 공개합니다</div>
+  <div class="foot"><span>DeckFlip · GRAVITY 2026 IR · LIVE</span><span>12 / 16</span></div>
+</section>
+
+<!-- P13 GTM -->
+<section class="slide" data-title="GTM — 5단계">
+  <div class="hd"><div class="eb">Go-To-Market</div>
+    <h1 data-anim>학생의 <span class="blue">무료 포트폴리오</span>가,<br>회사의 <span class="blue">결제</span>가 되게 합니다.</h1></div>
+  <div class="mrow" style="display:flex;gap:12px;margin-top:auto">
+    <div class="card" style="flex:1;padding:16px 14px;border-color:var(--blue);background:#f4f7ff" data-anim><div class="num">1단계</div>
+      <div style="font-weight:800;font-size:15.5px;margin-top:6px">학생 무료</div>
+      <div style="font-size:13.5px;color:var(--gray7);margin-top:6px;line-height:1.55">과제·포트폴리오에 쓰게 합니다 (워터마크)</div></div>
+    <div class="card" style="flex:1;padding:16px 14px" data-anim><div class="num">2단계</div>
+      <div style="font-weight:800;font-size:15.5px;margin-top:6px">프리랜서·크리에이터</div>
+      <div style="font-size:13.5px;color:var(--gray7);margin-top:6px;line-height:1.55">제안서가 일인 사람들의 첫 결제</div></div>
+    <div class="card" style="flex:1;padding:16px 14px" data-anim><div class="num">3단계</div>
+      <div style="font-weight:800;font-size:15.5px;margin-top:6px">스타트업·에이전시</div>
+      <div style="font-size:13.5px;color:var(--gray7);margin-top:6px;line-height:1.55">피칭·클라이언트 제안이 많은 조직</div></div>
+    <div class="card" style="flex:1;padding:16px 14px" data-anim><div class="num">4단계</div>
+      <div style="font-weight:800;font-size:15.5px;margin-top:6px">팀 요금제</div>
+      <div style="font-size:13.5px;color:var(--gray7);margin-top:6px;line-height:1.55">개인이 쓰던 도구가 팀 결제로</div></div>
+    <div class="card" style="flex:1;padding:16px 14px" data-anim><div class="num">5단계</div>
+      <div style="font-weight:800;font-size:15.5px;margin-top:6px">기업 계약</div>
+      <div style="font-size:13.5px;color:var(--gray7);margin-top:6px;line-height:1.55">연 단위 라이선스</div></div>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:auto;gap:16px">
+    <div class="card" style="background:#f7f8fa;border-color:transparent;padding:16px 22px" data-anim>
+      <div style="font-size:15px;line-height:1.7;color:var(--ink2)"><b>검증된 경로입니다.</b> Figma 기업 고객의 <b class="blue"><span data-count="70">70</span>%가 개인 사용자로 시작</b>했고, Canva는 교육 무료 제공으로 학생을 먼저 얻어 지금의 2억 명이 됐습니다.</div>
+      <div class="src" style="margin-top:8px">Figma 상장 신고서(S-1) · Canva for Education 공식</div></div>
+    <div class="card" style="padding:16px 22px;border-color:var(--blue)" data-anim>
+      <div style="font-size:15px;line-height:1.7;color:var(--ink2)"><b>저희의 첫 학생은 이미 정해져 있습니다.</b> 실수의 대가가 가장 큰 발표를 하는 <b class="blue">4대 과기원 약 2.2만 명</b>. 여기서 품질을 증명하고 위 사다리를 오릅니다.</div>
+      <div class="src" style="margin-top:8px">이 확산 설계는 마케팅 대행사를 운영하는 팀원이 세웠습니다</div></div>
+  </div>
+  <div class="foot"><span>DeckFlip · GRAVITY 2026 IR · LIVE</span><span>13 / 16</span></div>
+</section>
+
+<!-- P14 팀 -->
+<section class="slide" data-title="팀">
+  <div class="hd"><div class="eb">Team</div>
+    <h1 data-anim>만드는 사람, 파는 사람, 다듬는 사람,<br>그리고 <span class="blue">고객이 팀 안에</span> 있습니다.</h1></div>
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:20px;flex:1;align-content:center">
+    <div class="card" style="padding:20px 18px" data-anim><div style="font-size:26px">⚙️</div>
+      <div style="font-weight:900;font-size:17px;margin-top:8px">황재웅 <span style="font-size:12px;color:var(--gray);font-weight:700">CTO</span></div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:6px;line-height:1.6">현대차 ADAS 개발자<br><b>LLM 생성·검증<br>파이프라인 설계·구축</b></div></div>
+    <div class="card" style="padding:20px 18px" data-anim><div style="font-size:26px">🧭</div>
+      <div style="font-weight:900;font-size:17px;margin-top:8px">이강원 <span style="font-size:12px;color:var(--gray);font-weight:700">총괄</span></div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:6px;line-height:1.6">UNIST MOT<br>기획·검증·운영<br><b>사전조사·파일럿 설계</b></div></div>
+    <div class="card" style="padding:20px 18px" data-anim><div style="font-size:26px">🛡️</div>
+      <div style="font-weight:900;font-size:17px;margin-top:8px">이현우 <span style="font-size:12px;color:var(--gray);font-weight:700">인프라·전략</span></div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:6px;line-height:1.6">글로벌 기업 16년<br>운영·전략<br><b>인프라·원가 최적화</b></div></div>
+    <div class="card" style="padding:20px 18px" data-anim><div style="font-size:26px">🎨</div>
+      <div style="font-weight:900;font-size:17px;margin-top:8px">이수지 <span style="font-size:12px;color:var(--gray);font-weight:700">디자인</span></div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:6px;line-height:1.6">CJ ENM AD 10년<br>비주얼 시스템<br><b>산출물 품질 기준</b></div></div>
+    <div class="card" style="padding:20px 18px;border-color:var(--blue)" data-anim><div style="font-size:26px">📣</div>
+      <div style="font-weight:900;font-size:17px;margin-top:8px">황유경 <span style="font-size:12px;color:var(--gray);font-weight:700">마케팅</span></div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:6px;line-height:1.6">마케팅 회사 대표<br>브랜딩·고객 확보<br><b class="blue">확장 시장의 고객, 바로 본인</b></div></div>
+  </div>
+  <div style="margin-top:auto;display:flex;gap:10px;flex-wrap:wrap" data-anim>
+    <span class="pill solid">제조업의 검증 문화 × 콘텐츠 업계의 눈</span>
+    <span class="pill">재학생 대표가 상시 전담, 현업 전문가 4인이 함께</span>
+    <span class="pill" style="border-color:var(--blue)">본선까지 제품 MVP·검증 원장·이 발표자료를 실제로 출하했습니다</span>
+  </div>
+  <div class="foot"><span>DeckFlip · GRAVITY 2026 IR · LIVE</span><span>14 / 16</span></div>
+</section>
+
+<!-- P15 로드맵 -->
+<section class="slide" data-title="로드맵 — 본선 다음 날부터">
+  <div class="hd"><div class="eb">Roadmap</div>
+    <h1 data-anim>본선 <span class="blue">다음 날부터</span>의 계획입니다.</h1></div>
+  <div class="mrow" style="display:flex;gap:16px;margin-top:auto">
+    <div class="card" style="flex:1;border-color:var(--blue)" data-anim><div class="num">7월 · 지금</div>
+      <div style="font-weight:800;font-size:17px;margin-top:6px">본선 · 파일럿</div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:6px;line-height:1.6">테스터 20명과 논문→발표자료 실증을 진행합니다</div></div>
+    <div class="card" style="flex:1" data-anim><div class="num">8–9월</div>
+      <div style="font-weight:800;font-size:17px;margin-top:6px">공개 베타</div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:6px;line-height:1.6">품질 지표 통과 후 공개 · 4대 과기원 연구실부터</div></div>
+    <div class="card" style="flex:1" data-anim><div class="num">10–11월</div>
+      <div style="font-weight:800;font-size:17px;margin-top:6px">유료 전환 검증</div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:6px;line-height:1.6">구독 시작 · <b>11월 목표: 첫 유료 결제</b></div></div>
+    <div class="card" style="flex:1" data-anim><div class="num">출시 2–3년</div>
+      <div style="font-weight:800;font-size:17px;margin-top:6px">SOM 1,000개 조직</div>
+      <div style="font-size:14px;color:var(--gray7);margin-top:6px;line-height:1.6">연 환산 약 12억 원 목표 · 산식은 4장과 동일합니다</div></div>
+  </div>
+  <div style="margin-top:26px" data-anim><span class="mark">공개 베타 오픈일은 파일럿 품질 지표 확인 후 확정합니다</span></div>
+  <div class="card" style="margin-top:auto;display:flex;gap:20px;align-items:center;background:#f7f8fa;border-color:transparent;padding:18px 24px" data-anim>
+    <div style="font-size:24px">⚡</div>
+    <div style="font-size:15.5px;line-height:1.65;color:var(--ink2)"><b>속도의 증거:</b> 저희는 협업툴도 직접 만들어 씁니다. <b>이틀 만에 만들었고,</b> 다섯 명이 매일 씁니다. 남의 도구를 바꾸겠다는 팀이라, 저희 것부터 바꿨습니다.</div>
+  </div>
+  <div class="foot"><span>DeckFlip · GRAVITY 2026 IR · LIVE</span><span>15 / 16</span></div>
+</section>
+
+<!-- P16 클로징 -->
+<section class="slide dark" data-title="클로징" style="justify-content:center">
+  <div class="glow" style="background:radial-gradient(900px 500px at 85% 20%,rgba(31,94,255,.26),transparent 60%)"></div>
+  <div class="mrow" style="position:relative;display:flex;justify-content:space-between;align-items:center;gap:40px">
+    <div>
+      <div style="font-size:58px;font-weight:900;letter-spacing:-.06em;line-height:1" data-anim>Deck<span style="color:var(--ice)">Flip</span></div>
+      <div style="font-size:22px;font-weight:650;margin-top:16px;color:rgba(255,255,255,.9)" data-anim>다음 발표자료는, 만들지 마세요.</div>
+      <div style="font-size:15px;color:rgba(255,255,255,.55);margin-top:20px;line-height:1.8" data-anim>팀 DeckFlip · GRAVITY 2026 · UNIST 대학원 트랙<br>문의 <b style="color:rgba(255,255,255,.85)">m20268222@unist.ac.kr</b></div>
+      <div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap" data-anim>
+        <!-- 데모 URL 확정 시 복원: <a href="https://hw.deckflip.net" class="pill" style="text-decoration:none;border-color:var(--ice);color:#fff">🌐 제품이 만든 다른 발표자료 보기</a> -->
+      </div>
+    </div>
+    <div style="text-align:center;flex:none;max-width:340px" data-anim>
+      <div style="font-size:15px;color:rgba(255,255,255,.85);line-height:1.8">여기까지가 <b style="color:var(--lime)">19번째 슬라이드</b>였습니다.<br>방금 보신 모든 것이 이 화면 하나에서 작동했고,<br>이것이 저희가 만드는 발표자료입니다.</div>
+      <div style="margin-top:14px;font-size:13px;color:rgba(255,255,255,.5)"><span class="onlydesk">키보드 <b style="color:var(--ice)">P</b> 로</span><span class="onlymob">왼쪽 아래 버튼으로</span> PDF와의 차이를 언제든 다시 확인하세요</div>
+      <div id="selfurl" style="display:none;margin-top:16px" data-anim>
+        <img alt="이 자료 주소 QR" style="width:120px;height:120px;border-radius:12px;background:#fff;padding:6px">
+        <div class="uu" style="margin-top:8px;font-size:12px;color:rgba(255,255,255,.6);word-break:break-all"></div>
+        <div style="margin-top:6px;font-size:12px;color:rgba(255,255,255,.5)">발표가 끝나도 이 주소는 그대로 살아 있습니다</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>DeckFlip · GRAVITY 2026 IR · LIVE</span><span>16 / 16</span></div>
+</section>
+
+</div></div>
+
+<script>
+(function(){
+"use strict";
+var deck=document.getElementById('deck'), slides=[].slice.call(document.querySelectorAll('.slide'));
+var N=slides.length, cur=0, started=false, t0=null;
+function mm(q,fb){try{return window.matchMedia(q).matches;}catch(_){return fb;}}
+var COARSE=mm('(pointer:coarse)',false);
+function calcScroll(){
+  var w=window.innerWidth||1280,sw=9999;
+  try{sw=Math.min(screen.width||9999,screen.height||9999);}catch(_){}
+  return w<=819||(COARSE&&sw<=819);
+}
+var SCROLL=calcScroll();
+var REDUCED=mm('(prefers-reduced-motion: reduce)',false);
+function safe(fn){try{fn();}catch(_){}}
+var mem={};
+var store={
+  get:function(k,d){try{var v=localStorage.getItem(k);if(v!==null)return v;}catch(_){}return (k in mem)?mem[k]:d;},
+  set:function(k,v){mem[k]=v;try{localStorage.setItem(k,v);}catch(_){}},
+  del:function(k){delete mem[k];try{localStorage.removeItem(k);}catch(_){}}
+};
+if(SCROLL)document.body.classList.add('scrollmode');
+
+/* ── 별 배경 (스테이지 레터박스 + 인트로) ── */
+function starfield(canvas,parallax){
+  var ctx=canvas.getContext('2d'),stars=[],mx=0,my=0,W,H;
+  function size(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;}
+  size();window.addEventListener('resize',size);
+  for(var i=0;i<150;i++)stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.4+.3,p:Math.random()*6.28,s:.5+Math.random()});
+  if(parallax)document.addEventListener('mousemove',function(e){mx=(e.clientX/window.innerWidth-.5);my=(e.clientY/window.innerHeight-.5);});
+  var t=0;
+  (function draw(){
+    if(!canvas.offsetParent&&canvas.id==='istars'){requestAnimationFrame(draw);return;}
+    t+=.016;ctx.clearRect(0,0,W,H);
+    for(var i=0;i<stars.length;i++){var st=stars[i];
+      var a=.25+.55*Math.abs(Math.sin(t*st.s+st.p));
+      ctx.globalAlpha=a;ctx.fillStyle='#cfe2ff';
+      ctx.beginPath();ctx.arc(st.x*W+mx*14*st.s,st.y*H+my*14*st.s,st.r,0,6.28);ctx.fill();}
+    ctx.globalAlpha=1;
+    if(!REDUCED)requestAnimationFrame(draw);
+  })();
+}
+if(!REDUCED){safe(function(){starfield(document.getElementById('istars'),true);});if(!SCROLL)safe(function(){starfield(document.getElementById('bgstars'),true);});}
+
+/* ── 인트로 ── */
+var intro=document.getElementById('intro'), introGone=false;
+function killIntro(){
+  if(introGone)return;introGone=true;
+  intro.classList.add('bye');
+  setTimeout(function(){intro.style.display='none';},750);
+  setTimeout(function(){var h=document.getElementById('hint');if(h)h.style.opacity='0';setTimeout(function(){h.remove();},900);},6000);
+}
+document.getElementById('enter').addEventListener('click',killIntro);
+intro.addEventListener('touchend',function(){killIntro();},{passive:true});
+var h0=NaN;try{h0=parseInt((location.hash||'').replace('#',''),10);}catch(_){}
+if(!isNaN(h0)&&h0>1)killIntro();
+
+/* ── 스케일 핏 (스테이지 모드) ── */
+function fit(){if(SCROLL)return;var s=Math.min(window.innerWidth/1320,window.innerHeight/770);deck.style.transform='scale('+s+')';}
+window.addEventListener('resize',function(){
+  var nowScroll=calcScroll();
+  if(nowScroll!==SCROLL){try{location.reload();}catch(_){}return;}
+  fit();
+});fit();
+
+/* ── 진입 애니메이션 트리거 ── */
+function trigger(sl){
+  [].slice.call(sl.querySelectorAll('[data-anim]')).forEach(function(el,i){
+    el.classList.remove('in');
+    setTimeout(function(){el.classList.add('in');},60+i*90);
+  });
+  [].slice.call(sl.querySelectorAll('[data-count]')).forEach(function(el){
+    var target=parseFloat(el.getAttribute('data-count')),t1=performance.now();
+    if(REDUCED||document.body.classList.contains('pdf')){el.textContent=target;return;}
+    (function step(now){var p=Math.min(1,(now-t1)/900),e=1-Math.pow(1-p,3);
+      el.textContent=Math.round(target*e);if(p<1)requestAnimationFrame(step);})(t1);
+  });
+  if(sl.querySelector('#formula'))typeFormula();
+}
+
+/* ── 스테이지 모드 내비게이션 ── */
+function go(n){
+  if(SCROLL)return;
+  n=Math.max(0,Math.min(N-1,n));
+  slides[cur].classList.remove('on');
+  cur=n;var sl=slides[cur];sl.classList.add('on');
+  trigger(sl);
+  document.getElementById('prog').style.width=(cur/(N-1)*100)+'%';
+  document.getElementById('cnt').textContent=(cur+1)+' / '+N;
+  try{var hs='#'+(cur+1);
+    if(location.hash!==hs){if(history.replaceState)history.replaceState(null,'',hs);else location.hash=hs;}
+  }catch(_){}
+  var items=document.querySelectorAll('.sitem');
+  [].slice.call(items).forEach(function(it,i){it.classList.toggle('cur',i===cur);});
+  if(!started&&cur>0){started=true;if(!t0)t0=Date.now();}
+}
+window.addEventListener('hashchange',function(){
+  var n=parseInt((location.hash||'').replace('#',''),10);
+  if(!isNaN(n)&&(n-1)!==cur&&!SCROLL)go(n-1);
+});
+
+/* ── 스크롤 모드 (모바일 웹툰) ── */
+if(SCROLL){
+  if(!('IntersectionObserver' in window)){
+    slides.forEach(function(sl){sl.classList.add('on');trigger(sl);});
+  }else{
+  var seen=new Set();
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(en){
+      if(en.isIntersecting&&!seen.has(en.target)){
+        seen.add(en.target);en.target.classList.add('on');trigger(en.target);
+      }
+      if(en.isIntersecting){
+        var idx=slides.indexOf(en.target);
+        if(idx>=0)document.getElementById('cnt').textContent=(idx+1)+' / '+N;
+      }
+    });
+  },{threshold:.08});
+  slides.forEach(function(s){io.observe(s);});
+  }
+  window.addEventListener('scroll',function(){
+    var d=document.documentElement;
+    document.getElementById('prog').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100)+'%';
+  },{passive:true});
+}
+
+/* ── 키보드 ── */
+var buf='';
+document.addEventListener('keydown',function(e){
+  if(!introGone&&e.key!=='F5'){e.preventDefault();killIntro();return;}
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(cur+1);}
+  else if(e.key==='ArrowLeft'){go(cur-1);}
+  else if(e.key==='p'||e.key==='P'){document.body.classList.toggle('pdf');}
+  else if(e.key==='b'||e.key==='B'){document.body.classList.toggle('blackout');}
+  else if(e.key==='s'||e.key==='S'){document.getElementById('strip').classList.toggle('open');}
+  else if(e.key==='f'||e.key==='F'){try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}catch(_){}}
+  else if(e.key==='t'||e.key==='T'){document.body.classList.toggle('timeron');if(!t0)t0=Date.now();}
+  else if(e.key==='?'){toggleHelp();}
+  else if(/^[0-9]$/.test(e.key)){buf+=e.key;}
+  else if(e.key==='Enter'&&buf){go(parseInt(buf,10)-1);buf='';}
+});
+var helpTO=null;
+function toggleHelp(){
+  var on=document.body.classList.toggle('helpon');
+  clearTimeout(helpTO);
+  if(on)helpTO=setTimeout(function(){document.body.classList.remove('helpon');},7000);
+}
+document.getElementById('help').addEventListener('click',function(){document.body.classList.remove('helpon');});
+document.getElementById('pdfbtn').addEventListener('click',function(e){e.stopPropagation();document.body.classList.toggle('pdf');});
+document.getElementById('timer').addEventListener('click',function(e){e.stopPropagation();t0=Date.now();});
+setInterval(function(){
+  if(!t0)return;var s=Math.floor((Date.now()-t0)/1000);
+  document.getElementById('timer').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+},500);
+
+/* ── 클릭 / 터치 (데모 요소는 제외) ── */
+document.addEventListener('click',function(e){
+  if(!introGone){killIntro();return;}
+  if(SCROLL)return;
+  if(e.target.closest('button,a,.live,#pdfbtn,#timer,#help,#strip,#stripHot,#intro,.mark'))return;
+  (e.clientX>window.innerWidth/2)?go(cur+1):go(cur-1);
+});
+var tx=null;
+document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',function(e){
+  if(SCROLL||tx===null)return;
+  if(e.target.closest('button,a,.live,#strip,#intro'))return;
+  var dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>40){dx<0?go(cur+1):go(cur-1);}
+  tx=null;
+},{passive:true});
+
+/* ── 크롬 자동 페이드 ── */
+var idleTO=null;
+function poke(){
+  document.body.classList.remove('dimchrome');
+  clearTimeout(idleTO);
+  idleTO=setTimeout(function(){document.body.classList.add('dimchrome');},4000);
+}
+['mousemove','keydown','touchstart'].forEach(function(ev){document.addEventListener(ev,poke,{passive:true});});
+poke();
+
+/* ── 필름스트립 (실제 슬라이드 축소 클론) ── */
+if(!SCROLL){
+  var inner=document.getElementById('stripInner');
+  slides.forEach(function(sl,i){
+    var it=document.createElement('div');it.className='sitem';
+    var tb=document.createElement('div');tb.className='thumb';
+    var cl=sl.cloneNode(true);cl.className=sl.className.replace('slide','slide')+' cl';
+    cl.classList.remove('on');cl.style.cssText='opacity:1;pointer-events:none;position:absolute;inset:auto;top:0;left:0';
+    cl.classList.add('cl');
+    [].slice.call(cl.querySelectorAll('[id]')).forEach(function(x){x.removeAttribute('id');});
+    cl.removeAttribute('id');
+    tb.appendChild(cl);
+    var lb=document.createElement('div');lb.className='slabel';
+    lb.innerHTML='<b>'+String(i+1).padStart(2,'0')+'</b>'+(sl.getAttribute('data-title')||'');
+    it.appendChild(tb);it.appendChild(lb);
+    it.addEventListener('click',function(){go(i);});
+    inner.appendChild(it);
+  });
+  var strip=document.getElementById('strip');
+  document.getElementById('stripHot').addEventListener('mouseenter',function(){strip.classList.add('open');});
+  strip.addEventListener('mouseleave',function(){strip.classList.remove('open');});
+}
+
+/* ── 투표·청중 질문 — 실시간(수파베이스) · 연결 실패 시 로컬 데모 ── */
+var POLL={
+  url:'https://clpgbxfbnhyxstnystsh.supabase.co',
+  key:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNscGdieGZibmh5eHN0bnlzdHNoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMxODAyOTIsImV4cCI6MjA5ODc1NjI5Mn0.adOh4J5LfJU5IS2cCdX60O6odoxHKTMxexpYZs0vv4k',
+  table:'deck_votes', qtable:'deck_questions', id:'gravity2026',
+  live:false, stale:false, busy:false, pending:null, ready:false, qready:false,
+  gen:0, tick:0, failN:0,
+  labels:['내용 만들기','모양 다듬기'], counts:[0,0], qn:0, qlast:''
+};
+try{var _qp=new URLSearchParams(location.search).get('poll');
+  if(_qp){_qp=_qp.replace(/[^\w-]/g,'').slice(0,40);if(_qp)POLL.id=_qp;}}catch(_){}
+function sbHead(json){
+  var h={apikey:POLL.key,Authorization:'Bearer '+POLL.key};
+  if(json){h['Content-Type']='application/json';h.Prefer='return=minimal';}
+  return h;
+}
+/* 테이블 존재 확인 — 이 조회는 테이블이 아직 없어도 항상 200으로 답해서, 콘솔에 404가 남지 않습니다.
+   투표테이블_생성.sql(pg_graphql 확장 포함)을 실행하면 다음 확인 때 실시간 집계로 올라옵니다 */
+function sbProbe(){
+  return fetch(POLL.url+'/graphql/v1',{method:'POST',
+    headers:{apikey:POLL.key,Authorization:'Bearer '+POLL.key,'Content-Type':'application/json'},
+    body:JSON.stringify({query:'{ v:__type(name: "'+POLL.table+'") { name } q:__type(name: "'+POLL.qtable+'") { name } }'})
+  })
+  .then(function(r){if(!r.ok)throw 0;return r.json();})
+  .then(function(j){
+    var d=(j&&j.data)||{};
+    POLL.ready=!!(d.v&&d.v.name);
+    POLL.qready=!!(d.q&&d.q.name);
+    return POLL.ready;
+  });
+}
+function pollRender(){
+  var el=document.getElementById('pollres');if(!el)return;
+  var tot=POLL.counts[0]+POLL.counts[1];
+  el.innerHTML=POLL.counts.map(function(v,i){
+    var pc=tot?Math.round(v/tot*100):0;
+    return '<div class="pollrow">'+POLL.labels[i]+' · '+v+'표 ('+pc+'%)<div class="bar"><i style="--w:'+pc+'%;width:'+pc+'%"></i></div></div>';
+  }).join('');
+  var mine=store.get('df_voted_'+POLL.id,null);
+  var lab=document.getElementById('polllab');
+  if(lab){
+    if(POLL.live&&POLL.stale)lab.textContent='실시간 집계 · 연결을 다시 시도하는 중입니다';
+    else if(POLL.live)lab.textContent='실시간 집계 · 모든 참여자의 표가 함께 모입니다'+(mine!==null?' · 내 표: '+POLL.labels[+mine]:'');
+    else lab.textContent='로컬 데모 · 이 기기에서만 집계됩니다';
+  }
+  [].slice.call(document.querySelectorAll('#deck .pollbtn')).forEach(function(b){
+    if(b.id==='qasend')return;
+    var off=POLL.live&&(mine!==null||POLL.busy);
+    b.disabled=off;
+    if(off){
+      var isMine=String(b.getAttribute('data-v'))===String(mine);
+      b.style.opacity=isMine?'1':'.45';
+      b.style.borderColor=isMine?'var(--blue)':'';
+    }else{b.style.opacity='';b.style.borderColor='';}
+  });
+  qaRender();
+}
+function qaRender(){
+  var ql=document.getElementById('qalist');if(!ql)return;
+  if(!POLL.live){ql.textContent='질문 기능은 온라인 발표에서 열립니다';return;}
+  ql.textContent=POLL.qn?('청중 질문 '+POLL.qn+'건 · 최신: '+POLL.qlast):'아직 질문이 없습니다 · 첫 질문을 보내 보세요';
+}
+function pollFail(){
+  POLL.failN++;
+  if(POLL.live&&POLL.failN>=3&&!POLL.stale){POLL.stale=true;pollRender();}
+}
+function pollFetch(){
+  var g=++POLL.gen;
+  return fetch(POLL.url+'/rest/v1/'+POLL.table+'?select=choice&poll=eq.'+encodeURIComponent(POLL.id)+'&limit=1000',{headers:sbHead()})
+  .then(function(r){if(!r.ok)throw 0;return r.json();})
+  .then(function(rows){
+    if(g!==POLL.gen)return;
+    var c=[0,0];rows.forEach(function(x){var i=+x.choice;if(i===0||i===1)c[i]++;});
+    var first=!POLL.live;
+    POLL.counts=c;POLL.live=true;POLL.stale=false;POLL.failN=0;
+    if(first&&POLL.pending!==null&&store.get('df_voted_'+POLL.id,null)===null){
+      var pv=POLL.pending;POLL.pending=null;sendVote(pv);
+    }
+    pollRender();
+  })
+  .catch(function(e){pollFail();throw e;});
+}
+function qaFetch(){
+  return fetch(POLL.url+'/rest/v1/'+POLL.qtable+'?select=body&poll=eq.'+encodeURIComponent(POLL.id)+'&order=created_at.desc&limit=30',{headers:sbHead()})
+  .then(function(r){if(!r.ok)throw 0;return r.json();})
+  .then(function(rows){
+    POLL.qn=rows.length;
+    POLL.qlast=rows.length?String(rows[0].body).slice(0,60):'';
+    qaRender();
+  });
+}
+function sendVote(v){
+  POLL.counts[v]++;POLL.busy=true;pollRender();
+  fetch(POLL.url+'/rest/v1/'+POLL.table,{method:'POST',headers:sbHead(true),body:JSON.stringify({poll:POLL.id,choice:v})})
+  .then(function(r){
+    if(!r.ok)throw 0;
+    store.set('df_voted_'+POLL.id,String(v));POLL.busy=false;
+    return pollFetch().catch(function(){});
+  })
+  .catch(function(){
+    POLL.busy=false;POLL.counts[v]=Math.max(0,POLL.counts[v]-1);
+    store.del('df_voted_'+POLL.id);pollRender();
+    var lab=document.getElementById('polllab');
+    if(lab)lab.textContent='전송이 안 됐습니다. 한 번 더 눌러 주세요.';
+  });
+}
+safe(function(){
+  try{POLL.counts=JSON.parse(store.get('df_poll_demo','[0,0]'));}catch(_){POLL.counts=[0,0];}
+  if(Object.prototype.toString.call(POLL.counts)!=='[object Array]'||POLL.counts.length!==2)POLL.counts=[0,0];
+  POLL.counts=[Math.max(0,+POLL.counts[0]||0),Math.max(0,+POLL.counts[1]||0)];
+  pollRender();
+  if(window.fetch){
+    sbProbe().then(function(ok){if(ok)return pollFetch();}).catch(function(){});
+    setInterval(function(){
+      if(document.hidden)return;
+      POLL.tick++;
+      if(POLL.ready){
+        if(POLL.live||POLL.tick%5===0){
+          pollFetch().catch(function(){});
+          if(POLL.live&&POLL.qready)qaFetch().catch(function(){});
+        }
+      }else if(POLL.tick%5===0){
+        sbProbe().then(function(ok){if(ok)return pollFetch();}).catch(function(){});
+      }
+    },3000);
+  }
+});
+[].slice.call(document.querySelectorAll('#deck .pollbtn')).forEach(function(b){
+  if(b.id==='qasend')return;
+  b.addEventListener('click',function(e){
+    e.stopPropagation();
+    var v=parseInt(b.getAttribute('data-v'),10);
+    if(POLL.live){
+      if(POLL.busy||store.get('df_voted_'+POLL.id,null)!==null){pollRender();return;}
+      sendVote(v);
+    }else{
+      POLL.counts[v]++;POLL.pending=v;
+      store.set('df_poll_demo',JSON.stringify(POLL.counts));
+      pollRender();
+    }
+  });
+});
+/* 청중 질문 보내기 — 기기당 60초에 1건, 120자, textContent 렌더만 사용 */
+safe(function(){
+  var inp=document.getElementById('qain'),btn=document.getElementById('qasend');
+  if(!inp||!btn)return;
+  function send(){
+    var t=(inp.value||'').trim().slice(0,120);
+    if(!t)return;
+    if(!POLL.live||!POLL.qready){inp.value='';inp.placeholder='온라인 발표에서 열립니다';return;}
+    var last=+store.get('df_qat',0);
+    if(Date.now()-last<60000){inp.value='';inp.placeholder='잠시 후 다시 보낼 수 있습니다';return;}
+    btn.disabled=true;
+    fetch(POLL.url+'/rest/v1/'+POLL.qtable,{method:'POST',headers:sbHead(true),body:JSON.stringify({poll:POLL.id,body:t})})
+    .then(function(r){
+      if(!r.ok)throw 0;
+      store.set('df_qat',String(Date.now()));
+      inp.value='';inp.placeholder='전달했습니다. 발표자가 확인합니다';
+      btn.disabled=false;
+      return qaFetch().catch(function(){});
+    })
+    .catch(function(){btn.disabled=false;inp.placeholder='전송이 안 됐습니다. 다시 시도해 주세요';});
+  }
+  btn.addEventListener('click',function(e){e.stopPropagation();send();});
+  inp.addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Enter'){e.preventDefault();send();}});
+  inp.addEventListener('click',function(e){e.stopPropagation();});
+});
+
+/* ── P16: 배포된 주소를 그대로 QR로 (파일로 열면 표시 안 함) ── */
+safe(function(){
+  if(!/^https?:$/.test(location.protocol))return;
+  var box=document.getElementById('selfurl');if(!box)return;
+  var u=location.origin+location.pathname;
+  box.style.display='block';
+  var img=box.querySelector('img');
+  img.onerror=function(){img.style.display='none';};
+  img.src='https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data='+encodeURIComponent(u);
+  box.querySelector('.uu').textContent=u.replace(/^https?:\/\//,'');
+});
+
+/* ── 수식 타이핑 (클릭 = 다시 쓰기) ── */
+var FTXT='∇·E = ρ/ε₀   ·   F = ma   ·   ŷ = σ(Wx + b)';
+var fEl=document.getElementById('formula'),fTicking=false;
+function typeFormula(){
+  if(fTicking||!fEl)return;fTicking=true;fEl.textContent='';
+  if(REDUCED){fEl.textContent=FTXT;fTicking=false;return;}
+  var i=0;(function tick(){
+    if(i<FTXT.length){fEl.textContent+=FTXT[i++];setTimeout(tick,38);}
+    else fTicking=false;})();
+}
+if(fEl)fEl.addEventListener('click',function(e){e.stopPropagation();typeFormula();});
+
+/* ── 미니 차트 ── */
+function chartDraw(){
+  var g=document.getElementById('mbars');if(!g)return;var html='';
+  for(var i=0;i<6;i++){var h=14+Math.random()*40,x=8+i*32;
+    html+='<rect x="'+x+'" y="'+(58-h)+'" width="22" height="'+h+'" rx="4" fill="'+(i===3?'#1f5eff':'#dbe3f0')+'"/>';}
+  g.innerHTML=html;
+}
+var mc=document.getElementById('mchart');
+if(mc)mc.addEventListener('click',function(e){e.stopPropagation();chartDraw();});
+chartDraw();
+
+/* ── 시작 ── */
+safe(function(){
+  if(!SCROLL){go(isNaN(h0)?0:Math.max(0,h0-1));}
+  else{document.getElementById('prog').style.width='0%';}
+});
+})();
+</script>
+</body>
+</html>
