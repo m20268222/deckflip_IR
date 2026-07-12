@@ -71,6 +71,24 @@ h1{font-weight:900;letter-spacing:-.055em;line-height:1.06;margin-top:14px;font-
 #nav button:disabled{opacity:.28;cursor:default;border-color:rgba(255,255,255,.1)}
 body.dimchrome #nav{opacity:.45}
 .scrollmode #nav,html.nojs #nav{display:none}
+/* ─ 질문 실시간 확인 모달 ─ */
+#qmodal{position:fixed;inset:0;z-index:92;display:none;place-items:center;background:rgba(4,7,13,.86);padding:24px}
+#qmodal .qmbox{width:100%;max-width:720px;max-height:82vh;display:flex;flex-direction:column;background:#0c1120;border:1px solid rgba(255,255,255,.14);border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,.6);overflow:hidden}
+#qmodal .qmhd{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:17px 24px;border-bottom:1px solid rgba(255,255,255,.1);font-size:18px;font-weight:800;color:#fff;flex:none}
+#qmodal .qmhd b{color:var(--ice)}
+#qmodal .qmlive{font-size:13px;font-weight:700;color:var(--lime)}
+#qmodal #qmclose{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#fff;border-radius:999px;padding:7px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;flex:none}
+#qmodal #qmclose:hover{border-color:var(--ice)}
+#qmodal #qmlist{overflow-y:auto;padding:14px 18px;display:flex;flex-direction:column;gap:10px}
+#qmodal .qmrow{display:flex;gap:13px;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:13px 16px}
+#qmodal .qmnum{flex:none;width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:800;display:grid;place-items:center;margin-top:1px}
+#qmodal .qmtx{font-size:16.5px;line-height:1.6;color:#eaf0ff;word-break:break-word}
+#qmodal .qmempty{color:rgba(255,255,255,.5);font-size:15px;text-align:center;padding:44px 0}
+#qmodal .qmfoot{padding:11px 24px;border-top:1px solid rgba(255,255,255,.08);font-size:12px;color:rgba(255,255,255,.42);flex:none;text-align:center}
+html.nojs #qaview{display:none}
+/* s9 비교: 모바일에선 세로 스택 */
+.scrollmode .s9grid{grid-template-columns:1fr;gap:12px}
+.scrollmode .s9cap{min-height:120px}
 /* ─ P7 라이브 빌드 스트립 ─ */
 #p7build .p7row{display:flex;align-items:center;gap:13px;flex-wrap:nowrap}
 .scrollmode #p7build .p7row{flex-wrap:wrap;gap:9px 12px}
@@ -345,6 +363,7 @@ html.nojs .slide{height:auto}
 <div id="hint"><span class="onlydesk">화살표 버튼 또는 <b style="color:var(--ice)">← →</b> 이동 · <b style="color:var(--ice)">P</b> PDF 모드 · <b style="color:var(--ice)">?</b> 단축키</span><span class="onlymob">웹툰처럼 아래로 내려보세요. 각 장이 살아서 움직입니다</span></div>
 <div id="nav"><button id="navprev" type="button" title="이전 (←)" aria-label="이전 슬라이드">‹</button><button id="navnext" type="button" title="다음 (→ · Space)" aria-label="다음 슬라이드">›</button></div>
 <div id="stamp">지금 PDF를 보고 계십니다. 다시 누르면 살아납니다</div>
+<div id="qmodal"><div class="qmbox"><div class="qmhd"><div>청중 질문 <b id="qmcount">0</b>건 <span class="qmlive">· 실시간</span></div><button id="qmclose" type="button">닫기 ✕</button></div><div id="qmlist"></div><div class="qmfoot">Esc 또는 바깥을 눌러 닫기 · 질문 키(Q)로도 열립니다 · 자동 갱신</div></div></div>
 <div id="black"></div>
 <div id="timer" title="클릭 = 리셋">00:00</div>
 <div id="help"><div class="box">
@@ -602,22 +621,30 @@ html.nojs .slide{height:auto}
   <div class="hd"><div class="eb">Field Test</div>
     <h1 data-anim>같은 한 줄을 <span class="blue">다섯 곳</span>에 넣어 봤습니다.</h1></div>
   <div style="margin-top:12px;font-size:15.5px;color:var(--gray7)" data-anim>프롬프트는 <b>"디지털 마케팅 트렌드"</b> 한 줄입니다. 마케팅 대행사를 운영하는 팀원이 직접 만들어 비교했습니다 <span class="src">(2026.7 · 분량과 구성은 각 도구가 스스로 결정)</span></div>
-  <div class="mrow" style="display:flex;gap:12px;margin-top:auto">
-    <div class="card" style="flex:1;padding:18px 14px" data-anim><div style="font-weight:800;font-size:15px">Canva</div>
-      <div class="big" style="font-size:62px;color:var(--gray7)"><span data-count="5">5</span><span style="font-size:24px">장</span></div>
-      <div style="font-size:13.5px;color:var(--gray7);line-height:1.55">가벼운 요약본.<br>출처 표기 없음</div></div>
-    <div class="card" style="flex:1;padding:18px 14px" data-anim><div style="font-weight:800;font-size:15px">Gamma</div>
-      <div class="big" style="font-size:62px;color:var(--gray)">—</div>
-      <div style="font-size:13.5px;color:var(--gray7);line-height:1.55">템플릿형 구성<br><span class="mark" style="font-size:10.5px;display:inline-block;line-height:1.5;margin-top:4px">장수 기입 · 링크 공개 전환 중</span></div></div>
-    <div class="card" style="flex:1;padding:18px 14px" data-anim><div style="font-weight:800;font-size:15px">Pitch</div>
-      <div class="big" style="font-size:62px;color:var(--gray)">—</div>
-      <div style="font-size:13.5px;color:var(--gray7);line-height:1.55">템플릿형 구성<br><span class="mark" style="font-size:10.5px;display:inline-block;line-height:1.5;margin-top:4px">장수 기입 · 링크 공개 전환 중</span></div></div>
-    <div class="card" style="flex:1;padding:18px 14px" data-anim><div style="font-weight:800;font-size:15px">Beautiful.ai</div>
-      <div class="big" style="font-size:62px;color:var(--gray7)"><span data-count="9">9</span><span style="font-size:24px">장</span></div>
-      <div style="font-size:13.5px;color:var(--gray7);line-height:1.55">깔끔한 요약본.<br>출처 표기 없음</div></div>
-    <div class="card" style="flex:1.25;padding:18px 14px;border-color:var(--blue)" data-anim><div style="font-weight:900;font-size:15px;color:var(--blue)">DeckFlip</div>
-      <div class="big" style="font-size:62px;color:var(--blue)"><span data-count="33">33</span><span style="font-size:24px">장</span></div>
-      <div style="font-size:13.5px;color:var(--ink2);font-weight:600;line-height:1.55">장마다 출처 표기<br>추정치는 ★로 구분<br>웹에서 살아 움직임</div></div>
+  <div class="s9grid" style="display:grid;grid-template-columns:1.05fr 1fr;gap:15px;margin-top:auto;flex:1;align-items:stretch" data-anim>
+    <div class="s9tools" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="card" style="padding:11px 13px;display:flex;flex-direction:column"><div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-size:14px;color:var(--gray7)">Canva</b><span style="font-size:12.5px;color:var(--gray)">5장</span></div>
+        <div class="s9cap" style="flex:1;margin-top:7px;border:1.5px dashed #d4a017;border-radius:10px;background:#fffdf4;display:grid;place-items:center;min-height:80px"><span style="font-size:11px;color:#7a5c00;font-weight:700;text-align:center">대표 슬라이드 캡처<br>(유경 대표님)</span></div>
+        <div style="font-size:11.5px;color:var(--gray);margin-top:5px">출처 표기 없음</div></div>
+      <div class="card" style="padding:11px 13px;display:flex;flex-direction:column"><div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-size:14px;color:var(--gray7)">Gamma</b><span style="font-size:12.5px;color:var(--gray)">—</span></div>
+        <div class="s9cap" style="flex:1;margin-top:7px;border:1.5px dashed #d4a017;border-radius:10px;background:#fffdf4;display:grid;place-items:center;min-height:80px"><span style="font-size:11px;color:#7a5c00;font-weight:700;text-align:center">캡처 · 장수 기입<br>(링크 공개 전환 중)</span></div>
+        <div style="font-size:11.5px;color:var(--gray);margin-top:5px">템플릿형 구성</div></div>
+      <div class="card" style="padding:11px 13px;display:flex;flex-direction:column"><div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-size:14px;color:var(--gray7)">Pitch</b><span style="font-size:12.5px;color:var(--gray)">—</span></div>
+        <div class="s9cap" style="flex:1;margin-top:7px;border:1.5px dashed #d4a017;border-radius:10px;background:#fffdf4;display:grid;place-items:center;min-height:80px"><span style="font-size:11px;color:#7a5c00;font-weight:700;text-align:center">캡처 · 장수 기입<br>(링크 공개 전환 중)</span></div>
+        <div style="font-size:11.5px;color:var(--gray);margin-top:5px">템플릿형 구성</div></div>
+      <div class="card" style="padding:11px 13px;display:flex;flex-direction:column"><div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-size:14px;color:var(--gray7)">Beautiful.ai</b><span style="font-size:12.5px;color:var(--gray)">9장</span></div>
+        <div class="s9cap" style="flex:1;margin-top:7px;border:1.5px dashed #d4a017;border-radius:10px;background:#fffdf4;display:grid;place-items:center;min-height:80px"><span style="font-size:11px;color:#7a5c00;font-weight:700;text-align:center">대표 슬라이드 캡처<br>(유경 대표님)</span></div>
+        <div style="font-size:11.5px;color:var(--gray);margin-top:5px">출처 표기 없음</div></div>
+    </div>
+    <div class="card" style="padding:15px 17px;border-color:var(--blue);background:#f4f7ff;display:flex;flex-direction:column">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-size:17px;color:var(--blue)">DeckFlip</b><span class="big" style="font-size:30px;color:var(--blue)">33<span style="font-size:16px">장</span></span></div>
+      <div class="s9cap" style="flex:1;margin-top:9px;border:1.5px dashed #d4a017;border-radius:12px;background:#fffdf4;display:grid;place-items:center;min-height:168px"><span style="font-size:12px;color:#7a5c00;font-weight:700;text-align:center">대표 슬라이드 캡처 · 크게<br>(출처 표기·★마커가 보이는 장으로)</span></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px">
+        <span class="pill" style="font-size:12px;padding:4px 11px">장마다 출처 표기</span>
+        <span class="pill" style="font-size:12px;padding:4px 11px">추정치 ★ 구분</span>
+        <span class="pill" style="font-size:12px;padding:4px 11px">웹에서 살아 움직임</span>
+      </div>
+    </div>
   </div>
   <div class="card" style="margin-top:auto;background:#f7f8fa;border-color:transparent;padding:15px 22px;display:flex;gap:16px;align-items:center" data-anim>
     <div style="font-size:20px">⏱️</div>
@@ -676,7 +703,7 @@ html.nojs .slide{height:auto}
 <section class="slide" id="p6live" data-title="라이브 — 청중 참여">
   <div class="hd"><div class="eb">Live</div>
     <h1 data-anim>링크 하나면, 청중의 폰이<br><span class="blue">발표장</span>이 됩니다.</h1></div>
-  <div class="grid" style="grid-template-columns:1.05fr 1fr;margin-top:13px">
+  <div class="grid" style="grid-template-columns:1.05fr 1fr;margin-top:4px">
     <div class="card live" data-anim><div style="font-size:26px">🗳️</div><div style="font-weight:800;font-size:18px;margin-top:6px">라이브 투표 · 청중 Q&A</div>
       <div id="poll" style="margin-top:8px">
         <div style="font-size:13px;color:var(--gray7);font-weight:700">발표자료, 어디에 시간을 제일 쓰세요?</div>
@@ -686,7 +713,7 @@ html.nojs .slide{height:auto}
         <div class="src" id="polllab" style="margin-top:5px">로컬 데모 · 이 기기에서만 집계됩니다</div>
         <div id="pollpunch" style="margin-top:7px;color:var(--blue);font-weight:800;font-size:12.5px;line-height:1.45">여러분의 답이 저희 시장 가설을 실시간으로 검증합니다.</div>
         <div style="display:flex;gap:6px;margin-top:8px">
-          <input id="qain" maxlength="120" placeholder="발표자에게 질문 보내기" style="flex:1;min-width:0;border:1.5px solid var(--line);border-radius:10px;padding:6px 10px;font-size:12.5px;font-family:var(--f);color:var(--ink2)">
+          <input id="qain" maxlength="100" placeholder="발표자에게 질문 보내기" style="flex:1;min-width:0;border:1.5px solid var(--line);border-radius:10px;padding:6px 10px;font-size:12.5px;font-family:var(--f);color:var(--ink2)">
           <button id="qasend" class="pollbtn" style="width:auto;margin-top:0;padding:6px 12px;font-size:12.5px">보내기</button>
         </div>
         <div id="qalist" class="src" style="margin-top:5px">아직 질문이 없습니다</div>
@@ -700,7 +727,7 @@ html.nojs .slide{height:auto}
         <div style="font-size:14px;color:rgba(255,255,255,.7);margin-top:5px;line-height:1.6">이 투표는 실제 서비스와 똑같은 방식으로 돌아갑니다. 연결이 없으면 스스로 <b style="color:var(--lime)">"로컬 데모"</b>로 내려갑니다</div></div>
     </div>
   </div>
-  <div style="margin-top:auto;display:flex;align-items:center;gap:15px;flex-wrap:wrap" data-anim><div style="display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:8px 15px 8px 10px"><div style="width:104px;height:104px;flex:none"><svg style="width:100%;height:100%;display:block" viewBox="0 0 33 33" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" role="img" aria-label="웹 발표자료 접속 QR"><path d="M0 0h33v33h-33z" fill="#fff"/><path d="M2 2h7v1h-7zM10 2h2v1h-2zM13 2h2v1h-2zM18 2h1v1h-1zM24 2h7v1h-7zM2 3h1v1h-1zM8 3h1v1h-1zM11 3h1v1h-1zM13 3h2v1h-2zM21 3h2v1h-2zM24 3h1v1h-1zM30 3h1v1h-1zM2 4h1v1h-1zM4 4h3v1h-3zM8 4h1v1h-1zM11 4h1v1h-1zM14 4h1v1h-1zM16 4h5v1h-5zM24 4h1v1h-1zM26 4h3v1h-3zM30 4h1v1h-1zM2 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM10 5h1v1h-1zM12 5h1v1h-1zM16 5h2v1h-2zM20 5h2v1h-2zM24 5h1v1h-1zM26 5h3v1h-3zM30 5h1v1h-1zM2 6h1v1h-1zM4 6h3v1h-3zM8 6h1v1h-1zM10 6h1v1h-1zM13 6h1v1h-1zM16 6h3v1h-3zM20 6h1v1h-1zM24 6h1v1h-1zM26 6h3v1h-3zM30 6h1v1h-1zM2 7h1v1h-1zM8 7h1v1h-1zM10 7h2v1h-2zM13 7h1v1h-1zM15 7h2v1h-2zM18 7h5v1h-5zM24 7h1v1h-1zM30 7h1v1h-1zM2 8h7v1h-7zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h7v1h-7zM10 9h5v1h-5zM16 9h4v1h-4zM22 9h1v1h-1zM2 10h1v1h-1zM6 10h1v1h-1zM8 10h3v1h-3zM13 10h1v1h-1zM15 10h1v1h-1zM17 10h1v1h-1zM19 10h3v1h-3zM23 10h5v1h-5zM30 10h1v1h-1zM3 11h1v1h-1zM6 11h1v1h-1zM10 11h1v1h-1zM13 11h3v1h-3zM17 11h4v1h-4zM23 11h2v1h-2zM26 11h5v1h-5zM4 12h1v1h-1zM8 12h1v1h-1zM11 12h2v1h-2zM14 12h2v1h-2zM17 12h2v1h-2zM20 12h1v1h-1zM22 12h1v1h-1zM24 12h3v1h-3zM30 12h1v1h-1zM3 13h2v1h-2zM6 13h1v1h-1zM10 13h1v1h-1zM12 13h3v1h-3zM17 13h1v1h-1zM19 13h1v1h-1zM23 13h1v1h-1zM25 13h1v1h-1zM27 13h1v1h-1zM29 13h2v1h-2zM6 14h4v1h-4zM11 14h1v1h-1zM16 14h2v1h-2zM19 14h1v1h-1zM22 14h1v1h-1zM25 14h1v1h-1zM29 14h1v1h-1zM2 15h1v1h-1zM4 15h1v1h-1zM6 15h2v1h-2zM11 15h1v1h-1zM14 15h1v1h-1zM16 15h5v1h-5zM23 15h2v1h-2zM26 15h5v1h-5zM2 16h4v1h-4zM8 16h1v1h-1zM10 16h1v1h-1zM13 16h1v1h-1zM15 16h5v1h-5zM22 16h2v1h-2zM25 16h1v1h-1zM27 16h2v1h-2zM30 16h1v1h-1zM2 17h1v1h-1zM4 17h4v1h-4zM16 17h1v1h-1zM19 17h7v1h-7zM29 17h2v1h-2zM2 18h5v1h-5zM8 18h4v1h-4zM13 18h1v1h-1zM15 18h2v1h-2zM19 18h1v1h-1zM21 18h2v1h-2zM25 18h1v1h-1zM29 18h1v1h-1zM2 19h2v1h-2zM5 19h3v1h-3zM10 19h4v1h-4zM16 19h5v1h-5zM23 19h2v1h-2zM26 19h2v1h-2zM29 19h2v1h-2zM5 20h2v1h-2zM8 20h2v1h-2zM12 20h1v1h-1zM14 20h4v1h-4zM20 20h1v1h-1zM23 20h4v1h-4zM28 20h1v1h-1zM30 20h1v1h-1zM4 21h1v1h-1zM9 21h2v1h-2zM12 21h2v1h-2zM15 21h1v1h-1zM18 21h6v1h-6zM25 21h1v1h-1zM29 21h2v1h-2zM2 22h5v1h-5zM8 22h8v1h-8zM17 22h1v1h-1zM19 22h2v1h-2zM22 22h6v1h-6zM30 22h1v1h-1zM10 23h2v1h-2zM14 23h9v1h-9zM26 23h1v1h-1zM30 23h1v1h-1zM2 24h7v1h-7zM10 24h2v1h-2zM13 24h2v1h-2zM17 24h1v1h-1zM20 24h3v1h-3zM24 24h1v1h-1zM26 24h3v1h-3zM30 24h1v1h-1zM2 25h1v1h-1zM8 25h1v1h-1zM14 25h1v1h-1zM16 25h1v1h-1zM18 25h3v1h-3zM22 25h1v1h-1zM26 25h1v1h-1zM29 25h2v1h-2zM2 26h1v1h-1zM4 26h3v1h-3zM8 26h1v1h-1zM10 26h1v1h-1zM12 26h1v1h-1zM15 26h2v1h-2zM19 26h1v1h-1zM21 26h7v1h-7zM30 26h1v1h-1zM2 27h1v1h-1zM4 27h3v1h-3zM8 27h1v1h-1zM11 27h3v1h-3zM15 27h1v1h-1zM17 27h2v1h-2zM20 27h2v1h-2zM25 27h1v1h-1zM30 27h1v1h-1zM2 28h1v1h-1zM4 28h3v1h-3zM8 28h1v1h-1zM11 28h4v1h-4zM17 28h1v1h-1zM19 28h2v1h-2zM25 28h1v1h-1zM27 28h4v1h-4zM2 29h1v1h-1zM8 29h1v1h-1zM11 29h2v1h-2zM14 29h1v1h-1zM16 29h2v1h-2zM19 29h1v1h-1zM21 29h4v1h-4zM27 29h1v1h-1zM29 29h2v1h-2zM2 30h7v1h-7zM10 30h1v1h-1zM13 30h1v1h-1zM15 30h1v1h-1zM19 30h1v1h-1zM21 30h2v1h-2zM24 30h2v1h-2zM27 30h1v1h-1zM29 30h1v1h-1z" fill="#111318"/></svg></div><div style="font-size:13px;line-height:1.5;color:var(--ink2)">폰 카메라로 스캔하면<br><b>지금 이 투표에 바로 참여</b>합니다<br><span class="src" style="font-size:11px">m20268222.github.io/deckflip_IR</span></div></div><span class="pill solid" style="font-size:15px;padding:10px 20px">질의응답 동안 이 화면을 열어 두겠습니다</span></div>
+  <div style="margin-top:auto;display:flex;align-items:center;gap:15px;flex-wrap:wrap" data-anim><div style="display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:8px 15px 8px 10px"><div style="width:104px;height:104px;flex:none"><svg style="width:100%;height:100%;display:block" viewBox="0 0 33 33" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" role="img" aria-label="웹 발표자료 접속 QR"><path d="M0 0h33v33h-33z" fill="#fff"/><path d="M2 2h7v1h-7zM10 2h2v1h-2zM13 2h2v1h-2zM18 2h1v1h-1zM24 2h7v1h-7zM2 3h1v1h-1zM8 3h1v1h-1zM11 3h1v1h-1zM13 3h2v1h-2zM21 3h2v1h-2zM24 3h1v1h-1zM30 3h1v1h-1zM2 4h1v1h-1zM4 4h3v1h-3zM8 4h1v1h-1zM11 4h1v1h-1zM14 4h1v1h-1zM16 4h5v1h-5zM24 4h1v1h-1zM26 4h3v1h-3zM30 4h1v1h-1zM2 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM10 5h1v1h-1zM12 5h1v1h-1zM16 5h2v1h-2zM20 5h2v1h-2zM24 5h1v1h-1zM26 5h3v1h-3zM30 5h1v1h-1zM2 6h1v1h-1zM4 6h3v1h-3zM8 6h1v1h-1zM10 6h1v1h-1zM13 6h1v1h-1zM16 6h3v1h-3zM20 6h1v1h-1zM24 6h1v1h-1zM26 6h3v1h-3zM30 6h1v1h-1zM2 7h1v1h-1zM8 7h1v1h-1zM10 7h2v1h-2zM13 7h1v1h-1zM15 7h2v1h-2zM18 7h5v1h-5zM24 7h1v1h-1zM30 7h1v1h-1zM2 8h7v1h-7zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h7v1h-7zM10 9h5v1h-5zM16 9h4v1h-4zM22 9h1v1h-1zM2 10h1v1h-1zM6 10h1v1h-1zM8 10h3v1h-3zM13 10h1v1h-1zM15 10h1v1h-1zM17 10h1v1h-1zM19 10h3v1h-3zM23 10h5v1h-5zM30 10h1v1h-1zM3 11h1v1h-1zM6 11h1v1h-1zM10 11h1v1h-1zM13 11h3v1h-3zM17 11h4v1h-4zM23 11h2v1h-2zM26 11h5v1h-5zM4 12h1v1h-1zM8 12h1v1h-1zM11 12h2v1h-2zM14 12h2v1h-2zM17 12h2v1h-2zM20 12h1v1h-1zM22 12h1v1h-1zM24 12h3v1h-3zM30 12h1v1h-1zM3 13h2v1h-2zM6 13h1v1h-1zM10 13h1v1h-1zM12 13h3v1h-3zM17 13h1v1h-1zM19 13h1v1h-1zM23 13h1v1h-1zM25 13h1v1h-1zM27 13h1v1h-1zM29 13h2v1h-2zM6 14h4v1h-4zM11 14h1v1h-1zM16 14h2v1h-2zM19 14h1v1h-1zM22 14h1v1h-1zM25 14h1v1h-1zM29 14h1v1h-1zM2 15h1v1h-1zM4 15h1v1h-1zM6 15h2v1h-2zM11 15h1v1h-1zM14 15h1v1h-1zM16 15h5v1h-5zM23 15h2v1h-2zM26 15h5v1h-5zM2 16h4v1h-4zM8 16h1v1h-1zM10 16h1v1h-1zM13 16h1v1h-1zM15 16h5v1h-5zM22 16h2v1h-2zM25 16h1v1h-1zM27 16h2v1h-2zM30 16h1v1h-1zM2 17h1v1h-1zM4 17h4v1h-4zM16 17h1v1h-1zM19 17h7v1h-7zM29 17h2v1h-2zM2 18h5v1h-5zM8 18h4v1h-4zM13 18h1v1h-1zM15 18h2v1h-2zM19 18h1v1h-1zM21 18h2v1h-2zM25 18h1v1h-1zM29 18h1v1h-1zM2 19h2v1h-2zM5 19h3v1h-3zM10 19h4v1h-4zM16 19h5v1h-5zM23 19h2v1h-2zM26 19h2v1h-2zM29 19h2v1h-2zM5 20h2v1h-2zM8 20h2v1h-2zM12 20h1v1h-1zM14 20h4v1h-4zM20 20h1v1h-1zM23 20h4v1h-4zM28 20h1v1h-1zM30 20h1v1h-1zM4 21h1v1h-1zM9 21h2v1h-2zM12 21h2v1h-2zM15 21h1v1h-1zM18 21h6v1h-6zM25 21h1v1h-1zM29 21h2v1h-2zM2 22h5v1h-5zM8 22h8v1h-8zM17 22h1v1h-1zM19 22h2v1h-2zM22 22h6v1h-6zM30 22h1v1h-1zM10 23h2v1h-2zM14 23h9v1h-9zM26 23h1v1h-1zM30 23h1v1h-1zM2 24h7v1h-7zM10 24h2v1h-2zM13 24h2v1h-2zM17 24h1v1h-1zM20 24h3v1h-3zM24 24h1v1h-1zM26 24h3v1h-3zM30 24h1v1h-1zM2 25h1v1h-1zM8 25h1v1h-1zM14 25h1v1h-1zM16 25h1v1h-1zM18 25h3v1h-3zM22 25h1v1h-1zM26 25h1v1h-1zM29 25h2v1h-2zM2 26h1v1h-1zM4 26h3v1h-3zM8 26h1v1h-1zM10 26h1v1h-1zM12 26h1v1h-1zM15 26h2v1h-2zM19 26h1v1h-1zM21 26h7v1h-7zM30 26h1v1h-1zM2 27h1v1h-1zM4 27h3v1h-3zM8 27h1v1h-1zM11 27h3v1h-3zM15 27h1v1h-1zM17 27h2v1h-2zM20 27h2v1h-2zM25 27h1v1h-1zM30 27h1v1h-1zM2 28h1v1h-1zM4 28h3v1h-3zM8 28h1v1h-1zM11 28h4v1h-4zM17 28h1v1h-1zM19 28h2v1h-2zM25 28h1v1h-1zM27 28h4v1h-4zM2 29h1v1h-1zM8 29h1v1h-1zM11 29h2v1h-2zM14 29h1v1h-1zM16 29h2v1h-2zM19 29h1v1h-1zM21 29h4v1h-4zM27 29h1v1h-1zM29 29h2v1h-2zM2 30h7v1h-7zM10 30h1v1h-1zM13 30h1v1h-1zM15 30h1v1h-1zM19 30h1v1h-1zM21 30h2v1h-2zM24 30h2v1h-2zM27 30h1v1h-1zM29 30h1v1h-1z" fill="#111318"/></svg></div><div style="font-size:13px;line-height:1.5;color:var(--ink2)">폰 카메라로 스캔하면<br><b>지금 이 투표에 바로 참여</b>합니다<br><span class="src" style="font-size:11px">m20268222.github.io/deckflip_IR</span></div></div><button id="qaview" type="button" style="border:1.5px solid var(--navy);background:var(--navy);color:#fff;border-radius:999px;padding:10px 18px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit">🔍 질문 실시간 확인하기</button><span class="pill solid" style="font-size:15px;padding:10px 20px">질의응답 동안 이 화면을 열어 두겠습니다</span></div>
   <div class="foot"><span>DeckFlip · GRAVITY 2026 IR · LIVE</span><span>12 / 18</span></div>
 </section>
 
@@ -1005,6 +1032,8 @@ if(SCROLL){
 var buf='';
 document.addEventListener('keydown',function(e){
   if(!introGone&&e.key!=='F5'){e.preventDefault();killIntro();return;}
+  var _qm=document.getElementById('qmodal');
+  if(_qm&&_qm.style.display==='grid'){if(e.key==='Escape'||e.key==='q'||e.key==='Q')toggleQm();return;}
   if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(cur+1);}
   else if(e.key==='ArrowLeft'){go(cur-1);}
   else if(e.key==='p'||e.key==='P'){document.body.classList.toggle('pdf');}
@@ -1013,6 +1042,7 @@ document.addEventListener('keydown',function(e){
   else if(e.key==='f'||e.key==='F'){try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}catch(_){}}
   else if(e.key==='t'||e.key==='T'){document.body.classList.toggle('timeron');if(!t0)t0=Date.now();}
   else if(e.key==='?'){toggleHelp();}
+  else if(e.key==='q'||e.key==='Q'){toggleQm();}
   else if(/^[0-9]$/.test(e.key)){buf+=e.key;}
   else if(e.key==='Enter'&&buf){go(parseInt(buf,10)-1);buf='';}
 });
@@ -1081,7 +1111,7 @@ var POLL={
   table:'deck_votes', qtable:'deck_questions', id:'gravity2026',
   live:false, stale:false, busy:false, pending:null, ready:false, qready:false,
   gen:0, tick:0, failN:0,
-  labels:['내용 만들기','모양 다듬기'], counts:[0,0], qn:0, qlast:''
+  labels:['내용 만들기','모양 다듬기'], counts:[0,0], qn:0, qlast:'', qlist:[]
 };
 try{var _qp=new URLSearchParams(location.search).get('poll');
   if(_qp){_qp=_qp.replace(/[^\w-]/g,'').slice(0,40);if(_qp)POLL.id=_qp;}}catch(_){}
@@ -1159,6 +1189,20 @@ function pollRender(){
   try{punchRender();}catch(_){}
   try{ledgerRender();}catch(_){}
 }
+function qmodalRender(){
+  var list=document.getElementById('qmlist'),cnt=document.getElementById('qmcount');
+  if(!list)return;
+  if(cnt)cnt.textContent=POLL.qn||0;
+  list.textContent='';
+  if(!POLL.live){var e0=document.createElement('div');e0.className='qmempty';e0.textContent='질문은 온라인 발표에서 실시간으로 들어옵니다.';list.appendChild(e0);return;}
+  if(!POLL.qlist||!POLL.qlist.length){var e1=document.createElement('div');e1.className='qmempty';e1.textContent='아직 들어온 질문이 없습니다. 청중이 보내면 여기에 실시간으로 쌓입니다.';list.appendChild(e1);return;}
+  POLL.qlist.forEach(function(q,i){
+    var row=document.createElement('div');row.className='qmrow';
+    var num=document.createElement('span');num.className='qmnum';num.textContent=String(i+1);
+    var tx=document.createElement('div');tx.className='qmtx';tx.textContent=q;
+    row.appendChild(num);row.appendChild(tx);list.appendChild(row);
+  });
+}
 function qaRender(){
   var ql=document.getElementById('qalist');if(!ql)return;
   if(!POLL.live){ql.textContent='질문 기능은 온라인 발표에서 열립니다';return;}
@@ -1185,12 +1229,14 @@ function pollFetch(){
   .catch(function(e){pollFail();throw e;});
 }
 function qaFetch(){
-  return fetch(POLL.url+'/rest/v1/'+POLL.qtable+'?select=body&poll=eq.'+encodeURIComponent(POLL.id)+'&order=created_at.desc&limit=30',{headers:sbHead()})
+  return fetch(POLL.url+'/rest/v1/'+POLL.qtable+'?select=body&poll=eq.'+encodeURIComponent(POLL.id)+'&order=created_at.desc&limit=100',{headers:sbHead()})
   .then(function(r){if(!r.ok)throw 0;return r.json();})
   .then(function(rows){
     POLL.qn=rows.length;
-    POLL.qlast=rows.length?String(rows[0].body).slice(0,60):'';
+    POLL.qlist=rows.map(function(x){return String((x&&x.body)||'').slice(0,100);});
+    POLL.qlast=POLL.qlist.length?POLL.qlist[0].slice(0,60):'';
     qaRender();
+    try{qmodalRender();}catch(_){}
   });
 }
 function sendVote(v){
@@ -1244,12 +1290,15 @@ safe(function(){
     }
   });
 });
-/* 청중 질문 보내기 — 기기당 60초에 1건, 120자, textContent 렌더만 사용 */
+function qmShow(){var m=document.getElementById('qmodal');if(!m)return;m.style.display='grid';try{qmodalRender();}catch(_){}if(POLL.live&&POLL.qready)qaFetch().catch(function(){});}
+function qmHide(){var m=document.getElementById('qmodal');if(m)m.style.display='none';}
+function toggleQm(){var m=document.getElementById('qmodal');if(!m)return;(m.style.display==='grid')?qmHide():qmShow();}
+/* 청중 질문 보내기 — 기기당 60초에 1건, 100자, textContent 렌더만 사용 */
 safe(function(){
   var inp=document.getElementById('qain'),btn=document.getElementById('qasend');
   if(!inp||!btn)return;
   function send(){
-    var t=(inp.value||'').trim().slice(0,120);
+    var t=(inp.value||'').trim().slice(0,100);
     if(!t)return;
     if(!POLL.live||!POLL.qready){inp.value='';inp.placeholder='온라인 발표에서 열립니다';return;}
     var last=+store.get('df_qat',0);
@@ -1268,6 +1317,10 @@ safe(function(){
   btn.addEventListener('click',function(e){e.stopPropagation();send();});
   inp.addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Enter'){e.preventDefault();send();}});
   inp.addEventListener('click',function(e){e.stopPropagation();});
+  var qv=document.getElementById('qaview'),qmc=document.getElementById('qmclose'),qmm=document.getElementById('qmodal');
+  if(qv)qv.addEventListener('click',function(e){e.stopPropagation();qv.blur();qmShow();});
+  if(qmc)qmc.addEventListener('click',function(e){e.stopPropagation();qmHide();});
+  if(qmm)qmm.addEventListener('click',function(e){if(e.target===qmm)qmHide();});
 });
 
 /* ── P16: 접속 QR은 인라인 SVG로 정적 삽입(외부 API 제거·오프라인/카톡 안전) ── */
