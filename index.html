@@ -913,6 +913,43 @@ html.nojs .thumbs,html.nojs .edgehot{display:none}
   .convmsg{white-space:normal;text-align:center;width:86vw}
 }
 
+/* ═══ 라운드6 ═══ */
+/* 썸네일: 실황 미니어처(PPT식) */
+.th-item{display:block;padding:12px}
+.th-item:hover{transform:none}
+.th-chip,.th-hd{display:none}
+.th-mini{display:block;position:relative;overflow:hidden;border-radius:9px;border:1px solid var(--line2);
+  background:#05060C;pointer-events:none;width:100%}
+.th-stage{position:absolute;left:0;top:0;transform-origin:0 0;display:block}
+.th-stage .scene{position:relative}
+.th-mini [data-r]{opacity:1!important;transform:none!important;transition:none!important}
+.th-meta{display:block;margin-top:9px;padding:0 2px}
+.th-tt{font-weight:700}
+/* GRAVITY 라벨: 칩 제거, 글자만 */
+.glabchip{background:transparent;border:none;padding:0;border-radius:0;backdrop-filter:none;
+  font-size:clamp(14px,1.5vw,19px);letter-spacing:.32em;
+  text-shadow:0 0 18px rgba(3,4,10,.95),0 2px 12px rgba(3,4,10,.85),0 0 42px rgba(198,242,82,.35)}
+/* 고리: 선 → 실사 링릿 밴드 3겹(내측 얇은 링 · 주 밴드 · 외측 희미한 링) */
+.gring.back,.gring.front{width:206%;border:none;box-shadow:none;
+  background:radial-gradient(circle closest-side,
+    transparent 55%,
+    rgba(178,198,238,.09) 56.5%,rgba(178,198,238,.13) 58.6%,transparent 60.4%,
+    rgba(188,208,248,.17) 62.6%,rgba(216,229,255,.28) 66%,rgba(178,198,240,.19) 69%,
+    rgba(198,215,250,.25) 71.4%,transparent 74%,
+    rgba(178,198,238,.11) 75.6%,transparent 78.2%)}
+
+/* ═══ 라운드7(검증 워크플로 반영) ═══ */
+/* 고리 이음새 제거: back은 상반부만 담당(하반부는 front → 이중합성 소멸) */
+.gring.back{clip-path:inset(0 0 49.9% 0)}
+/* 미니어처는 정지 화면: 저사양 웹뷰에서 11개 클론 애니 동시구동 차단 */
+.th-mini *{animation:none!important;transition:none!important}
+/* 위성 라벨: GRAVITY와 동일한 맨글자 체계(필 제거, 행성 위에서도 읽히는 그림자) */
+.moonp b{background:transparent;padding:0;border-radius:0;
+  text-shadow:0 0 14px rgba(0,0,0,.95),0 1px 6px rgba(0,0,0,.9),0 0 26px rgba(0,0,0,.8)}
+/* DECKFLIP 별: 브랜드 라임 발광 강화 */
+.dfstar i{box-shadow:0 0 30px 8px rgba(198,242,82,.75),0 0 70px 18px rgba(198,242,82,.3)}
+.dfstar b{color:#F0FFCF}
+
 </style>
 </head>
 <body>
@@ -944,11 +981,6 @@ html.nojs .thumbs,html.nojs .edgehot{display:none}
   <button class="stop" id="pilotstop">멈추기 · ESC</button>
 </div>
 
-<aside class="thumbs" id="thumbs" aria-label="장면 미리보기">
-  <div class="th-head">오늘의 무대 <button class="th-x" id="thumbsX">닫기 ✕</button></div>
-  <div class="th-list" id="thlist"></div>
-  <div class="th-tip">화면 왼쪽 끝을 잡고 오른쪽으로 끌어도 열려요</div>
-</aside>
 <div class="edgehot" id="edgehot" aria-hidden="true"></div>
 
 <div class="helpov" id="helpov">
@@ -1339,6 +1371,11 @@ html.nojs .thumbs,html.nojs .edgehot{display:none}
 </main></section>
 
 </main>
+<aside class="thumbs" id="thumbs" aria-label="장면 미리보기">
+  <div class="th-head">오늘의 무대 <button class="th-x" id="thumbsX">닫기 ✕</button></div>
+  <div class="th-list" id="thlist"></div>
+  <div class="th-tip">화면 왼쪽 끝을 잡고 오른쪽으로 끌어도 열려요</div>
+</aside>
 
 <script>
 /* DeckFlip Showcase V2 — 인터랙션 엔진 (씬 재진입 자동 재생 · 다시보기 없음) */
@@ -1749,8 +1786,44 @@ $$('.ticket').forEach(function(t){
       timers.push(setTimeout(function(){sc.setAttribute('data-ph','3')},16200));
     })});
   }
-  sc.addEventListener('scene:in',run);
-  sc.addEventListener('scene:out',function(){timers.forEach(clearTimeout)});
+  /* 실제 공전: 위성 4 + DeckFlip 별이 고리 평면(rotateX 72° → 단축비 0.309)을 따라 회전.
+     앞(sin>0)일 때 행성 위로, 뒤일 때 행성 뒤로(zIndex) + 원근 스케일/명도 */
+  var PRM=false;try{PRM=matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
+  var orb=[
+    {sel:'.moonp.m1',R:67,T:56,a0:200,zf:4},
+    {sel:'.moonp.m2',R:67,T:64,a0:340,zf:4},
+    {sel:'.moonp.m3',R:67,T:60,a0:115,zf:4},
+    {sel:'.moonp.m4',R:67,T:50,a0:65,zf:4},
+    {sel:'.dfstar',R:50,T:34,a0:45,zf:5}
+  ];
+  for(var oi=0;oi<orb.length;oi++)orb[oi].el=sc.querySelector(orb[oi].sel);
+  var orbRaf=0,orbT0=0;
+  function orbFrame(now){
+    if(!orbT0)orbT0=now;
+    var t=(now-orbT0)/1000;
+    for(var i=0;i<orb.length;i++){
+      var o=orb[i];if(!o.el)continue;
+      var a=(o.a0+t*360/o.T)*Math.PI/180,sn=Math.sin(a);
+      var s=0.8+0.32*(sn+1)/2;
+      o.el.style.left=(50+o.R*Math.cos(a)).toFixed(2)+'%';
+      o.el.style.top=(50+o.R*0.309*sn).toFixed(2)+'%';
+      o.el.style.right='auto';o.el.style.bottom='auto';
+      o.el.style.zIndex=sn>0?o.zf:-2;
+      o.el.style.transform='translate(-50%,-50%) scale('+s.toFixed(3)+')';
+      o.el.style.filter=sn>0?'none':(o.zf===5?'brightness(.88)':'brightness(.72)');
+    }
+    if(!PRM)orbRaf=requestAnimationFrame(orbFrame);
+  }
+  function orbStart(){
+    if(orbRaf)cancelAnimationFrame(orbRaf);
+    orbT0=0;
+    for(var i=0;i<orb.length;i++)if(orb[i].el)
+      orb[i].el.style.transition=(orb[i].zf===5?'opacity 1.4s ease 1.2s':'opacity 1.6s ease');
+    orbRaf=requestAnimationFrame(orbFrame);
+  }
+  function orbStop(){if(orbRaf){cancelAnimationFrame(orbRaf);orbRaf=0}}
+  sc.addEventListener('scene:in',function(){run();orbStart()});
+  sc.addEventListener('scene:out',function(){timers.forEach(clearTimeout);orbStop()});
   sc.__pull=run;
 })();
 
@@ -1797,24 +1870,48 @@ $$('.ticket').forEach(function(t){
 /* ── 썸네일 패널 + 도움말 + 확장 단축키 ── */
 (function(){
   var th=$('thumbs'),list=$('thlist'),help=$('helpov');
-  var TCOLOR={open:'#0D1430',setlist:'#1A1030',guide:'#141A2E',flip:'#100D18',paper:'#EFE9DC',
-    freeze:'#101526',voice:'#0D1024',recompile:'#0A0F1E',depth:'#12101E',morph:'#0F0D1A',finale:'#030409'};
   scenes.forEach(function(sc,i){
     var b=document.createElement('button');b.className='th-item';
     var hd=sc.querySelector('.headline,.display');
     var hdt=hd?hd.textContent.replace(/\s+/g,' ').trim():'';
-    b.innerHTML='<span class="th-chip" style="--tc:'+(TCOLOR[sc.id]||'#101725')+'"></span>'+
-      '<span><span class="th-aa">'+(i+1)+' · Scene · '+(sc.getAttribute('data-nav')||sc.id)+'</span>'+
-      '<span class="th-tt" style="display:block">'+hdt.slice(0,34)+'</span>'+
-      '<span class="th-hd">'+hdt+'</span></span>';
+    b.innerHTML='<span class="th-mini"></span>'+
+      '<span class="th-meta"><span class="th-aa">'+(i+1)+' · Scene · '+(sc.getAttribute('data-nav')||sc.id)+'</span>'+
+      '<span class="th-tt" style="display:block">'+hdt+'</span></span>';
     b.addEventListener('click',function(){thClose();go(i)});
     list.appendChild(b);
   });
+  /* 실황 미니어처: 씬 DOM을 복제해 실제 화면 비율 그대로 축소 (vw/vh 단위가 원본과 동일하게 풀리도록 무대 크기 = 실제 뷰포트) */
+  function buildMinis(){
+    var vw=Math.max(innerWidth,800),vh=Math.max(innerHeight,450);
+    $$('.th-mini',list).forEach(function(mini,i){
+      mini.innerHTML='';
+      var w=mini.clientWidth||436,k=w/vw;
+      mini.style.height=Math.round(vh*k)+'px';
+      var st=document.createElement('span');st.className='th-stage';
+      st.style.width=vw+'px';st.style.height=vh+'px';
+      st.style.transform='scale('+k+')';
+      /* id는 유지: 씬 배경·그리드·[data-ph] 규칙이 전부 id 스코프.
+         패널이 DOM에서 main 뒤라 getElementById는 항상 원본을 먼저 잡는다 */
+      var cl=scenes[i].cloneNode(true);
+      if(scenes[i].id==='finale')cl.setAttribute('data-ph','3');
+      if(scenes[i].id==='freeze'){var fz=cl.querySelector('.fz-stage');if(fz)fz.className+=' frozen'}
+      var cv=cl.querySelector('canvas');if(cv)cv.parentNode.removeChild(cv);
+      var cf=cl.querySelector('.cardfield');if(cf)cf.classList.remove('off');
+      var cm=cl.querySelector('.convmsg');if(cm)cm.classList.remove('on');
+      cl.setAttribute('inert','');
+      var foc=cl.querySelectorAll('button,a,[tabindex]');
+      for(var x=0;x<foc.length;x++)foc[x].setAttribute('tabindex','-1');
+      cl.style.minHeight='0';cl.style.height='100%';
+      st.appendChild(cl);mini.appendChild(st);
+    });
+  }
+  function clearMinis(){$$('.th-mini',list).forEach(function(m){m.innerHTML='';})}
   var items=$$('.th-item',list);
-  setInterval(function(){items.forEach(function(it,i){it.classList.toggle('cur',i===curScene)})},600);
-  function thOpen(){th.classList.add('open')}
-  function thClose(){th.classList.remove('open')}
-  function thToggle(){th.classList.toggle('open')}
+  setInterval(function(){if(!th.classList.contains('open'))return;
+    items.forEach(function(it,i){it.classList.toggle('cur',i===curScene)})},600);
+  function thOpen(){th.classList.add('open');buildMinis()}
+  function thClose(){th.classList.remove('open');clearMinis()}
+  function thToggle(){if(th.classList.contains('open'))thClose();else thOpen()}
   function helpToggle(){help.classList.toggle('on')}
   var tb=$('thumbBtn'),hb=$('helpBtn'),tx=$('thumbsX'),hx=$('helpX');
   if(tb)tb.addEventListener('click',thToggle);
