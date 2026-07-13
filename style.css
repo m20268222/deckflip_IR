@@ -487,3 +487,219 @@ html.nojs .preloader{display:none}
   html.anim [data-r]{opacity:1!important;transform:none!important;transition:none!important}
   *{transition-duration:.01ms!important}
 }
+
+
+/* ═══ 최종 라운드 추가 ═══ */
+/* 전반 글씨 확대 */
+.body{font-size:clamp(17.5px,1.62vw,20.5px)}
+.grow .lb{font-size:clamp(16px,1.5vw,18.5px)}
+.ticket p{font-size:clamp(15.5px,1.45vw,17.5px)}
+.dp-row .dd{font-size:clamp(14.5px,1.38vw,17px)}
+.rt-chip{font-size:clamp(15px,1.45vw,17.5px)}
+.pollmeta{font-size:clamp(14px,1.3vw,16px)}
+.chartcap,.mlabel{font-size:13px}
+/* 플립 디테일 라벨 */
+.livelab{font-size:clamp(10.5px,.95vw,12px);letter-spacing:.18em;color:var(--dim);text-transform:uppercase;font-weight:800}
+.flipmeta{display:flex;flex-direction:column;gap:4px;align-items:center}
+.flipmeta .fm-lab{font-size:12.5px;letter-spacing:.04em;color:var(--dim);text-transform:none}
+/* 백스테이지 */
+#guide{background:linear-gradient(180deg,#0B0D14,#10131F)}
+.kb-live{display:flex;justify-content:flex-start}
+.kb-echo{display:inline-flex;align-items:center;gap:18px;padding:18px 28px;border-radius:18px;
+  background:rgba(10,12,22,.8);border:1px solid var(--line2)}
+.ke-key{display:grid;place-items:center;min-width:64px;height:64px;padding:0 18px;border-radius:14px;
+  background:linear-gradient(180deg,#232A44,#141A30);border:1px solid var(--line2);
+  border-bottom:3px solid rgba(198,242,82,.6);font-size:26px;font-weight:800;color:var(--lime)}
+.ke-desc{font-size:clamp(15px,1.4vw,17.5px);color:var(--ink2)}
+.kb-grid{margin-top:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:860px}
+.kb{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:14px;border:1px solid var(--line);
+  background:rgba(200,216,255,.04);font-size:clamp(14.5px,1.35vw,16.5px);color:var(--ink2)}
+.kb .kcap{display:flex;gap:5px}
+kbd{display:inline-grid;place-items:center;min-width:30px;height:30px;padding:0 8px;border-radius:8px;
+  background:#1A2138;border:1px solid var(--line2);border-bottom:2.5px solid rgba(156,194,255,.5);
+  font-family:inherit;font-size:13.5px;font-weight:800;color:var(--ice)}
+/* 썸네일 패널 */
+.thumbs{position:fixed;left:0;top:0;bottom:0;width:min(340px,86vw);z-index:98;display:flex;flex-direction:column;
+  background:rgba(9,10,18,.94);border-right:1px solid var(--line2);backdrop-filter:blur(18px);
+  transform:translateX(-102%);transition:transform .55s var(--ease);padding:20px 18px}
+.thumbs.open{transform:none}
+.th-head{display:flex;justify-content:space-between;align-items:center;font-weight:800;letter-spacing:.12em;
+  font-size:14px;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+.th-x{font-size:12px;color:var(--dim);border:1px solid var(--line);border-radius:100px;padding:6px 13px}
+.th-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:9px;padding-right:4px}
+.th-item{display:flex;gap:13px;align-items:center;text-align:left;padding:12px 14px;border-radius:14px;
+  border:1px solid var(--line);background:rgba(200,216,255,.04);transition:all .3s;cursor:pointer}
+.th-item:hover{border-color:var(--kyan);transform:translateX(4px)}
+.th-item.cur{border-color:var(--lime)}
+.th-chip{flex:none;width:52px;aspect-ratio:16/10;border-radius:7px;border:1px solid var(--line2);background:var(--tc,#101725)}
+.th-tt{font-weight:700;font-size:15px}
+.th-aa{font-size:11.5px;color:var(--dim);letter-spacing:.14em;text-transform:uppercase}
+.th-tip{margin-top:12px;font-size:12.5px;color:var(--dim);line-height:1.6}
+.edgehot{position:fixed;left:0;top:0;bottom:0;width:22px;z-index:97;cursor:e-resize}
+html.nojs .thumbs,html.nojs .edgehot{display:none}
+/* 도움말 오버레이 */
+.helpov{position:fixed;inset:0;z-index:110;background:rgba(4,5,10,.72);backdrop-filter:blur(8px);
+  display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .4s}
+.helpov.on{opacity:1;pointer-events:auto}
+.hp-card{width:min(560px,90vw);padding:30px 34px;border-radius:22px;background:rgba(13,15,26,.96);
+  border:1px solid var(--line2);box-shadow:0 40px 120px -30px rgba(0,0,0,.9)}
+.hp-t{font-weight:800;font-size:22px;margin-bottom:18px}
+.hp-grid{display:grid;grid-template-columns:auto 1fr;gap:13px 20px;align-items:center}
+.hp-grid span{display:flex;gap:5px}
+.hp-grid em{font-style:normal;font-size:15.5px;color:var(--ink2)}
+.hp-x{margin-top:22px;width:100%;padding:13px;border-radius:12px;background:var(--lime);color:#101A04;font-weight:800;font-size:15px}
+/* 종이가 되는 순간 */
+#freeze{background:radial-gradient(70% 60% at 50% 30%,#101526,#0A0B12 70%)}
+.fz-stage{position:relative;border-radius:22px;border:1px solid var(--line2);background:var(--glass);
+  backdrop-filter:blur(12px);padding:clamp(20px,2.4vw,32px);transition:filter .9s ease}
+.fz-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.fzw{padding:16px 18px;border-radius:16px;border:1px solid var(--line);background:rgba(200,216,255,.045);text-align:center}
+.fz-lab{display:block;font-size:12.5px;letter-spacing:.12em;color:var(--dim);text-transform:uppercase;font-weight:800;margin-bottom:10px}
+.fz-clock{font-weight:300;font-size:clamp(24px,2.4vw,34px);font-variant-numeric:tabular-nums;color:var(--ice)}
+.fz-bars{display:flex;gap:7px;align-items:flex-end;height:52px;justify-content:center}
+.fz-bars b{width:13px;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--kyan),var(--blue));
+  transform-origin:bottom;animation:mb 2.4s ease-in-out infinite alternate}
+.fz-bars b:nth-child(1){height:45%}.fz-bars b:nth-child(2){height:75%;animation-delay:.25s}
+.fz-bars b:nth-child(3){height:55%;animation-delay:.5s}.fz-bars b:nth-child(4){height:92%;animation-delay:.75s}
+.fz-bars b:nth-child(5){height:64%;animation-delay:1s}
+.fz-count{padding:12px 18px;border-radius:100px;border:1.5px solid var(--kyan);color:var(--ice);font-weight:800;
+  font-size:15px;transition:all .3s}
+.fz-count:hover{background:rgba(57,168,255,.14)}
+.fz-count b{color:var(--lime)}
+.fz-spin{display:grid;place-items:center;height:56px}
+.fz-spin i{display:block;width:56px;height:36px;border-radius:6px;border:1px solid var(--ice);
+  background:linear-gradient(150deg,#14203A,#0C1426);animation:pflip 2.6s cubic-bezier(.6,.05,.2,1) infinite}
+.fz-prog{height:12px;border-radius:100px;background:rgba(156,194,255,.14);overflow:hidden;margin-top:18px}
+.fz-prog i{display:block;height:100%;width:40%;border-radius:100px;background:linear-gradient(90deg,var(--blue),var(--lime));
+  animation:fzp 3s ease-in-out infinite alternate}
+@keyframes fzp{from{width:12%}to{width:96%}}
+.fz-glow{height:52px;border-radius:14px;animation:fzg 4s linear infinite}
+@keyframes fzg{0%{background:rgba(62,123,255,.35)}33%{background:rgba(198,242,82,.35)}66%{background:rgba(255,59,107,.3)}100%{background:rgba(62,123,255,.35)}}
+.fz-stage.frozen{filter:grayscale(1) contrast(.92) brightness(.86)}
+.fz-stage.frozen .fz-bars b,.fz-stage.frozen .fz-spin i,.fz-stage.frozen .fz-prog i,.fz-stage.frozen .fz-glow{animation-play-state:paused}
+.fz-stage.frozen .fz-count{pointer-events:none;opacity:.6}
+.stamp{position:absolute;left:50%;top:46%;z-index:9;transform:translate(-50%,-50%) rotate(-11deg) scale(2.6);
+  opacity:0;pointer-events:none;text-align:center;padding:18px 34px;border:6px solid #E33B52;border-radius:14px;
+  color:#E33B52;background:rgba(255,235,238,.07)}
+.stamp .st-big{display:block;font-weight:900;font-size:clamp(54px,6vw,84px);letter-spacing:.08em;line-height:1}
+.stamp .st-sm{display:block;margin-top:6px;font-weight:800;font-size:clamp(13px,1.3vw,16px);letter-spacing:.28em}
+.fz-stage.frozen~.stamp{animation:stampin .5s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes stampin{from{opacity:0;transform:translate(-50%,-50%) rotate(-11deg) scale(2.6)}
+  to{opacity:1;transform:translate(-50%,-50%) rotate(-11deg) scale(1)}}
+.fz-btns{margin-top:22px;display:flex;gap:14px;justify-content:center}
+/* 피날레: 중력의 우주 */
+#finale{background:#030409;overflow:hidden}
+.cosmos{position:absolute;inset:0;z-index:0}
+.neb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5}
+.neb.n1{width:56vw;height:40vh;left:-10%;top:-8%;background:radial-gradient(circle,rgba(64,58,160,.5),transparent 70%)}
+.neb.n2{width:48vw;height:44vh;right:-12%;bottom:-10%;background:radial-gradient(circle,rgba(22,88,140,.5),transparent 70%)}
+.neb.n3{width:30vw;height:26vh;left:34%;top:52%;background:radial-gradient(circle,rgba(120,54,120,.32),transparent 70%)}
+.starsA,.starsB{position:absolute;inset:0}
+.starsA{background-image:
+  radial-gradient(1.4px 1.4px at 11% 21%,rgba(255,255,255,.9),transparent 55%),
+  radial-gradient(1px 1px at 27% 63%,rgba(220,232,255,.7),transparent 55%),
+  radial-gradient(1.7px 1.7px at 41% 12%,rgba(255,255,255,.95),transparent 55%),
+  radial-gradient(1px 1px at 55% 44%,rgba(220,232,255,.6),transparent 55%),
+  radial-gradient(1.3px 1.3px at 69% 74%,rgba(255,255,255,.8),transparent 55%),
+  radial-gradient(1px 1px at 83% 27%,rgba(220,232,255,.65),transparent 55%),
+  radial-gradient(1.6px 1.6px at 93% 58%,rgba(255,255,255,.85),transparent 55%),
+  radial-gradient(1px 1px at 17% 85%,rgba(220,232,255,.55),transparent 55%),
+  radial-gradient(1.2px 1.2px at 63% 90%,rgba(255,255,255,.7),transparent 55%)}
+.starsB{background-image:
+  radial-gradient(.8px .8px at 8% 48%,rgba(200,216,255,.5),transparent 60%),
+  radial-gradient(.8px .8px at 22% 34%,rgba(200,216,255,.4),transparent 60%),
+  radial-gradient(.9px .9px at 36% 76%,rgba(200,216,255,.45),transparent 60%),
+  radial-gradient(.8px .8px at 49% 26%,rgba(200,216,255,.4),transparent 60%),
+  radial-gradient(.8px .8px at 61% 58%,rgba(200,216,255,.42),transparent 60%),
+  radial-gradient(.9px .9px at 74% 14%,rgba(200,216,255,.5),transparent 60%),
+  radial-gradient(.8px .8px at 87% 82%,rgba(200,216,255,.4),transparent 60%),
+  radial-gradient(.8px .8px at 95% 38%,rgba(200,216,255,.45),transparent 60%);
+  animation:twk 6s ease-in-out infinite alternate}
+@keyframes twk{from{opacity:.5}to{opacity:1}}
+.galaxy{position:absolute;width:340px;height:120px;left:12%;top:16%;border-radius:50%;
+  background:conic-gradient(from 30deg,transparent,rgba(190,205,255,.25),transparent 40%,rgba(150,170,240,.18),transparent 75%);
+  filter:blur(6px);transform:rotate(-24deg);opacity:.8}
+.planetfield{position:absolute;inset:0;z-index:1;pointer-events:none}
+.planetfield i{position:absolute;display:block;border-radius:50%;left:var(--x);top:var(--y);
+  width:var(--w,34px);aspect-ratio:1;opacity:.95;transition:all 4.2s var(--ease);will-change:transform,opacity;
+  background:
+    radial-gradient(circle at 30% 28%,rgba(255,255,255,.75),rgba(255,255,255,.08) 36%,transparent 42%),
+    radial-gradient(circle at 68% 74%,rgba(255,255,255,.12),transparent 46%),
+    radial-gradient(circle,var(--pc,rgba(120,160,255,.5)) 0%,rgba(10,14,30,.85) 88%);
+  border:1px solid rgba(255,255,255,.32);
+  box-shadow:inset -6px -8px 18px rgba(0,0,10,.6),0 0 22px -4px var(--pc,rgba(120,160,255,.55))}
+#finale[data-ph="1"] .planetfield i,#finale[data-ph="2"] .planetfield i,#finale[data-ph="3"] .planetfield i{
+  left:50%;top:46%;transform:translate(-50%,-50%) scale(.05);opacity:0}
+.fin-copy{position:absolute;z-index:6;left:50%;top:50%;transform:translate(-50%,-50%);width:min(1100px,90vw);
+  text-align:center;transition:all 1.4s var(--ease)}
+.fin-copy .ctarow{justify-content:center;transition:justify-content 0s}
+#finale[data-ph="2"] .fin-copy,#finale[data-ph="3"] .fin-copy{
+  left:clamp(22px,6vw,92px);transform:translate(0,-50%);width:min(560px,52vw);text-align:left}
+#finale[data-ph="2"] .fin-copy .ctarow,#finale[data-ph="3"] .fin-copy .ctarow{justify-content:flex-start}
+#finale[data-ph="2"] .fin-copy .display,#finale[data-ph="3"] .fin-copy .display{font-size:clamp(36px,4.6vw,72px)}
+.fin-stage{position:absolute;z-index:5;right:6%;top:50%;transform:translateY(-50%) scale(0);width:min(46vw,620px);
+  aspect-ratio:1;opacity:0;transition:all 1.6s var(--ease);pointer-events:none}
+#finale[data-ph="1"] .fin-stage{left:50%;right:auto;transform:translate(-50%,-50%) scale(.22);opacity:1}
+#finale[data-ph="2"] .fin-stage,#finale[data-ph="3"] .fin-stage{transform:translateY(-50%) scale(1);opacity:1}
+@media (max-width:940px){
+  #finale[data-ph="2"] .fin-copy,#finale[data-ph="3"] .fin-copy{left:50%;transform:translate(-50%,-78%);width:90vw;text-align:center}
+  #finale[data-ph="2"] .fin-copy .ctarow,#finale[data-ph="3"] .fin-copy .ctarow{justify-content:center}
+  .fin-stage{right:50%;transform:translate(50%,26%) scale(.7)!important;width:78vw}
+  .kb-grid{grid-template-columns:1fr 1fr}
+  .fz-grid{grid-template-columns:1fr 1fr}
+}
+.gsys{position:absolute;inset:0}
+.gplanet{position:absolute;left:50%;top:50%;width:34%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 26%,rgba(255,255,255,.8),rgba(255,255,255,.1) 34%,transparent 40%),
+    radial-gradient(circle at 70% 78%,rgba(198,242,82,.25),transparent 50%),
+    radial-gradient(circle,rgba(62,123,255,.45),rgba(10,18,44,.92) 85%);
+  border:1.5px solid rgba(255,255,255,.4);
+  box-shadow:inset -14px -18px 40px rgba(0,0,14,.7),0 0 70px -8px rgba(90,150,255,.6),0 0 130px -20px rgba(198,242,82,.35);
+  backdrop-filter:blur(4px)}
+.glab{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-weight:900;letter-spacing:.34em;
+  font-size:clamp(13px,1.3vw,17px);color:rgba(240,248,255,.95);text-shadow:0 0 18px rgba(120,170,255,.8)}
+.gring{position:absolute;left:50%;top:50%;border-radius:50%;border:1px solid rgba(190,210,255,.28);
+  transform:translate(-50%,-50%) rotateX(72deg);opacity:0;transition:opacity 1s ease}
+.gring.r1{width:64%;aspect-ratio:1}
+.gring.r2{width:92%;aspect-ratio:1;border-color:rgba(190,210,255,.16)}
+#finale[data-ph="3"] .gring{opacity:1}
+.orb{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotateX(72deg);opacity:0;transition:opacity .8s ease}
+#finale[data-ph="3"] .orb{opacity:1}
+.orb .spinp{position:absolute;inset:0;display:block;animation:orbit var(--os,14s) linear infinite;animation-play-state:paused}
+#finale[data-ph="3"] .orb .spinp{animation-play-state:running}
+@keyframes orbit{to{transform:rotate(360deg)}}
+.orb .moon{position:absolute;left:100%;top:50%;display:block;width:var(--mw,26px);aspect-ratio:1;border-radius:50%;
+  transform:translate(-50%,-50%) rotateX(-72deg);
+  background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.85),rgba(255,255,255,.1) 40%,transparent 46%),
+    radial-gradient(circle,var(--mc) 0%,rgba(8,12,26,.9) 90%);
+  border:1px solid rgba(255,255,255,.4);box-shadow:0 0 16px -2px var(--mc)}
+.orb.o1{width:64%;aspect-ratio:1}.orb.o1 .spinp{--os:11s}.orb.o1 .moon{--mc:rgba(79,227,217,.9);--mw:30px}
+.orb.o2{width:92%;aspect-ratio:1}.orb.o2 .spinp{--os:17s;animation-delay:-4s}.orb.o2 .moon{--mc:rgba(75,141,255,.9)}
+.orb.o3{width:120%;aspect-ratio:1}.orb.o3 .spinp{--os:23s;animation-delay:-9s}.orb.o3 .moon{--mc:rgba(198,242,82,.9)}
+.orb.o4{width:148%;aspect-ratio:1}.orb.o4 .spinp{--os:29s;animation-delay:-15s}.orb.o4 .moon{--mc:rgba(180,140,255,.9)}
+.glabels{position:absolute;left:50%;bottom:-13%;transform:translateX(-50%);white-space:nowrap;
+  font-size:clamp(13px,1.25vw,15.5px);color:var(--ink2);opacity:0;transition:opacity 1s ease 1s}
+#finale[data-ph="3"] .glabels{opacity:1}
+.glabels b{font-weight:700}
+
+/* 낮은 높이 추가 압축 */
+@media (max-height:940px){
+  .tickets{grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+  .ticket{padding:15px 16px}
+  .ticket h3{font-size:clamp(17px,1.6vw,21px);margin-top:8px}
+  .ticket p{font-size:clamp(13.5px,1.25vw,15px);margin-top:6px}
+  .ticket .webtag{margin-top:10px;padding:5px 11px;font-size:12px}
+  #setlist .lede,#recompile .lede{font-size:clamp(15px,1.5vw,18px);line-height:1.6}
+  .rt-stage{margin-top:14px;gap:20px}
+  .rt-chip{padding:9px 14px;font-size:14px;gap:7px}
+  .rt-chips{gap:8px}
+  .rt-gauge svg{width:118px}
+  .rt-time{font-size:clamp(28px,2.8vw,38px)}
+  #recompile .scenehead{margin-bottom:14px}
+  .seg button{padding:10px 20px;font-size:14px}
+  .kb-grid{gap:9px}
+  .kb{padding:11px 14px}
+  .fz-grid{gap:10px}
+  .fzw{padding:12px 14px}
+}

@@ -26,6 +26,8 @@
 <header class="topbar">
   <div class="wordmark">DECK<b>FLIP</b></div>
   <div class="right">
+    <button class="pilotbtn" id="thumbBtn">🎞️ 미리보기 · T</button>
+    <button class="pilotbtn" id="helpBtn">단축키 · ?</button>
     <button class="pilotbtn" id="pilotBtn">▶ 손 놓고 보기 · 90초</button>
   </div>
 </header>
@@ -35,6 +37,30 @@
 <div class="pilotbar" id="pilotbar">
   <div class="cap" id="pilotcap"></div>
   <button class="stop" id="pilotstop">멈추기 · ESC</button>
+</div>
+
+<aside class="thumbs" id="thumbs" aria-label="장면 미리보기">
+  <div class="th-head">오늘의 무대 <button class="th-x" id="thumbsX">닫기 ✕</button></div>
+  <div class="th-list" id="thlist"></div>
+  <div class="th-tip">화면 왼쪽 끝을 잡고 오른쪽으로 끌어도 열려요</div>
+</aside>
+<div class="edgehot" id="edgehot" aria-hidden="true"></div>
+
+<div class="helpov" id="helpov">
+  <div class="hp-card">
+    <div class="hp-t">단축키 안내</div>
+    <div class="hp-grid">
+      <span><kbd>←</kbd><kbd>→</kbd></span><em>이전 · 다음 무대</em>
+      <span><kbd>1</kbd>~<kbd>9</kbd></span><em>그 번호 무대로 바로 이동</em>
+      <span><kbd>T</kbd></span><em>장면 미리보기 열고 닫기</em>
+      <span><kbd>A</kbd></span><em>손 놓고 보기 시작</em>
+      <span><kbd>F</kbd></span><em>전체 화면</em>
+      <span><kbd>Home</kbd><kbd>End</kbd></span><em>처음 · 마지막 무대</em>
+      <span><kbd>?</kbd></span><em>이 안내 열고 닫기</em>
+      <span><kbd>ESC</kbd></span><em>모두 닫기 · 자동 상영 멈추기</em>
+    </div>
+    <button class="hp-x" id="helpX">닫기</button>
+  </div>
 </div>
 
 <main>
@@ -48,7 +74,7 @@
     <span class="chip lime" data-r>GRAVITY 2026 · 팀 DeckFlip</span>
     <h1 class="display" data-r style="transition-delay:.08s">무중력의 아이디어를,<br><span class="accent">끌어당기는 힘.</span></h1>
     <p class="lede" data-r style="transition-delay:.16s">지금 보고 계신 이 화면이 저희가 제출한 발표자료예요.<br>종이에서 멈춰 있던 것들이, 여기서는 움직이기 시작해요.</p>
-    <button class="coach" id="openCoach"><span class="ic">✋</span>화면을 잡고 움직여 보세요</button>
+    <button class="coach" id="openCoach"><span class="ic">✋</span>글자 바깥 빈 곳을 잡고, 옆으로 끌어 보세요</button>
   </div>
   <div class="scrollcue"><span>아래로</span><span class="chev"></span></div>
 </section>
@@ -62,43 +88,81 @@
       <p class="lede" data-r style="transition-delay:.08s">티켓을 누르면 그 무대로 바로 이동해요.<br>막마다 종이는 못 하는 걸 하나씩 준비했어요.</p>
     </div>
     <div class="tickets">
-      <button class="ticket" data-goto="flip" data-r>
+      <button class="ticket" data-goto="guide" data-r>
+        <span class="act">Act 0</span><span class="go">→</span>
+        <h3>백스테이지 투어</h3>
+        <p>이 무대를 움직이는 단축키를 알려드려요.</p>
+        <span class="webtag">⌨️ 키보드로 조종하는 발표</span>
+      </button>
+      <button class="ticket" data-goto="flip" data-r style="transition-delay:.05s">
         <span class="act">Act 1</span><span class="go">→</span>
         <h3>카드를 뒤집으면</h3>
         <p>멈춘 발표자료가 살아나는 순간이에요.</p>
         <span class="webtag">✋ 직접 잡고 던지는 카드</span>
       </button>
-      <button class="ticket" data-goto="paper" data-r style="transition-delay:.07s">
+      <button class="ticket" data-goto="paper" data-r style="transition-delay:.1s">
         <span class="act">Act 2</span><span class="go">→</span>
         <h3>스스로 고치는 무대</h3>
         <p>숫자가 자라고, 깨진 곳은 알아서 고쳐요.</p>
         <span class="webtag">🩹 눈앞에서 반복되는 자가 수리</span>
       </button>
-      <button class="ticket" data-goto="voice" data-r style="transition-delay:.14s">
+      <button class="ticket" data-goto="freeze" data-r style="transition-delay:.15s">
         <span class="act">Act 3</span><span class="go">→</span>
+        <h3>종이가 되는 순간</h3>
+        <p>도장 한 번이면, 이 무대가 그대로 멈춰요.</p>
+        <span class="webtag">🖨️ 웹과 종이의 차이 체험</span>
+      </button>
+      <button class="ticket" data-goto="voice" data-r style="transition-delay:.2s">
+        <span class="act">Act 4</span><span class="go">→</span>
         <h3>손끝 스테이지</h3>
         <p>내 투표 한 번에 무대가 바로 대답해요.</p>
         <span class="webtag">🗳️ 실시간으로 물드는 화면</span>
       </button>
-      <button class="ticket" data-goto="recompile" data-r style="transition-delay:.21s">
-        <span class="act">Act 4</span><span class="go">→</span>
+      <button class="ticket" data-goto="recompile" data-r style="transition-delay:.25s">
+        <span class="act">Act 5</span><span class="go">→</span>
         <h3>7분이 90초로</h3>
-        <p>같은 이야기가 자리에 맞게 다시 짜여요.</p>
+        <p>같은 이야기가 자리에 맞게 다시 구성돼요.</p>
         <span class="webtag">✂️ 버튼 하나로 다시 편집</span>
       </button>
-      <button class="ticket" data-goto="depth" data-r style="transition-delay:.28s">
-        <span class="act">Act 5</span><span class="go">→</span>
+      <button class="ticket" data-goto="depth" data-r style="transition-delay:.3s">
+        <span class="act">Act 6</span><span class="go">→</span>
         <h3>듣는 사람에 맞추기</h3>
-        <p>짧게도, 깊게도 같은 화면에서 열려요.</p>
-        <span class="webtag">🎚️ 깊이 조절 다이얼</span>
+        <p>짧은 내용도, 자세한 내용도 같은 화면에서 열려요.</p>
+        <span class="webtag">🎚️ 간단히 · 자세하게 다이얼</span>
       </button>
       <button class="ticket" data-goto="finale" data-r style="transition-delay:.35s">
         <span class="act">Finale</span><span class="go">→</span>
         <h3>커튼콜</h3>
-        <p>모든 카드가 한 점으로 모여요.</p>
-        <span class="webtag">🌌 중력 피날레</span>
+        <p>모든 아이디어가 중력을 만나요.</p>
+        <span class="webtag">🪐 행성이 도는 피날레</span>
       </button>
     </div>
+  </div>
+</section>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 백스테이지: 단축키 안내 ═══ -->
+<section class="scene" id="guide" data-nav="백스테이지">
+  <div class="scene-in">
+    <div class="scenehead" style="margin-bottom:22px">
+      <div class="eyebrow">Act 0 · Backstage</div>
+      <h2 class="headline" data-r>이 무대, 키보드로<br><span class="accent">조종할 수 있어요.</span></h2>
+      <p class="lede" data-r style="transition-delay:.08s">아무 키나 눌러 보세요. 무대가 어떻게 반응하는지 아래에 바로 보여드릴게요.</p>
+    </div>
+    <div class="kb-live" data-r style="transition-delay:.14s">
+      <div class="kb-echo" id="kbEcho"><span class="ke-key">?</span><span class="ke-desc">키를 누르면 여기 표시돼요</span></div>
+    </div>
+    <div class="kb-grid" data-r style="transition-delay:.2s">
+      <div class="kb"><span class="kcap"><kbd>←</kbd><kbd>→</kbd></span>이전 · 다음 무대</div>
+      <div class="kb"><span class="kcap"><kbd>1</kbd>~<kbd>9</kbd></span>번호로 바로 이동</div>
+      <div class="kb"><span class="kcap"><kbd>T</kbd></span>장면 미리보기</div>
+      <div class="kb"><span class="kcap"><kbd>A</kbd></span>손 놓고 보기</div>
+      <div class="kb"><span class="kcap"><kbd>F</kbd></span>전체 화면</div>
+      <div class="kb"><span class="kcap"><kbd>?</kbd></span>단축키 안내</div>
+    </div>
+    <button class="coach" id="guideCoach"><span class="ic">👈</span>화면 왼쪽 끝을 잡고 오른쪽으로 끌면, 전체 장면이 한눈에 보여요</button>
   </div>
 </section>
 
@@ -126,7 +190,7 @@
         <div class="face back">
           <div class="pad">
             <span class="fchip">오늘부터 · 살아 있는 웹</span>
-            <div class="live"><span class="dot"></span><span class="clock" id="flipClock">00:00:00</span></div>
+            <div class="live"><span class="livelab">지금 시각</span><br><span class="dot"></span><span class="clock" id="flipClock">00:00:00</span></div>
             <div class="mini"><b></b><b></b><b></b><b></b><b></b></div>
             <div class="fixline">넘친 글자를 <span class="fx">방금 알아서 고쳤어요 ✓</span></div>
             <div class="ft">DeckFlip</div>
@@ -135,7 +199,7 @@
         </div>
         <div class="flipflash" id="flipflash"></div>
       </div>
-      <div class="flipmeta" id="flipcount">FLIP × <b>0</b></div>
+      <div class="flipmeta"><span class="fm-lab">몇 바퀴 돌렸는지 세고 있어요</span><span id="flipcount">FLIP × <b>0</b></span></div>
     </div>
   </div>
 </section>
@@ -164,6 +228,32 @@
         <div class="hb-say" id="hbSay">검사를 시작할게요</div>
       </div>
       <p class="body" style="margin-top:18px" data-r>이 검사, 멈추지 않고 계속 돌아요.<br>무대에 오르기 전에 마흔한 가지를 봐요.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 종이가 되는 순간 (도장) ═══ -->
+<section class="scene" id="freeze" data-nav="종이가 되는 순간">
+  <div class="scene-in">
+    <div class="scenehead" style="margin-bottom:20px">
+      <div class="eyebrow">Act 3 · The Stamp</div>
+      <h2 class="headline" data-r>이 무대를, 종이로<br><span class="accent">내보내면 어떻게 될까요?</span></h2>
+      <p class="lede" data-r style="transition-delay:.08s">아래 버튼을 눌러 보세요. 답을 눈으로 보여드릴게요.</p>
+    </div>
+    <div class="fz-wrap" data-r style="transition-delay:.14s;position:relative"><div class="fz-stage" id="fzStage">
+      <div class="fz-grid">
+        <div class="fzw"><span class="fz-lab">지금 시각</span><div class="fz-clock" id="fzClock">00:00:00</div></div>
+        <div class="fzw"><span class="fz-lab">살아 있는 차트</span><div class="fz-bars"><b></b><b></b><b></b><b></b><b></b></div></div>
+        <div class="fzw"><span class="fz-lab">눌러 보세요</span><button class="fz-count" id="fzCount">+1 · 지금까지 <b>0</b>번</button></div>
+        <div class="fzw"><span class="fz-lab">도는 카드</span><div class="fz-spin"><i></i></div></div>
+        <div class="fzw"><span class="fz-lab">차오르는 게이지</span><div class="fz-prog"><i></i></div></div>
+        <div class="fzw"><span class="fz-lab">색이 바뀌는 조명</span><div class="fz-glow"></div></div>
+      </div>
+    </div>
+    <div class="stamp" id="stamp"><span class="st-big">PDF</span><span class="st-sm">여기서 무대가 멈춥니다</span></div></div>
+    <div class="fz-btns" data-r style="transition-delay:.2s">
+      <button class="cta primary" id="fzKill">🖨️ 종이로 내보내기</button>
+      <button class="cta ghost" id="fzRevive" style="display:none">✨ 무대로 되살리기</button>
     </div>
   </div>
 </section>
@@ -208,8 +298,8 @@
   <div class="scene-in">
     <div class="scenehead">
       <div class="eyebrow">Act 4 · Recompile</div>
-      <h2 class="headline" data-r>7분짜리 공연이,<br><span class="accent">90초로 다시 짜여요.</span></h2>
-      <p class="lede" data-r style="transition-delay:.08s">발표는 파일이 아니라 이야기라서,<br>무대가 바뀌면 이야기가 알아서 다시 서요.</p>
+      <h2 class="headline" data-r>7분짜리 발표가,<br><span class="accent">90초로 다시 구성돼요.</span></h2>
+      <p class="lede" data-r style="transition-delay:.08s">복도에서 딱 90초뿐이라면요?<br>버튼 하나면 핵심 장면만 남고, 빠진 장면은 접혀 있다가 돌아와요.</p>
     </div>
     <div class="seg" data-r style="transition-delay:.14s" id="rtSeg">
       <button class="on" data-mode="main">본선 무대 · 7분</button>
@@ -217,16 +307,17 @@
     </div>
     <div class="rt-stage" id="rtStage">
       <div class="rt-chips">
-        <span class="rt-chip core"><span class="no">01</span>모양 다듬기의 밤</span>
-        <span class="rt-chip cut"><span class="no">02</span>커져 가는 시장</span>
-        <span class="rt-chip core"><span class="no">03</span>말이 발표가 되는 3분</span>
-        <span class="rt-chip cut"><span class="no">04</span>여섯 도구 직접 비교</span>
-        <span class="rt-chip cut"><span class="no">05</span>마흔한 가지 검사</span>
-        <span class="rt-chip core"><span class="no">06</span>돈 내겠다는 사람들</span>
-        <span class="rt-chip cut"><span class="no">07</span>요금과 원가</span>
-        <span class="rt-chip cut"><span class="no">08</span>고객이 팀 안에</span>
-        <span class="rt-chip core"><span class="no">09</span>끌어당기는 힘</span>
+        <span class="rt-chip core"><span class="no">장면 1</span>어떤 문제를 풀려는지</span>
+        <span class="rt-chip cut"><span class="no">장면 2</span>시장이 얼마나 큰지</span>
+        <span class="rt-chip core"><span class="no">장면 3</span>제품이 실제로 도는 모습</span>
+        <span class="rt-chip cut"><span class="no">장면 4</span>다른 도구와 뭐가 다른지</span>
+        <span class="rt-chip cut"><span class="no">장면 5</span>품질을 지키는 방법</span>
+        <span class="rt-chip core"><span class="no">장면 6</span>돈을 내겠다는 사람들</span>
+        <span class="rt-chip cut"><span class="no">장면 7</span>요금은 얼마인지</span>
+        <span class="rt-chip cut"><span class="no">장면 8</span>어떤 팀이 만드는지</span>
+        <span class="rt-chip core"><span class="no">장면 9</span>앞으로 가려는 길</span>
       </div>
+      <div class="rt-gauge"></div>
       <div class="rt-gauge">
         <svg viewBox="0 0 120 120">
           <defs><linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1">
@@ -249,8 +340,8 @@
       <h2 class="headline" data-r>듣는 사람에 맞춰,<br>같은 화면이 달라져요.</h2>
     </div>
     <div class="seg" data-r style="transition-delay:.1s" id="dpSeg">
-      <button class="on" data-d="exec">짧게 듣기</button>
-      <button data-d="deep">깊게 듣기</button>
+      <button class="on" data-d="exec">간단히</button>
+      <button data-d="deep">자세하게</button>
     </div>
     <div class="dp-wrap" id="dpWrap" data-r style="transition-delay:.16s">
       <div class="dp-exec">
@@ -267,7 +358,7 @@
       </div>
       <div class="provpop" id="provpop"><b>사전 조사 · 2026년 7월</b><br>대학원생과 직장인 19명에게 물었어요. 발표 준비에서 시간이 제일 많이 드는 단계요. 4명 중 3명이 내용이 아니라 모양 다듬기를 골랐어요.</div>
     </div>
-    <p class="dp-note" data-r style="transition-delay:.22s">임원 보고와 기술 심사가, 같은 자료를 골라 들을 수 있어요.</p>
+    <p class="dp-note" data-r style="transition-delay:.22s">바쁜 대표님께는 간단히, 꼼꼼한 심사위원께는 자세하게. 자료를 두 벌 만들 필요가 없어요.</p>
   </div>
 </section>
 
@@ -283,23 +374,26 @@
       <button class="on">발표</button><button>랜딩페이지</button><button>제안서</button><button>전시</button>
     </div>
     <div class="mstage" id="mstage" data-m="0" data-r style="transition-delay:.18s">
-      <span class="mob mo-chip">DECKFLIP</span>
-      <div class="mob mo-title">생각이 발표가 되는<br>가장 빠른 길.</div>
-      <div class="mob mo-line">같은 이야기, 다른 무대.<br>다시 만들지 않았어요.</div>
+      <span class="mob mo-chip" id="moChip">DECKFLIP</span>
+      <div class="mob mo-title" id="moTitle">생각이 발표가 되는<br>가장 빠른 길.</div>
+      <div class="mob mo-line" id="moLine">오늘 발표의 세 가지: 문제, 제품, 그리고 팀.</div>
       <div class="mob mo-visual"></div>
-      <div class="mob mo-cta">지금 시작하기</div>
+      <div class="mob mo-cta" id="moCta">발표 시작하기</div>
       <span class="mlabel" id="mlabel">Stage · 발표</span>
     </div>
   </div>
 </section>
 
-<!-- ═══ S9 피날레 ═══ -->
-<section class="scene" id="finale" data-nav="커튼콜">
-  <div class="conv" id="conv"></div>
-  <div class="core"></div>
-  <div class="scene-in">
+<!-- ═══ 피날레: 중력의 우주 ═══ -->
+<section class="scene" id="finale" data-nav="커튼콜" data-ph="0">
+  <div class="cosmos">
+    <i class="neb n1"></i><i class="neb n2"></i><i class="neb n3"></i>
+    <div class="starsA"></div><div class="starsB"></div><div class="galaxy"></div>
+  </div>
+  <div class="planetfield" id="planetfield"></div>
+  <div class="fin-copy" id="finCopy">
     <span class="chip ghost" data-r>Finale · 커튼콜</span>
-    <h2 class="display" data-r style="transition-delay:.1s;margin-top:24px">다음 발표자료는,<br><span class="accent">만들지 마세요.</span></h2>
+    <h2 class="display" data-r style="transition-delay:.1s;margin-top:22px">다음 발표자료는,<br><span class="accent">만들지 마세요.</span></h2>
     <p class="sub" data-r style="transition-delay:.2s">말해 주시면, 저희가 무대에 올릴게요. <b>DeckFlip.</b></p>
     <div class="ctarow" data-r style="transition-delay:.3s">
       <a class="cta primary" href="deck.html">심사장에서 보신 발표 덱 열기 <span class="arw">→</span></a>
@@ -307,7 +401,20 @@
     </div>
     <div class="foot" data-r style="transition-delay:.4s">Team DeckFlip · GRAVITY 2026 · UNIST 대학원 트랙</div>
   </div>
+  <div class="fin-stage" id="finStage">
+    <div class="gsys">
+      <div class="gplanet"><span class="gcore"></span><span class="glab">GRAVITY</span></div>
+      <span class="gring r1"></span><span class="gring r2"></span>
+      <div class="orb o1"><span class="spinp"><i class="moon mUNIST" title="UNIST"></i></span></div>
+      <div class="orb o2"><span class="spinp"><i class="moon mKAIST" title="KAIST"></i></span></div>
+      <div class="orb o3"><span class="spinp"><i class="moon mGIST" title="GIST"></i></span></div>
+      <div class="orb o4"><span class="spinp"><i class="moon mDGIST" title="DGIST"></i></span></div>
+      <div class="glabels"><b>4대 과학기술원이, 이 중력장 안에 있어요</b></div>
+    </div>
+  </div>
 </section>
+
+</main></section>
 
 </main>
 
