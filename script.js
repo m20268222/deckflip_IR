@@ -304,9 +304,11 @@ $$('.ticket').forEach(function(t){
     if(m==='hall'){stage.classList.add('hall');
       if(gf)gf.style.strokeDashoffset=String(C*(1-90/420));
       if(tm)tm.innerHTML='<b>1</b>:30';if(tl)tl.textContent='핵심 네 장면만';
+      var d1=$('rtDesc');if(d1)d1.textContent='핵심 네 장면만 남겼어요. 접힌 다섯 장면은 지워진 게 아니라, 본선 구성으로 돌아가면 다시 펼쳐져요.';
     }else{stage.classList.remove('hall');
       if(gf)gf.style.strokeDashoffset='0';
-      if(tm)tm.innerHTML='<b>7</b>:00';if(tl)tl.textContent='아홉 장면 전부';}
+      if(tm)tm.innerHTML='<b>7</b>:00';if(tl)tl.textContent='아홉 장면 전부';
+      var d2=$('rtDesc');if(d2)d2.textContent='지금은 아홉 장면 전부를 7분 동안 보여드리는 본선 구성이에요. 파란 테두리가 어디서든 남는 핵심 장면이에요.';}
   }
   seg.addEventListener('click',function(e){
     var b=e.target.closest('button');if(b)mode(b.getAttribute('data-mode'));
@@ -366,7 +368,7 @@ $$('.ticket').forEach(function(t){
     iv=setInterval(function(){if(Date.now()>hold&&!document.hidden)set((cur+1)%4)},3400);
   });
   sc.addEventListener('scene:out',function(){if(iv){clearInterval(iv);iv=null}set(0)});
-  sc.__set=set;
+  sc.__set=function(i){hold=Date.now()+6000;set(i)};
 })();
 
 /* ── 피날레: 중력의 우주 (수렴→재배치→공전) ── */
@@ -393,9 +395,9 @@ $$('.ticket').forEach(function(t){
     seed();
     sc.setAttribute('data-ph','0');
     requestAnimationFrame(function(){requestAnimationFrame(function(){
-      timers.push(setTimeout(function(){sc.setAttribute('data-ph','1')},900));
-      timers.push(setTimeout(function(){sc.setAttribute('data-ph','2')},6200));
-      timers.push(setTimeout(function(){sc.setAttribute('data-ph','3')},7900));
+      timers.push(setTimeout(function(){sc.setAttribute('data-ph','1')},1100));
+      timers.push(setTimeout(function(){sc.setAttribute('data-ph','2')},8600));
+      timers.push(setTimeout(function(){sc.setAttribute('data-ph','3')},11600));
     })});
   }
   sc.addEventListener('scene:in',run);
@@ -450,8 +452,12 @@ $$('.ticket').forEach(function(t){
     freeze:'#101526',voice:'#0D1024',recompile:'#0A0F1E',depth:'#12101E',morph:'#0F0D1A',finale:'#030409'};
   scenes.forEach(function(sc,i){
     var b=document.createElement('button');b.className='th-item';
+    var hd=sc.querySelector('.headline,.display');
+    var hdt=hd?hd.textContent.replace(/\s+/g,' ').trim():'';
     b.innerHTML='<span class="th-chip" style="--tc:'+(TCOLOR[sc.id]||'#101725')+'"></span>'+
-      '<span><span class="th-aa">'+(i+1)+' · Scene</span><br><span class="th-tt">'+(sc.getAttribute('data-nav')||sc.id)+'</span></span>';
+      '<span><span class="th-aa">'+(i+1)+' · Scene · '+(sc.getAttribute('data-nav')||sc.id)+'</span>'+
+      '<span class="th-tt" style="display:block">'+hdt.slice(0,34)+'</span>'+
+      '<span class="th-hd">'+hdt+'</span></span>';
     b.addEventListener('click',function(){thClose();go(i)});
     list.appendChild(b);
   });
@@ -519,7 +525,7 @@ window.stopPilot=stopPilot;
     {id:'morph',dur:9500,cap:'발표가 끝나도 이야기는 계속돼요. 랜딩으로, 제안서로, 전시로 옷을 갈아입어요.',
       fn:function(){var m=$('morph');if(m&&m.__set){[1,2,3,0].forEach(function(k,i){
         setTimeout(function(){m.__set(k)},1000+i*2000)})}}},
-    {id:'finale',dur:14000,cap:'흩어져 있던 아이디어들이 중력을 만나면, 이렇게 한 자리에 모여요. 다음 발표자료는 만들지 마세요.'}
+    {id:'finale',dur:17500,cap:'흩어져 있던 아이디어들이 중력을 만나면, 이렇게 한 자리에 모여요. 다음 발표자료는 만들지 마세요.'}
   ];
   function startPilot(){
     if(pilotOn)return;pilotOn=true;var gen=++pilotGen;

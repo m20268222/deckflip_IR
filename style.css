@@ -703,3 +703,99 @@ html.nojs .thumbs,html.nojs .edgehot{display:none}
   .fz-grid{gap:10px}
   .fzw{padding:12px 14px}
 }
+
+/* ═══ 라운드4 ═══ */
+/* 0) 글씨 추가 확대 */
+.body{font-size:clamp(18.5px,1.7vw,22px)}
+.lede{font-size:clamp(19px,2vw,25px)}
+.grow .lb,.ticket p{font-size:clamp(16.5px,1.55vw,19px)}
+.dp-row .dd,.kb,.voicepitch{font-size:clamp(15.5px,1.45vw,18px)}
+.fz-lab,.th-aa{font-size:13.5px}
+.webtag{font-size:clamp(13.5px,1.25vw,15.5px)!important}
+.mlabel,.chartcap{font-size:14px}
+.rt-tlb{font-size:clamp(13px,1.2vw,15px)}
+.rt-desc{margin-top:16px;font-size:clamp(16px,1.5vw,19px);color:var(--ink2);line-height:1.7;max-width:70ch}
+/* 1) 썸네일 대형화 + 내용 미리보기 */
+.thumbs{width:min(500px,92vw)}
+.th-item{padding:14px 16px;gap:15px;align-items:flex-start}
+.th-chip{width:104px;border-radius:9px}
+.th-tt{font-size:17px}
+.th-hd{display:block;margin-top:4px;font-size:13.5px;color:var(--mut);line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* 2) paper 레이아웃 */
+#paper .scene-in{display:block}
+.paper-top{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(26px,4vw,56px);align-items:center}
+.growcards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:clamp(20px,3vh,32px)}
+.grow{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.grow .num{min-width:0}
+@media (max-width:940px){.paper-top{grid-template-columns:1fr}.growcards{grid-template-columns:1fr}}
+/* 4) 커튼콜 재설계 */
+.starsC{position:absolute;inset:-10%;background-image:
+  radial-gradient(1px 1px at 5% 15%,rgba(255,255,255,.5),transparent 60%),
+  radial-gradient(1.1px 1.1px at 15% 55%,rgba(210,225,255,.6),transparent 60%),
+  radial-gradient(1px 1px at 30% 90%,rgba(255,255,255,.45),transparent 60%),
+  radial-gradient(1.3px 1.3px at 45% 35%,rgba(255,255,255,.7),transparent 60%),
+  radial-gradient(1px 1px at 58% 70%,rgba(210,225,255,.5),transparent 60%),
+  radial-gradient(1.2px 1.2px at 72% 20%,rgba(255,255,255,.6),transparent 60%),
+  radial-gradient(1px 1px at 90% 65%,rgba(210,225,255,.5),transparent 60%),
+  radial-gradient(1.4px 1.4px at 97% 10%,rgba(255,255,255,.7),transparent 60%);
+  animation:drift 46s linear infinite alternate}
+@keyframes drift{from{transform:translate(0,0)}to{transform:translate(-2.5%,1.5%)}}
+.starsA{animation:drift 62s linear infinite alternate-reverse}
+.galaxy.g1{width:420px;height:150px;left:8%;top:12%;transform:rotate(-24deg)}
+.galaxy.g2{position:absolute;width:300px;height:100px;right:6%;bottom:14%;border-radius:50%;
+  background:conic-gradient(from 200deg,transparent,rgba(200,180,255,.22),transparent 45%,rgba(150,190,255,.14),transparent 80%);
+  filter:blur(7px);transform:rotate(18deg);opacity:.7}
+.planetfield i{transition:all 6s var(--ease)}
+/* 행성계: 처음부터 중앙에 크게(반투명) → 우측 이동 */
+.fin-stage{right:auto;left:50%;top:50%;transform:translate(-50%,-50%) scale(.94);width:min(52vw,700px);
+  opacity:.42;z-index:2;transition:all 2.6s var(--ease)}
+#finale[data-ph="1"] .fin-stage{left:50%;transform:translate(-50%,-50%) scale(.97);opacity:.55}
+#finale[data-ph="2"] .fin-stage,#finale[data-ph="3"] .fin-stage{left:auto;right:10%;transform:translateY(-50%) scale(1);opacity:1}
+.fin-copy{z-index:6}
+.gplanet{width:46%;background:
+  radial-gradient(circle at 31% 26%,rgba(255,255,255,.95),rgba(220,235,255,.25) 22%,transparent 38%),
+  radial-gradient(circle at 30% 30%,rgba(140,190,255,.55),rgba(62,123,255,.32) 45%,transparent 66%),
+  radial-gradient(circle at 72% 80%,rgba(198,242,82,.2),transparent 46%),
+  radial-gradient(circle at 50% 50%,rgba(30,58,140,.9),rgba(8,14,34,.98) 78%);
+  border:1px solid rgba(200,220,255,.5);
+  box-shadow:inset -22px -26px 60px rgba(0,0,12,.85),inset 10px 12px 34px rgba(160,200,255,.25),
+    0 0 90px -10px rgba(90,150,255,.65),0 0 160px -30px rgba(198,242,82,.3)}
+.gplanet .atmo{position:absolute;inset:-7%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,transparent 62%,rgba(120,180,255,.28) 74%,transparent 82%)}
+.glab{font-size:clamp(15px,1.5vw,20px);letter-spacing:.3em}
+.gring{opacity:0;transition:opacity 1.8s ease}
+.gring.back{width:150%;aspect-ratio:1;transform:translate(-50%,-50%) rotateX(76deg);z-index:-1;
+  border:2px solid rgba(190,210,255,.35);
+  box-shadow:0 0 24px rgba(150,190,255,.25),inset 0 0 24px rgba(150,190,255,.18)}
+.gring.front{width:150%;aspect-ratio:1;transform:translate(-50%,-50%) rotateX(76deg);z-index:3;
+  border:2px solid rgba(210,226,255,.5);clip-path:inset(50% 0 0 0);pointer-events:none}
+.gring.r1,.gring.r2{display:none}
+#finale[data-ph="3"] .gring{opacity:1}
+.orb{transform:translate(-50%,-50%) rotateX(76deg);transition:opacity 1.8s ease}
+.orb.o1{width:150%}.orb.o2{width:190%}.orb.o3{width:230%}.orb.o4{width:272%}
+.orb .moon{transform:translate(-50%,-50%) rotateX(-76deg);--mw:34px;
+  background:radial-gradient(circle at 30% 26%,rgba(255,255,255,.95),rgba(255,255,255,.2) 30%,transparent 42%),
+    radial-gradient(circle at 50% 50%,var(--mc),rgba(6,10,24,.95) 86%);
+  border:1px solid rgba(255,255,255,.5);
+  box-shadow:inset -5px -6px 12px rgba(0,0,10,.7),0 0 20px -2px var(--mc)}
+.orb .moon em{position:absolute;left:50%;top:118%;transform:translateX(-50%);font-style:normal;
+  font-size:11.5px;font-weight:800;letter-spacing:.14em;color:var(--ink2);white-space:nowrap;
+  text-shadow:0 0 10px rgba(0,0,0,.9)}
+.orb.o1 .spinp{--os:13s}.orb.o1 .moon{--mc:rgba(79,227,217,.95);--mw:40px}
+.orb.o2 .spinp{--os:19s;animation-delay:-6s}.orb.o2 .moon{--mc:rgba(75,141,255,.95)}
+.orb.o3 .spinp{--os:26s;animation-delay:-12s}.orb.o3 .moon{--mc:rgba(198,242,82,.95)}
+.orb.o4 .spinp{--os:33s;animation-delay:-20s}.orb.o4 .moon{--mc:rgba(180,140,255,.95)}
+.gcap{position:absolute;left:50%;bottom:-15%;transform:translateX(-50%);white-space:nowrap;
+  font-size:clamp(15px,1.5vw,19px);color:var(--ink2);opacity:0;transition:opacity 1.6s ease 1.4s}
+.gcap b{color:var(--kyan);font-weight:800}
+#finale[data-ph="3"] .gcap{opacity:1}
+.glabels{display:none}
+@media (max-width:940px){
+  #finale[data-ph="2"] .fin-stage,#finale[data-ph="3"] .fin-stage{right:50%;transform:translate(50%,30%) scale(.62)}
+}
+
+@media (max-height:940px){
+  #recompile .lede{display:none}
+  .rt-desc{margin-top:10px;font-size:15px}
+}

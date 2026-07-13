@@ -207,19 +207,12 @@
 <!-- ═══ S4 종이 무대 (라이트 반전) ═══ -->
 <section class="scene" id="paper" data-nav="스스로 고치는 무대">
   <div class="scene-in">
-    <div>
-      <div class="scenehead" style="margin-bottom:26px">
+    <div class="paper-top">
+      <div class="scenehead" style="margin-bottom:0">
         <div class="eyebrow">Act 2 · Alive</div>
         <h2 class="headline" data-r>숫자가 눈앞에서 자라고,<br>깨진 곳은 알아서 고쳐요.</h2>
-        <p class="body" data-r style="transition-delay:.1s">발표자들에게 물어봤어요.<br>시간이 어디에 제일 많이 쓰이는지요.</p>
+        <p class="body" data-r style="transition-delay:.1s">발표자들에게 물어봤어요. 시간이 어디에 제일 많이 쓰이는지요.<br>그리고 오른쪽 검사는 멈추지 않고 계속 돌아요.</p>
       </div>
-      <div class="growcards">
-        <div class="grow" data-r><span class="num"><b data-count="75">0</b>%</span><span class="lb">내용이 아니라 모양 다듬기에<br>시간을 쓰고 있었어요</span></div>
-        <div class="grow" data-r style="transition-delay:.08s"><span class="num"><b data-count="4">0</b>시간</span><span class="lb">자료 하나 만드는 데<br>기본으로 걸리는 시간</span></div>
-        <div class="grow" data-r style="transition-delay:.16s"><span class="num"><b data-count="56">0</b>%</span><span class="lb">마감 전날 밤을 새워 본<br>사람의 비율</span></div>
-      </div>
-    </div>
-    <div>
       <div class="healbox" data-r style="transition-delay:.12s">
         <div class="hb-t">시장 이야기</div>
         <div class="hb-num" id="hbNum">657</div>
@@ -227,10 +220,16 @@
         <div class="hb-c" id="hbC"><b style="height:46%"></b><b style="height:68%"></b><b style="height:84%"></b><b style="height:58%"></b></div>
         <div class="hb-say" id="hbSay">검사를 시작할게요</div>
       </div>
-      <p class="body" style="margin-top:18px" data-r>이 검사, 멈추지 않고 계속 돌아요.<br>무대에 오르기 전에 마흔한 가지를 봐요.</p>
+    </div>
+    <div class="growcards">
+      <div class="grow" data-r><span class="num"><b data-count="75">0</b>%</span><span class="lb">내용이 아니라 모양 다듬기에<br>시간을 쓰고 있었어요</span></div>
+      <div class="grow" data-r style="transition-delay:.08s"><span class="num"><b data-count="4">0</b>시간</span><span class="lb">자료 하나 만드는 데<br>기본으로 걸리는 시간</span></div>
+      <div class="grow" data-r style="transition-delay:.16s"><span class="num"><b data-count="56">0</b>%</span><span class="lb">마감 전날 밤을 새워 본<br>사람의 비율</span></div>
     </div>
   </div>
 </section>
+
+<!-- ═══ 종이가 되는 순간</section>
 
 <!-- ═══ 종이가 되는 순간 (도장) ═══ -->
 <section class="scene" id="freeze" data-nav="종이가 되는 순간">
@@ -305,6 +304,7 @@
       <button class="on" data-mode="main">본선 무대 · 7분</button>
       <button data-mode="hall">복도에서 · 90초</button>
     </div>
+    <p class="rt-desc" id="rtDesc" data-r style="transition-delay:.18s">지금은 아홉 장면 전부를 7분 동안 보여드리는 본선 구성이에요. 파란 테두리가 어디서든 남는 핵심 장면이에요.</p>
     <div class="rt-stage" id="rtStage">
       <div class="rt-chips">
         <span class="rt-chip core"><span class="no">장면 1</span>어떤 문제를 풀려는지</span>
@@ -388,31 +388,35 @@
 <section class="scene" id="finale" data-nav="커튼콜" data-ph="0">
   <div class="cosmos">
     <i class="neb n1"></i><i class="neb n2"></i><i class="neb n3"></i>
-    <div class="starsA"></div><div class="starsB"></div><div class="galaxy"></div>
+    <div class="starsA"></div><div class="starsB"></div><div class="starsC"></div>
+    <div class="galaxy g1"></div><div class="galaxy g2"></div>
   </div>
   <div class="planetfield" id="planetfield"></div>
+  <div class="fin-stage" id="finStage">
+    <div class="gsys">
+      <span class="gring back"></span>
+      <div class="gplanet"><span class="atmo"></span><span class="glab">DECKFLIP</span></div>
+      <span class="gring front"></span>
+      <div class="orb o1"><span class="spinp"><i class="moon"><em>UNIST</em></i></span></div>
+      <div class="orb o2"><span class="spinp"><i class="moon"><em>KAIST</em></i></span></div>
+      <div class="orb o3"><span class="spinp"><i class="moon"><em>GIST</em></i></span></div>
+      <div class="orb o4"><span class="spinp"><i class="moon"><em>DGIST</em></i></span></div>
+    </div>
+    <div class="gcap">4대 과기원의 아이디어를 끌어당기는 힘, <b>DeckFlip</b></div>
+  </div>
   <div class="fin-copy" id="finCopy">
     <span class="chip ghost" data-r>Finale · 커튼콜</span>
     <h2 class="display" data-r style="transition-delay:.1s;margin-top:22px">다음 발표자료는,<br><span class="accent">만들지 마세요.</span></h2>
-    <p class="sub" data-r style="transition-delay:.2s">말해 주시면, 저희가 무대에 올릴게요. <b>DeckFlip.</b></p>
+    <p class="sub" data-r style="transition-delay:.2s">발표하고 싶은 내용만 말해 주세요.<br>무대는 저희가 만들게요. <b>DeckFlip.</b></p>
     <div class="ctarow" data-r style="transition-delay:.3s">
-      <a class="cta primary" href="deck.html">심사장에서 보신 발표 덱 열기 <span class="arw">→</span></a>
+      <a class="cta primary" href="deck.html">심사장에서 보신 발표 덱 · DeckFlip 통과 버전 <span class="arw">→</span></a>
       <button class="cta ghost" id="pilotBtn2">▶ 처음부터 자동으로 보기</button>
     </div>
     <div class="foot" data-r style="transition-delay:.4s">Team DeckFlip · GRAVITY 2026 · UNIST 대학원 트랙</div>
   </div>
-  <div class="fin-stage" id="finStage">
-    <div class="gsys">
-      <div class="gplanet"><span class="gcore"></span><span class="glab">GRAVITY</span></div>
-      <span class="gring r1"></span><span class="gring r2"></span>
-      <div class="orb o1"><span class="spinp"><i class="moon mUNIST" title="UNIST"></i></span></div>
-      <div class="orb o2"><span class="spinp"><i class="moon mKAIST" title="KAIST"></i></span></div>
-      <div class="orb o3"><span class="spinp"><i class="moon mGIST" title="GIST"></i></span></div>
-      <div class="orb o4"><span class="spinp"><i class="moon mDGIST" title="DGIST"></i></span></div>
-      <div class="glabels"><b>4대 과학기술원이, 이 중력장 안에 있어요</b></div>
-    </div>
-  </div>
 </section>
+
+</main></section>
 
 </main></section>
 
