@@ -1001,6 +1001,13 @@ html.nojs .thumbs,html.nojs .edgehot{display:none}
 .planetfield i{animation:pfdrift 9s ease-in-out var(--pfd,0s) infinite alternate}
 @keyframes pfdrift{from{transform:translate3d(0,-7px,0)}to{transform:translate3d(0,9px,0)}}
 
+/* ═══ 라운드11: 피날레 카운트다운(팀 피드백 — 피날레 놓침 방지) ═══ */
+.convmsg{display:flex;align-items:center;gap:12px}
+.cvring{flex:none;width:15px;height:15px;border-radius:50%;
+  background:conic-gradient(#C6F252 0%,rgba(255,255,255,.14) 0)}
+.cvcd{flex:none;font-weight:800;color:var(--lime);white-space:nowrap}
+.cvcd:empty,.convmsg:not(.on) .cvring{display:none}
+
 </style>
 </head>
 <body>
@@ -1144,6 +1151,7 @@ html.nojs .thumbs,html.nojs .edgehot{display:none}
     </div>
     <div class="kb-grid" data-r style="transition-delay:.2s">
       <div class="kb"><span class="kcap"><kbd>←</kbd><kbd>→</kbd></span>이전 · 다음 무대</div>
+      <div class="kb"><span class="kcap"><kbd>PgUp</kbd><kbd>PgDn</kbd></span>발표 리모컨 그대로</div>
       <div class="kb"><span class="kcap"><kbd>1</kbd>~<kbd>9</kbd></span>번호로 바로 이동</div>
       <div class="kb"><span class="kcap"><kbd>T</kbd></span>장면 미리보기</div>
       <div class="kb"><span class="kcap"><kbd>A</kbd></span>손 놓고 보기</div>
@@ -1388,7 +1396,7 @@ html.nojs .thumbs,html.nojs .edgehot{display:none}
     </svg>
   </div>
   <div class="planetfield" id="planetfield"></div>
-  <div class="convmsg" id="convmsg"></div>
+  <div class="convmsg" id="convmsg"><i class="cvring" id="cvRing"></i><span id="cvTxt"></span><span class="cvcd" id="cvCd"></span></div>
   <div class="fin-stage" id="finStage">
     <div class="gsys">
       <span class="gring back"></span>
@@ -1491,8 +1499,9 @@ if(!REDUCE){
 
 /* ── 키보드 ── */
 addEventListener('keydown',function(e){
-  if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();stopPilot();go(curScene+1)}
-  if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();stopPilot();go(curScene-1)}
+  var tg=(e.target&&e.target.tagName)||'';
+  if(e.key==='ArrowDown'||e.key==='ArrowRight'||e.key==='PageDown'||(e.key===' '&&!e.shiftKey&&!/BUTTON|A|INPUT|TEXTAREA/.test(tg))){e.preventDefault();stopPilot();go(curScene+1)}
+  if(e.key==='ArrowUp'||e.key==='ArrowLeft'||e.key==='PageUp'||(e.key===' '&&e.shiftKey)){e.preventDefault();stopPilot();go(curScene-1)}
   if(e.key==='Escape')stopPilot();
 });
 
@@ -1822,20 +1831,34 @@ $$('.ticket').forEach(function(t){
       pf.appendChild(el);
     });
   }
+  var cdIv=null;
   function run(){
     timers.forEach(clearTimeout);timers=[];
+    if(cdIv){clearInterval(cdIv);cdIv=null}
     seed();
-    var msg=$('convmsg');
+    var msg=$('convmsg'),tx=$('cvTxt'),cd=$('cvCd'),rg=$('cvRing');
     function say(t){if(!msg)return;if(!t){msg.classList.remove('on');return}
-      msg.textContent=t;msg.classList.add('on')}
+      if(tx)tx.textContent=t;else msg.textContent=t;
+      msg.classList.add('on')}
     sc.setAttribute('data-ph','0');say('');
+    /* 커튼콜 카운트다운: 행성 등장(ph3)까지 남은 시간을 링+초로 표시 */
+    var TOTAL=16400,t0=Date.now();
+    if(cd&&rg){
+      cd.textContent='';rg.style.background='conic-gradient(#C6F252 0%, rgba(255,255,255,.14) 0)';
+      cdIv=setInterval(function(){
+        var left=t0+TOTAL-Date.now();
+        if(left<=0){if(cdIv){clearInterval(cdIv);cdIv=null}return}
+        cd.textContent='\ucee4\ud2bc\ucf5c\uae4c\uc9c0 '+Math.ceil(left/1000)+'\ucd08';
+        rg.style.background='conic-gradient(#C6F252 '+((1-left/TOTAL)*100).toFixed(1)+'%, rgba(255,255,255,.14) 0)';
+      },200);
+    }
     requestAnimationFrame(function(){requestAnimationFrame(function(){
       timers.push(setTimeout(function(){sc.setAttribute('data-ph','1');
         say('반짝이는 아이디어들이 모이고 있어요')},1200));
       timers.push(setTimeout(function(){say('GRAVITY의 중력이 아이디어를 끌어당기고 있어요')},5200));
       timers.push(setTimeout(function(){say('다 모였어요. 이제 발표가 될 차례예요')},9200));
-      timers.push(setTimeout(function(){say('');sc.setAttribute('data-ph','2')},11800));
-      timers.push(setTimeout(function(){sc.setAttribute('data-ph','3')},16400));
+      timers.push(setTimeout(function(){say('무대가 제자리를 찾고 있어요');sc.setAttribute('data-ph','2')},11800));
+      timers.push(setTimeout(function(){say('');sc.setAttribute('data-ph','3')},16400));
     })});
   }
   /* 실제 공전: 위성 4 + DeckFlip 별이 고리 평면(rotateX 72° → 단축비 0.309)을 따라 회전.
@@ -1875,7 +1898,7 @@ $$('.ticket').forEach(function(t){
   }
   function orbStop(){if(orbRaf){cancelAnimationFrame(orbRaf);orbRaf=0}}
   sc.addEventListener('scene:in',function(){run();orbStart()});
-  sc.addEventListener('scene:out',function(){timers.forEach(clearTimeout);orbStop()});
+  sc.addEventListener('scene:out',function(){timers.forEach(clearTimeout);orbStop();if(cdIv){clearInterval(cdIv);cdIv=null}});
   sc.__pull=run;
 })();
 
@@ -1908,7 +1931,7 @@ $$('.ticket').forEach(function(t){
   var echo=$('kbEcho');if(!echo)return;
   var K=echo.querySelector('.ke-key'),D=echo.querySelector('.ke-desc');
   var DESC={'ArrowRight':'다음 무대로 넘어가요','ArrowLeft':'이전 무대로 돌아가요','ArrowDown':'다음 무대로 넘어가요',
-    'ArrowUp':'이전 무대로 돌아가요','t':'장면 미리보기를 열어요','T':'장면 미리보기를 열어요',
+    'ArrowUp':'이전 무대로 돌아가요','PageDown':'다음 무대로 넘어가요 · 발표 리모컨 키예요','PageUp':'이전 무대로 돌아가요 · 발표 리모컨 키예요',' ':'다음 무대로 넘어가요','t':'장면 미리보기를 열어요','T':'장면 미리보기를 열어요',
     'a':'손 놓고 보기를 시작해요','A':'손 놓고 보기를 시작해요','f':'전체 화면으로 바꿔요','F':'전체 화면으로 바꿔요',
     '?':'단축키 안내를 열어요','Escape':'열린 것들을 닫아요','Home':'첫 무대로 가요','End':'마지막 무대로 가요'};
   addEventListener('keydown',function(e){
