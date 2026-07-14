@@ -463,7 +463,7 @@ html.nojs .preloader{display:none}
   .coach{padding:13px 22px;font-size:15px}
 }
 /* 낮은 뷰포트(크롬 실화면) 안전 */
-@media (max-height:900px){
+@media (max-height:900px) and (min-width:941px){
   .pollbox{padding:20px 24px}
   .popts{margin-top:14px;gap:10px}
   .popt{padding:14px 18px 16px}
@@ -694,7 +694,7 @@ html.nojs .thumbs,html.nojs .edgehot{display:none}
 .glabels b{font-weight:700}
 
 /* 낮은 높이 추가 압축 */
-@media (max-height:940px){
+@media (max-height:940px) and (min-width:941px){
   .tickets{grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
   .ticket{padding:15px 16px}
   .ticket h3{font-size:clamp(17px,1.6vw,21px);margin-top:8px}
@@ -805,7 +805,7 @@ html.nojs .thumbs,html.nojs .edgehot{display:none}
   #finale[data-ph="2"] .fin-stage,#finale[data-ph="3"] .fin-stage{right:50%;transform:translate(50%,30%) scale(.62)}
 }
 
-@media (max-height:940px){
+@media (max-height:940px) and (min-width:941px){
   #recompile .lede{font-size:15.5px}
   .rt-desc{margin-top:10px;font-size:15px}
 }
@@ -977,6 +977,29 @@ html.nojs .thumbs,html.nojs .edgehot{display:none}
   .glabchip{font-size:11.5px;letter-spacing:.2em}
   .convmsg{bottom:2.2%}
 }
+
+/* ═══ 라운드10 (팀 피드백) ═══ */
+@media (max-width:940px){
+  /* 세트리스트: AI PPT식 가로 카드 — 넘버 칩 | 제목/설명 */
+  .tickets{grid-template-columns:1fr;gap:11px;margin-top:22px}
+  .ticket{display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:center;
+    padding:14px 44px 14px 14px;border-radius:14px}
+  .ticket .act{grid-row:1/3;align-self:center;padding:9px 10px;border:1px solid rgba(230,196,120,.38);
+    border-radius:10px;font-size:10.5px;letter-spacing:.12em;text-align:center;white-space:nowrap}
+  .ticket h3{margin-top:0;font-size:16.5px;line-height:1.3}
+  .ticket p{margin-top:3px;font-size:13px;line-height:1.5}
+  .ticket .webtag{display:none}
+  .ticket .go{top:50%;transform:translateY(-50%);right:15px;opacity:.55}
+  /* 자동재생 대본: left:50% shrink-to-fit 함정(가용폭=뷰포트 절반) 해제 → 하단 전폭 가로 바 */
+  .pilotbar{left:12px;right:12px;bottom:12px;max-width:none;width:auto;
+    transform:translateY(160%);padding:12px 14px;gap:10px}
+  .pilotbar.on{transform:translateY(0)}
+  .pilotbar .cap{font-size:13.5px;line-height:1.5}
+  .pilotbar .stop{padding:6px 12px}
+}
+/* 아이디어 행성: 수렴 전 무중력 부유(슬로건 '무중력의 아이디어'의 시각화) */
+.planetfield i{animation:pfdrift 9s ease-in-out var(--pfd,0s) infinite alternate}
+@keyframes pfdrift{from{transform:translate3d(0,-7px,0)}to{transform:translate3d(0,9px,0)}}
 
 </style>
 </head>
@@ -1378,7 +1401,7 @@ html.nojs .thumbs,html.nojs .edgehot{display:none}
       <div class="moonp m4"><i></i><b>DGIST</b></div>
       <div class="dfstar"><i></i><b>DECKFLIP</b></div>
     </div>
-    <div class="gcap">이 중력장 안에서, 아이디어를 발표로 만드는 힘. <b>DeckFlip</b></div>
+    <div class="gcap">무중력의 아이디어를 끌어당기는 힘, <b>DeckFlip</b></div>
   </div>
   <div class="fin-copy" id="finCopy">
     <span class="chip ghost" data-r>Finale · 커튼콜</span>
@@ -1794,6 +1817,7 @@ $$('.ticket').forEach(function(t){
       el.style.setProperty('--x',p[0]+'%');el.style.setProperty('--y',p[1]+'%');
       el.style.setProperty('--w',(26+(i*17)%44)+'px');
       el.style.setProperty('--hr',String((i*47)%320-160)+'deg');
+      el.style.setProperty('--pfd',String(-((i*13)%90)/10)+'s');
       el.style.transitionDelay=(i*0.12)+'s';
       pf.appendChild(el);
     });
@@ -2032,6 +2056,8 @@ window.stopPilot=stopPilot;
   var MOB=false;try{MOB=matchMedia('(max-width: 940px)').matches}catch(e){}
   if(!MOB)return;
   var tb=document.getElementById('thumbBtn'),pb=document.getElementById('pilotBtn');
+  var ps=document.getElementById('pilotstop');
+  if(ps)ps.textContent='\uba48\ucd94\uae30';
   if(tb)tb.textContent='\uD83C\uDF9E\uFE0F \ubBF8\ub9AC\ubCF4\uAE30';
   if(pb)pb.textContent='\u25B6 \uC790\uB3D9 \uC7AC\uC0DD';
 })();
