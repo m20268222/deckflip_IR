@@ -1642,7 +1642,7 @@ $$('.ticket').forEach(function(t){
     {id:BASE+'-q1',q:'다음 발표자료, 어떤 모습이면 좋겠어요?',a:'지금처럼 파일로',b:'살아 있는 웹으로'},
     {id:BASE+'-q2',q:'오늘 이 무대, 어땠어요?',a:'신기한 구경이었어요',b:'당장 써 보고 싶어요'}
   ];
-  var qi=0,counts=[0,0],live=null,visible=false,total0=-1,busy=false,iv=null;
+  var qi=0,counts=[0,0],live=null,visible=false,total0=-1,busy=false,sending=false,iv=null;
   var opts=$$('.popt',sc),state=$('pollstate'),totalEl=$('polltotal'),orbwrap=$('orbwrap');
   var pollq=$('pollq'),qsw=$('qswitch'),coach=$('voiceCoach');
   function H(){return {apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json'}}
@@ -1686,7 +1686,7 @@ $$('.ticket').forEach(function(t){
     if(busy)return;busy=true;
     var ctl=('AbortController' in window)?new AbortController():null;
     var to=setTimeout(function(){if(ctl)ctl.abort()},4500);
-    fetch(URL_+'/rest/v1/deck_votes?select=choice&poll=eq.'+pid()+'&limit=4000',
+    fetch(URL_+'/rest/v1/deck_votes?select=choice&poll=eq.'+encodeURIComponent(pid())+'&limit=4000',
       {headers:H(),signal:ctl?ctl.signal:undefined})
     .then(function(r){if(!r.ok)throw 0;return r.json()})
     .then(function(rows){
@@ -1699,8 +1699,12 @@ $$('.ticket').forEach(function(t){
     })
     .catch(function(){
       clearTimeout(to);busy=false;
-      if(live===null){live=false;counts=[4,11];total0=15;render();
-        if(state)state.textContent='지금은 미리 보기 집계예요'}
+      var hadLive=live===true;
+      live=false;
+      if(!hadLive){counts=[0,0];total0=0;render()}
+      if(state)state.textContent=hadLive
+        ?'연결이 잠시 끊겼어요. 마지막 집계를 보여드려요'
+        :'서버에 연결되지 않았어요. 투표는 아직 전송되지 않아요';
     });
   }
   function setQ(i){
@@ -1715,19 +1719,35 @@ $$('.ticket').forEach(function(t){
   });
   opts.forEach(function(o,i){
     o.addEventListener('click',function(){
+      if(live!==true){
+        if(state)state.textContent=live===null
+          ?'서버 연결을 확인하고 있어요. 잠시만 기다려 주세요'
+          :'아직 서버에 연결되지 않았어요. 연결되면 다시 눌러 주세요';
+        return;
+      }
+      if(sending){if(state)state.textContent='앞선 투표를 보내고 있어요';return;}
       var prev=null;try{prev=localStorage.getItem(myKey())}catch(_){}
-      try{localStorage.setItem(myKey(),String(i))}catch(_){}
+      sending=true;
       counts[i]++;
       total0=counts[0]+counts[1];render();orbs(2,i);
       if(coach)coach.classList.add('done');
-      if(live)fetch(URL_+'/rest/v1/deck_votes',{method:'POST',headers:H(),
-        body:JSON.stringify({poll:pid(),choice:i})}).catch(function(){});
       var name=i===0?QS[qi].a:QS[qi].b;
       var msg;
       if(prev===null)msg='"'+name+'" 쪽이시군요. 한 표, 무대에 올렸어요';
       else if(prev===String(i))msg='"'+name+'"에 한 표 더! 바로 얹었어요';
       else msg='"'+name+'" 쪽으로 마음이 바뀌셨군요. 반영했어요';
-      if(state)state.textContent=msg;
+      if(state)state.textContent='투표를 보내고 있어요';
+      fetch(URL_+'/rest/v1/deck_votes',{method:'POST',headers:H(),
+        body:JSON.stringify({poll:pid(),choice:i})})
+      .then(function(r){if(!r.ok)throw 0;
+        try{localStorage.setItem(myKey(),String(i))}catch(_){}
+        sending=false;if(state)state.textContent=msg;fetchCounts();
+      })
+      .catch(function(){
+        sending=false;live=false;counts[i]=Math.max(0,counts[i]-1);
+        total0=counts[0]+counts[1];render();
+        if(state)state.textContent='투표가 전송되지 않았어요. 연결되면 다시 눌러 주세요';
+      });
     });
   });
   sc.addEventListener('scene:in',function(){visible=true;fetchCounts();
