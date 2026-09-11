@@ -17,7 +17,7 @@ function setup({url='http://127.0.0.1:8765/?poll=review-session',storageThrows=f
   const options=[el(),el()];options.forEach(o=>{o.children['.opct']=el();o.children['.obar']=el()});
   const buttons=[el(),el()],img=el(),qrBox=el();img.parentNode=qrBox;
   els.voice.querySelector=()=>img;
-  const location={href:url,search:new URL(url).search};
+  const location={href:url,search:new URL(url).search,protocol:new URL(url).protocol};
   const ctx={document:{hidden:false},REDUCE:true,location,URL,URLSearchParams,encodeURIComponent,Math,JSON,Promise,Error,Object,Array,AbortController,
     $:id=>els[id],$$:(sel,parent)=>sel==='.popt'?options:buttons,
     localStorage:{getItem:k=>{if(storageThrows)throw Error('opaque origin');return saved.has(k)?saved.get(k):null},setItem:(k,v)=>{if(storageThrows)throw Error('opaque origin');saved.set(k,v)}},
@@ -82,6 +82,11 @@ async function test(name,run){await run();results.push(name)}
     const x=setup({url:'http://192.168.1.2:8765/index.html?poll=event-2026',config:{url:'http://192.168.1.2:8765/poll-api',key:'test-public-key'}});x.enter();await tick();
     assert.match(x.requests[0].url,/^http:\/\/192\.168\.1\.2:8765\/poll-api\/rest\/v1\/deck_votes/);
     assert.equal(x.attrs.get('data-poll-url'),'http://192.168.1.2:8765/index.html?poll=event-2026#voice');assert.match(x.img.src,/^data:image\/gif;base64,/);
+  });
+  await test('Opening a downloaded file defaults to local mode without any server requests',async()=>{
+    const x=setup({url:'file:///C:/IR/index.html'});x.enter();await tick();x.vote(1);
+    assert.equal(x.requests.length,0);assert.equal(x.els.polltotal.textContent,'1');
+    assert.match(x.els.pollstate.textContent,/로컬 체험/);
   });
   const report={pass:results.length,fail:0,network:'All requests replaced by deferred in-memory mocks',tests:results};
   console.log(JSON.stringify(report,null,2));

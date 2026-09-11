@@ -1664,7 +1664,7 @@ $$('.ticket').forEach(function(t){
   var BASE='showcase2026',mode='online';
   try{var q=new URLSearchParams(location.search).get('poll');
     if(q){q=q.replace(/[^\w-]/g,'').slice(0,40);if(q)BASE=q}
-    if(new URLSearchParams(location.search).get('mode')==='local')mode='local';
+    if(location.protocol==='file:'||new URLSearchParams(location.search).get('mode')==='local')mode='local';
   }catch(_){}
   var QS=[
     {id:BASE+'-q1',q:'다음 발표자료, 어떤 모습이면 좋겠어요?',a:'지금처럼 파일로',b:'살아 있는 웹으로'},
