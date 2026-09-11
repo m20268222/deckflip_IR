@@ -124,7 +124,7 @@ check(indexKeys.length === 1 && deckKeys.length === 1 && indexKeys[0] === deckKe
 
 check(/\/rest\/v1\/deck_votes\b/.test(htmlByName['index.html']), 'index.html reads and writes deck_votes');
 check(!/counts\s*=\s*\[4\s*,\s*11\]/.test(htmlByName['index.html']), 'index.html does not invent fallback vote totals');
-check(/encodeURIComponent\s*\(\s*pid\(\)\s*\)/.test(htmlByName['index.html']), 'index.html safely encodes its poll id');
+check(/encodeURIComponent\s*\(\s*capturedPoll\s*\)/.test(htmlByName['index.html']), 'index.html safely encodes its poll id');
 check(/\.then\s*\(\s*function\s*\(r\)\s*\{\s*if\s*\(\s*!r\.ok\s*\)\s*throw/.test(htmlByName['index.html']), 'index.html checks the vote POST response');
 check(/투표가 전송되지 않았어요/.test(htmlByName['index.html']), 'index.html shows a clear vote-send failure');
 check(/\btable\s*:\s*['"]deck_votes['"]/.test(htmlByName['deck.html']), 'deck.html configures deck_votes');

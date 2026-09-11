@@ -7,6 +7,9 @@ on:
       - index.html
       - deck.html
       - supabase/**
+      - poll-config.js
+      - vendor/**
+      - tools/**
       - tests/**
       - .github/workflows/poll-integration-check.yml
   pull_request:
@@ -14,6 +17,9 @@ on:
       - index.html
       - deck.html
       - supabase/**
+      - poll-config.js
+      - vendor/**
+      - tools/**
       - tests/**
       - .github/workflows/poll-integration-check.yml
 
@@ -30,3 +36,5 @@ jobs:
         with:
           node-version: 22
       - run: node tests/verify-poll-integration.mjs
+      - run: node tests/verify-poll-behavior.cjs
+      - run: node --test tests/local-poll-server.test.mjs
